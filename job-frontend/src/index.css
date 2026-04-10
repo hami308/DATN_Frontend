@@ -4,7 +4,8 @@
   --color-secondary: #e7f0fa;
   --color-accent: #bd0c47;
   --gradient-main: linear-gradient(135deg, #060610, #063f6b);
-
+  --color-main: #060610;
+  /*----------------------*/
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
