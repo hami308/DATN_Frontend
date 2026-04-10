@@ -1,0 +1,282 @@
+.homepage {
+    width : 100%;
+}
+
+
+/* Hero section */
+.homepage-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 100px;
+  background: #fff;
+}
+
+.homepage-hero-text-block {
+  flex: 1;
+  max-width: 800px;
+}
+
+.homepage-hero-title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.homepage-hero-text {
+  line-height: 1.6;
+  font-size: 16px;
+  color: #555;
+}
+
+.homepage-hero-image {
+  flex: 1;
+  max-width: 450px;
+  margin-left: 40px;
+}
+
+/* Stats section */
+.homepage-stats {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 30px 20px;
+  background: #302B63; /* nền xanh đậm */
+}
+
+.homepage-stat-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 0 10px;
+  flex: 1;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  max-width: 300px;
+  justify-content: center;
+}
+
+.homepage-stat-icon {
+  font-size: 36px;
+  color: #0073e6;
+  margin-right: 15px;
+}
+
+.homepage-stat-box h3 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.homepage-stat-box p {
+  font-size: 15px;
+  color: #666;
+  margin: 5px 0 0;
+}
+
+
+/* Jobs section */
+.homepage-jobs {
+  padding: 50px 40px;
+  background: #fafafa;
+}
+.homepage-jobs-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #222;
+}
+.homepage-job-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.homepage-job-item {
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+
+.job-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #302B63; /* màu xanh đậm để nổi bật */
+  margin-bottom: 8px;
+}
+.job-count {
+  font-size: 14px;
+  color: #666;
+}
+
+.mycvflow-container {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #F1F2F4;
+}
+
+.mycvflow-title {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.mycvflow-steps {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.mycvflow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.mycvflow-step:hover {
+  transform: scale(1.05);
+}
+
+.mycvflow-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  border: 2px dashed #888;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #555;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.mycvflow-step:hover .mycvflow-icon {
+  border-color: #007bff;
+  color: #007bff;
+  background-color: #eef6ff;
+}
+
+.mycvflow-text {
+  font-weight: bold;
+  font-size: 14px;
+  color: #444;
+  text-align: center;
+}
+
+.mycvflow-arrow {
+  font-size: 28px;
+  color: #aaa;
+}
+
+.homepage-job-cards{
+  background: #fff;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+.homepage-job-cards {
+  background: #f9fafb;
+  padding: 40px 60px;
+}
+
+/* HEADER (quan trọng nhất) */
+.job-cards-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  width: 75%;
+  margin: 0 auto 25px;
+}
+
+/* TITLE */
+.job-cards-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+/* BUTTON */
+.job-cards-btn {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  padding: 10px 18px;
+  border-radius: 8px;
+  color: #2563eb;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.job-cards-btn:hover {
+  background: #0A65CC;
+  border-color: #bfdbfe;
+  color: #fff;
+}
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  background-color: #F1F2F4;
+  padding: 40px 20px;
+}
+
+.register-panel {
+
+  border-radius: 12px;
+  padding: 24px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  align-items: flex-start;
+  width: 500px;
+}
+
+.register-panel.red {
+  background-color: #BD0C47; /* đỏ đậm */
+}
+
+.register-panel.blue {
+  background-color: #0851A3; /* xanh đậm */
+}
+
+.register-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.register-text {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.register-btn {
+  background: #fff;
+  color: #0A65CC;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.register-btn:hover {
+  opacity: 0.9;
+}
