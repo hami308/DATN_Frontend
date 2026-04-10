@@ -10,7 +10,7 @@
   margin: 16px auto;
 }
 .job-card:hover {
-  border: 1px solid #0A65CC;
+  border: 1px solid var(--color-primary);
 }
 
 /* LEFT */
@@ -54,12 +54,12 @@
 
 .job-card-type.full {
   background: #E8F1FF;
-  color: #0A65CC;
+  color: var(--color-primary);
 }
 
 .job-card-type.part {
   background: #e8f0fe;
-  color: #3b82f6;
+  color: var(--color-primary);
 }
 
 /* meta (Đà Nẵng | $ | deadline) */
@@ -84,7 +84,7 @@
 
 .apply-btn {
   background: #E7F0FA;
-  color: #0A65CC;
+  color: var(--color-primary);
   border: none;
   padding: 10px 16px;
   border-radius: 8px;
@@ -93,7 +93,7 @@
 }
 
 .apply-btn:hover {
-  background: #0A65CC;
+  background: var(--color-primary);
   color: #fff;
 }
 
@@ -103,5 +103,5 @@
   cursor: pointer;
 }
 .bookmark:hover {
-  color: #0A65CC;
+  color: var(--color-primary);
 }
