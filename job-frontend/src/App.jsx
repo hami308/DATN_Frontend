@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Homepage from "./pages/Homepage/Homepage";
 import Login from "./pages/login/login";
 import RegisterChoicePage from "./pages/register/registerChoicePage";
 import RegisterPage from "./pages/register/registerPage";
@@ -9,7 +10,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Homepage />} />
+         <Route path="/login" element={<Login />} />
         <Route path="/registerChoice" element={<RegisterChoicePage />} />
         <Route path="/register/:role" element={<RegisterPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
@@ -18,3 +20,5 @@ export default function App() {
     </BrowserRouter>
   );
 }
+export default App;
+
