@@ -1,5 +1,5 @@
-import styles from "./formRegister.module.css";
-import logo from "../../../assets/image/logo.png";
+import styles from "./formLayout.module.css";
+import logo from "../../assets/image/logo.png";
 
 export default function FormRegister({ children }) {
   return (

@@ -84,3 +84,62 @@ input {
   opacity: 1;
   text-decoration: underline;
 }
+/* ===== Tablet ===== */
+@media (max-width: 768px) {
+  .title {
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+
+  .row {
+    gap: 12px;
+  }
+
+  input {
+    padding: 11px;
+    font-size: 14px;
+  }
+
+  .submit {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 480px) {
+  .title {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  label {
+    font-size: 13px;
+  }
+
+  input {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .submit {
+    padding: 11px;
+    font-size: 14px;
+  }
+
+  .login {
+    font-size: 12px;
+  }
+
+  .backBtn {
+    position: static;
+    margin-top: 15px;
+    display: block;
+    text-align: left;
+  }
+}

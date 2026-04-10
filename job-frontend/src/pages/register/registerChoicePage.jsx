@@ -1,5 +1,5 @@
-import FormRegister from "./components/formRegister";
-import RegisterChoice from "../register/components/registerChoice";
+import FormRegister from "../../components/formLayout/formLayout";
+import RegisterChoice from "./components/registerChoice";
 
 export default function RegisterChoicePage() {
   return (
