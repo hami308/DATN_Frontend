@@ -11,7 +11,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Homepage />} />
-         <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/registerChoice" element={<RegisterChoicePage />} />
         <Route path="/register/:role" element={<RegisterPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
@@ -20,5 +20,3 @@ export default function App() {
     </BrowserRouter>
   );
 }
-export default App;
-
