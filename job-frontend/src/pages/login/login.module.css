@@ -9,7 +9,7 @@
 
   padding: 20px;
 
-  background: linear-gradient(135deg, #1f1c4d, #2a275f);
+  background: var(--gradient-main);
 }
 
 /* ảnh bên trái */
@@ -35,7 +35,27 @@
     transform: translateY(-50%) translateX(0);
   }
 }
+.pic3 {
+  position: absolute;
+  right: 120px;
+  top: 50%;
+  width: 500px;
 
+  opacity: 0;
+  transform: translateY(-50%) translateX(80px);
+
+  animation: slideInRight 1.2s ease forwards;
+}
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
 /* glass card */
 .card {
   width: 420px;
@@ -112,7 +132,7 @@ input {
   padding: 12px;
   border-radius: 8px;
   border: none;
-  background: #bd0c47;
+  background: var(--color-accent);
   color: white;
   font-weight: bold;
   cursor: pointer;
@@ -150,13 +170,17 @@ input {
   font-weight: bold;
   cursor: pointer;
 }
+.register span:hover {
+  text-decoration: underline;
+}
 
 /* ========================= */
 /* RESPONSIVE */
 /* ========================= */
 
 @media (max-width: 1024px) {
-  .pic1 {
+  .pic1,
+  .pic3 {
     display: none;
   }
 

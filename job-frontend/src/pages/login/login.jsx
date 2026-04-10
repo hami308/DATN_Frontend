@@ -1,10 +1,14 @@
 import styles from "./login.module.css";
 import logo from "../../assets/image/logo.png";
 import pic2 from "../../assets/image/pic2.png";
+import pic3 from "../../assets/image/pic3.png";
+import { useNavigate } from "react-router-dom";
 export default function Login() {
+  const navigate = useNavigate();
   return (
     <div className={styles.container}>
       <img src={pic2} className={styles.pic1} />
+      <img src={pic3} className={styles.pic3} />
       <div className={styles.card}>
         <div className={styles.logo}>
           <img src={logo} className={styles.logoIcon} />
@@ -34,7 +38,11 @@ export default function Login() {
           </button>
 
           <div className={styles.register}>
-            Bạn chưa có tài khoản ?<span> Đăng ký ngay</span>
+            Bạn chưa có tài khoản ?
+            <span onClick={() => navigate("/registerChoice")}>
+              {" "}
+              Đăng ký ngay
+            </span>
           </div>
         </div>
       </div>

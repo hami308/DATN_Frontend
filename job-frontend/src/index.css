@@ -1,4 +1,10 @@
 :root {
+  /*Các màu sắc dùng chính cho hệ thống*/
+  --color-primary: #0a2fb6;
+  --color-secondary: #e7f0fa;
+  --color-accent: #bd0c47;
+  --gradient-main: linear-gradient(135deg, #060610, #063f6b);
+
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
