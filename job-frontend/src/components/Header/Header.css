@@ -1,6 +1,6 @@
 /* Header */
 .homepage-header {
-  background: #302B63;
+  background: var(--color-main);
   color: white;
   padding: 0px 40px;
   display: flex;
@@ -20,7 +20,7 @@
   font-weight: bold;
 }
 .homepage-join-btn {
-  background: #BD0C47;
+  background: var(--color-accent);
   color: white;
   border: none;
   padding: 10px 25px;
@@ -30,5 +30,5 @@
   transition: background 0.3s ease;
 }
 .homepage-join-btn:hover {
-  background: #cc0000;
+  background: var(--color-accent-hover);
 }

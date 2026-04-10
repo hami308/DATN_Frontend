@@ -4,6 +4,7 @@ import logo from "../../assets/images/logo.png";
 import heroImage from "../../assets/images/image.png";
 import JobCard from "../../components/JobCard/JobCard";
 import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
 
 function JobItem({ title, count }) {
   return (
@@ -181,6 +182,7 @@ function Homepage() {
         </div>
       </div>
     </section>
+    <Footer />
     </div>
   );
 }
