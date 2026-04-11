@@ -45,6 +45,9 @@ export default function Login() {
             </span>
           </div>
         </div>
+        <button className={styles.backBtn} onClick={() => navigate("/")}>
+          ← Quay lại
+        </button>
       </div>
     </div>
   );
