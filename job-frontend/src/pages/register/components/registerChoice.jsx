@@ -30,6 +30,9 @@ export default function RegisterChoice() {
         Bạn đã có tài khoản?{" "}
         <span onClick={() => navigate("/login")}>Đăng nhập</span>
       </div>
+      <button className={styles.backBtn} onClick={() => navigate("/login")}>
+        ← Quay lại
+      </button>
     </>
   );
 }
