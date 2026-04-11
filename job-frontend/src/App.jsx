@@ -5,8 +5,8 @@ import RegisterChoicePage from "./pages/register/registerChoicePage";
 import RegisterPage from "./pages/register/registerPage";
 import VerifyEmailPage from "./pages/verifyAccount/verifyEmailPage";
 import VerifyPhonePage from "./pages/verifyAccount/verifyPhonePage";
-
-export default function App() {
+import HomepageRecuiter from "./pages/Homepage_Recuiter/Homepage_Recuiter";
+function App() {
   return (
     <BrowserRouter>
       <Routes>
@@ -16,7 +16,10 @@ export default function App() {
         <Route path="/register/:role" element={<RegisterPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/verify-phone" element={<VerifyPhonePage />} />
+        <Route path="/home-recuiter" element={<HomepageRecuiter />} />
+        <Route path="home-recuiter" element={<HomepageRecuiter />} />
       </Routes>
     </BrowserRouter>
   );
 }
+export default App;

@@ -32,3 +32,41 @@
 .homepage-join-btn:hover {
   background: var(--color-accent-hover);
 }
+/* Responsive */
+@media (max-width: 768px) {
+  .homepage-header {
+    padding: 0 20px;
+    height: 60px;
+  }
+
+  .homepage-title {
+    font-size: 20px;
+  }
+
+  .homepage-logo {
+    height: 30px;
+  }
+
+  .homepage-join-btn {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .homepage-header {
+    padding: 10px 15px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+
+  .homepage-logo {
+    margin-right: 0;
+  }
+
+  .homepage-join-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
