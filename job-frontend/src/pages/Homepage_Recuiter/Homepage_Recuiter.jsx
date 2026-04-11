@@ -64,6 +64,7 @@ function HomepageRecuiter() {
         <div className="homepage-recuiter">
             <Header />
             <section className="homepage-hero">
+              <div className="homepage-hero-container">
                 <div className="homepage-hero-text-block">
                     <h2 className="homepage-hero-title">Nơi bạn tìm thấy ứng viên lý tưởng, phù hợp với nhu cầu và văn hóa doanh nghiệp.</h2>
                     <p className="homepage-hero-text">
@@ -71,19 +72,21 @@ function HomepageRecuiter() {
                     </p>
                 </div>
                 <img src={heroImage} alt="Hero" className="homepage-hero-image" />
+              </div>
             </section>
             <section className="onboarding-section">
+              <div className="onboarding-container">
                 <div className="onboarding-content">
-                <div className="progress-circle-container">
-                    <div className="progress-circle">
-                    <span className="progress-text">0%</span>
-                    </div>
-                </div>
+                  <div className="progress-circle-container">
+                      <div className="progress-circle">
+                      <span className="progress-text">0%</span>
+                      </div>
+                  </div>
                 
-                <div className="greeting-text">
-                    <h2>Xin chào, Nguyễn Văn A</h2>
-                    <p>Làm theo hướng dẫn để bắt đầu tuyển dụng hiệu quả</p>
-                </div>
+                  <div className="greeting-text">
+                      <h2>Xin chào, Nguyễn Văn A</h2>
+                      <p>Làm theo hướng dẫn để bắt đầu tuyển dụng hiệu quả</p>
+                  </div>
                 </div>
 
                 <div className="home-recuiter-container">
@@ -93,6 +96,7 @@ function HomepageRecuiter() {
                     </div>
                 ))}
                 </div>
+              </div>
             </section>
             <section className="homepage-jobs">
                 <h3 className="homepage-jobs-title">Các vị trí tuyển dụng phổ biến</h3>
