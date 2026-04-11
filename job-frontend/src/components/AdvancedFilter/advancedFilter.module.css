@@ -1,0 +1,49 @@
+.sidebar {
+  width: 260px;
+  background: white;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.section {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 14px;
+  margin-top: 14px;
+}
+
+.section h4 {
+  font-size: 14px;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+}
+
+.options label {
+  font-size: 13px;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.options input[type="radio"] {
+  accent-color: #2b6cb0;
+  cursor: pointer;
+}

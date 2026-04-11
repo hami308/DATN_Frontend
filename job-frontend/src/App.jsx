@@ -6,6 +6,7 @@ import RegisterPage from "./pages/register/registerPage";
 import VerifyEmailPage from "./pages/verifyAccount/verifyEmailPage";
 import VerifyPhonePage from "./pages/verifyAccount/verifyPhonePage";
 import HomepageRecuiter from "./pages/Homepage_Recuiter/Homepage_Recuiter";
+
 function App() {
   return (
     <BrowserRouter>
