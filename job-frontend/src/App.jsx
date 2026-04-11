@@ -17,7 +17,6 @@ function App() {
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/verify-phone" element={<VerifyPhonePage />} />
         <Route path="/home-recuiter" element={<HomepageRecuiter />} />
-        <Route path="home-recuiter" element={<HomepageRecuiter />} />
       </Routes>
     </BrowserRouter>
   );

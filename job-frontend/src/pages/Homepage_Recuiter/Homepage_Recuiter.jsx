@@ -3,6 +3,7 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import "./Homepage_Recuiter.css";
 import heroImage from "../../assets/images/image.png";
+import MenuCard from "../../components/MenuCard/MenuCard";
 
 function ActionButton({ label }) {
   return (
@@ -62,6 +63,7 @@ const conditions = [
 function HomepageRecuiter() {
     return (
         <div className="homepage-recuiter">
+            <MenuCard />
             <Header />
             <section className="homepage-hero">
                 <div className="homepage-hero-text-block">
