@@ -75,7 +75,25 @@
     margin-bottom: 25px;
   }
 }
+.backBtn {
+  position: absolute;
+  left: 0;
+  bottom: -50px;
 
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.backBtn:hover {
+  transform: translateX(-3px);
+  text-decoration: underline;
+}
 /* ========= Mobile ========= */
 @media (max-width: 480px) {
   .options {
