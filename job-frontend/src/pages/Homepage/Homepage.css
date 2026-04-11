@@ -41,6 +41,7 @@
   justify-content: space-evenly;
   padding: 30px 20px;
   background: var(--color-main);
+  flex-wrap: wrap;
 }
 
 .homepage-stat-box {
@@ -49,10 +50,11 @@
   background: #fff;
   border-radius: 8px;
   padding: 20px;
-  margin: 0 10px;
+  margin: 10px 10px;
   flex: 1;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   max-width: 300px;
+  min-width: 200px;
   justify-content: center;
 }
 
@@ -278,4 +280,116 @@
 
 .register-btn:hover {
   opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .homepage-hero {
+    padding: 40px 5%;
+  }
+
+  .homepage-stats {
+    padding: 30px 10px;
+  }
+
+  .job-cards-header {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hero Section */
+  .homepage-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .homepage-hero-image {
+    margin-left: 0;
+    margin-top: 30px;
+    max-width: 100%;
+  }
+
+  /* Stats Section */
+  .homepage-stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .homepage-stat-box {
+    width: 100%;
+    max-width: 300px;
+    margin: 0;
+  }
+
+  /* CV Flow Section */
+  .mycvflow-steps {
+    gap: 10px;
+  }
+  /* Job Cards Section */
+  .job-cards-header {
+    width: 100%;
+    gap: 15px;
+    text-align: center;
+  }
+
+  /* Register Section */
+  .register-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .register-panel {
+    width: 90%;
+    max-width: 100%;
+  }
+  
+  .homepage-job-list {
+    gap:0px;
+  }
+  .homepage-job-item{
+    padding: 0px;
+  }
+  .homepage-jobs {
+    padding: 20px 15px;
+    margin-bottom: 0;
+  }
+  .homepage-job-list {
+    grid-template-columns:  repeat(auto-fill, minmax(40%, 2fr));;
+  }
+}
+
+@media (max-width: 480px) {
+  .homepage-hero-title {
+    font-size: 24px;
+  }
+  .job-cards-header{
+    flex-direction: column;
+  }
+   .job-cards-btn {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+  .homepage-jobs {
+    padding: 30px 15px;
+  }
+
+  .homepage-job-list {
+    grid-template-columns: 1fr;
+  }
+  .homepage-stat-box {
+    width: 100%;
+    max-width: 250px;
+    margin: 0;
+  }
+  .mycvflow-title, 
+  .job-cards-title {
+    font-size: 22px;
+  }
+
+  .homepage-job-cards {
+    padding: 20px 15px;
+  }
 }

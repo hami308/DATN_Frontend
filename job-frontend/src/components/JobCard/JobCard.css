@@ -105,3 +105,61 @@
 .bookmark:hover {
   color: var(--color-primary);
 }
+/* Responsive */
+@media (max-width: 1024px) {
+  .job-card {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .job-card {
+    width: 95%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .job-card-right {
+    width: 100%;
+    justify-content: space-between;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 12px;
+  }
+
+  .apply-btn {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .job-card {
+    padding: 12px;
+  }
+
+  .job-card-left {
+    align-items: flex-start;
+  }
+
+  .job-card-top {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .job-card-title {
+    font-size: 16px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .job-card-meta {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .job-card-logo {
+    width: 48px;
+    height: 48px;
+  }
+}
