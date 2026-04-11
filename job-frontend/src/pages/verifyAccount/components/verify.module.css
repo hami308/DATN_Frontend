@@ -1,0 +1,115 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 25px;
+}
+
+.title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+}
+
+.desc {
+  text-align: center;
+  opacity: 0.75;
+  line-height: 1.5;
+  color: white;
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+.input {
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.button {
+  width: 100%;
+  padding: 14px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.resend {
+  text-align: center;
+  opacity: 0.7;
+  color: white;
+  font-size: 14px;
+}
+
+.resend span {
+  color: #3b82f6;
+  cursor: pointer;
+}
+
+.resend span:hover {
+  text-decoration: underline;
+}
+
+/* ================== Tablet ================== */
+@media (max-width: 768px) {
+  .content {
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .desc {
+    font-size: 13px;
+  }
+
+  .input {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .button {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+/* ================== Mobile ================== */
+@media (max-width: 480px) {
+  .content {
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .desc {
+    font-size: 12px;
+  }
+
+  .input {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .button {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .resend {
+    font-size: 12px;
+  }
+}

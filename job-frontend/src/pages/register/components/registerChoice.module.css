@@ -17,7 +17,6 @@
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-
   transition: 0.25s ease;
 }
 
@@ -28,13 +27,10 @@
 .option img {
   width: 120px;
   height: 120px;
-
   object-fit: cover;
-
   background: white;
   padding: 10px;
   border-radius: 12px;
-
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
@@ -43,9 +39,11 @@
   font-size: 14px;
   font-weight: 500;
 }
+
 .option span:hover {
   text-decoration: underline;
 }
+
 .login {
   text-align: center;
   margin-top: 30px;
@@ -59,4 +57,49 @@
 
 .login span:hover {
   text-decoration: underline;
+}
+
+/* ========= Tablet ========= */
+@media (max-width: 768px) {
+  .options {
+    gap: 25px;
+  }
+
+  .option img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .desc {
+    font-size: 13px;
+    margin-bottom: 25px;
+  }
+}
+
+/* ========= Mobile ========= */
+@media (max-width: 480px) {
+  .options {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .option img {
+    width: 85px;
+    height: 85px;
+  }
+
+  .option span {
+    font-size: 13px;
+  }
+
+  .desc {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .login {
+    font-size: 12px;
+    margin-top: 20px;
+  }
 }
