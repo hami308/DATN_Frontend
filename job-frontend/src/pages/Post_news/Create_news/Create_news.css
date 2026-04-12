@@ -1,0 +1,313 @@
+/* Container chính bọc toàn bộ trang */
+.createjob-wrapper {
+  background: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  margin-left: 320px;
+  width: calc(100% - 320px);
+}
+.createjob-wrapper.collapsed {
+  margin-left: 50px;
+  width: calc(100% - 50px);
+}
+/* Card chứa nội dung form */
+.createjob-card {
+  width: 100%;
+  max-width: 950px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 35px 40px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* Tiêu đề chính */
+.createjob-main-title {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 30px;
+}
+
+/* Thanh tiến trình (Steps) */
+.createjob-steps-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 35px;
+}
+
+.createjob-step-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280; /* Màu mặc định khi chưa active */
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.createjob-step-item.active {
+  color: #111827;
+}
+
+.createjob-step-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.createjob-step-item.active .createjob-step-number {
+  background: #2f2963;
+  color: #ffffff;
+}
+
+.createjob-step-divider {
+  width: 80px;
+  height: 2px;
+  background: #d1d5db;
+}
+
+/* Form Layout */
+.createjob-section-title {
+  font-size: 20px;
+  margin: 22px 0 16px;
+  color: #111827;
+  border-left: 4px solid var(--color-primary);
+  padding-left: 12px;
+  text-align: left;
+}
+
+.createjob-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.createjob-form-grid-two-col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.createjob-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.createjob-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 8px;
+}
+
+/* Input, Select, Textarea */
+.createjob-input,
+.createjob-select,
+.createjob-textarea {
+  border: 1px solid var(--color-primary);
+
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #1f2937;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.createjob-input:focus,
+.createjob-select:focus,
+.createjob-textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.createjob-textarea {
+  min-height: 120px;
+  resize: none;
+  line-height: 1.5;
+}
+
+/* Xử lý mức lương */
+.createjob-salary-container {
+  grid-column: span 2;
+}
+
+.createjob-salary-flex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.createjob-salary-flex input {
+  flex: 1;
+}
+
+.createjob-salary-separator {
+  color: #9ca3af;
+  font-weight: bold;
+}
+
+/* Footer & Button */
+.createjob-action-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 20px;
+}
+
+.createjob-btn-next {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 35px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.createjob-btn-next:hover {
+  background: #1d4ed8;
+}
+
+.createjob-btn-next:active {
+  transform: scale(0.98);
+}
+
+
+.createjob-section-title-step2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 25px 0 10px 0;
+  text-align: left;
+}
+
+.createjob-textarea-large {
+  width: 100%;
+  min-height: 150px;
+  border: 1px solid var(--color-primary);
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  resize: none;
+  background: #ffffff;
+}
+
+.createjob-note {
+  font-size: 13px;
+  color: #4b5563;
+  font-style: italic;
+  margin-top: 8px;
+  text-align: left;
+}
+
+.createjob-label-sub {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+/* Footer nút bấm Bước 2 */
+.step2-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.createjob-btn-back {
+  background: transparent;
+  color: #d32f2f;
+  border: 1px solid #d32f2f;
+  padding: 10px 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.createjob-btn-back:hover {
+  background: #fdecea;
+}
+
+.createjob-btn-submit {
+  background: #3b5998; /* Màu xanh đậm giống trong ảnh */
+  color: white;
+  border: none;
+  padding: 10px 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.createjob-btn-submit:hover {
+  opacity: 0.9;
+}
+
+/* Hiệu ứng thanh line giữa 2 step */
+.createjob-step-divider.active {
+  background: #2f2963;
+}
+
+/* Khi step 1 đã xong */
+.createjob-step-item.completed .createjob-step-number {
+  background: #4caf50;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .createjob-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .createjob-salary-container {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .createjob-form-grid,
+  .createjob-form-grid-two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .createjob-salary-container {
+    grid-column: span 1;
+  }
+
+  .createjob-card {
+    padding: 24px;
+  }
+
+  .createjob-main-title {
+    font-size: 24px;
+  }
+
+  .createjob-steps-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-left: 20px;
+  }
+
+  .createjob-step-divider {
+    width: 2px;
+    height: 25px;
+    margin-left: 13px;
+  }
+}

@@ -3,6 +3,7 @@
   color: #fff;
   transition: all 0.3s ease; 
   z-index: 100000;
+  margin-top: 50px;
 }
 
 .footer-container {
