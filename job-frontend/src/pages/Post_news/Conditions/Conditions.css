@@ -1,0 +1,180 @@
+/* Layout chính */
+.setup-wrapper {
+  margin-left: 280px; /* Khớp với sidebar mặc định */
+  margin-top: 90px; /* Khớp với header */
+  min-height: calc(100vh - 90px - 220px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: #f5f5f5;
+  transition: all 0.3s ease;
+  width: calc(100% - 280px);
+}
+
+/* Khi sidebar thu nhỏ */
+.setup-wrapper.collapsed {
+  margin-left: 50px;
+  width: calc(100% - 50px);
+}
+
+/* Card chứa nội dung */
+.setup-card {
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 32px 36px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.setup-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.setup-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+/* Danh sách các bước */
+.setup-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.setup-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+/* Logic mờ và chặn click khi bị khóa */
+.setup-item.locked {
+  opacity: 0.45;
+  pointer-events: none; /* Không thể click */
+  user-select: none;    /* Không thể bôi đen chữ */
+  filter: grayscale(0.6);
+}
+
+.setup-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Vòng tròn check */
+.setup-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.setup-check.done {
+  border: 2px solid #5f8d4e;
+  color: #5f8d4e;
+  background-color: #f0fdf4;
+}
+
+.setup-check.pending {
+  border: 2px solid #cbd5e1;
+  color: transparent;
+}
+
+.setup-text {
+  font-size: 16px;
+  color: #111827;
+  font-weight: 500;
+}
+
+/* Nút mũi tên */
+.setup-arrow {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: #f3f0ff;
+  color: #4f46e5;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.setup-arrow:hover {
+  background: #e5e0ff;
+  transform: translateX(3px);
+}
+
+/* Trạng thái nút khi bị khóa */
+.setup-item.locked .setup-arrow {
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+
+/* Phần tiến trình */
+.setup-progress-section {
+  margin-top: 34px;
+}
+
+.setup-percent {
+  display: block;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 8px;
+}
+
+.setup-progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.setup-progress-fill {
+  height: 100%;
+  background: #88a96b;
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive cho thiết bị di động */
+@media (max-width: 768px) {
+  .setup-wrapper, .setup-wrapper.collapsed {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .setup-card {
+    padding: 24px 20px;
+  }
+
+  .setup-title {
+    font-size: 20px;
+  }
+
+  .setup-text {
+    font-size: 14px;
+  }
+}
