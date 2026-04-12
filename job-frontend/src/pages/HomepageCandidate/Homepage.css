@@ -1,0 +1,71 @@
+.homepage {
+  height: 1300px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  background: #f5f7fb;
+  overflow: hidden;
+}
+
+/* right content */
+.right {
+  flex: 1;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* top section (không scroll) */
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+/* cat */
+.top > :first-child {
+  align-self: flex-end;
+}
+
+/* search */
+.top > :last-child {
+  width: 100%;
+}
+
+/* filter + list */
+.body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
+  overflow: hidden;
+}
+
+/* filter cố định */
+.filter {
+}
+
+/* list scroll */
+.list {
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+
+  .list {
+    overflow: visible;
+  }
+}
