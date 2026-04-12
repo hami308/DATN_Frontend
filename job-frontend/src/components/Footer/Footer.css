@@ -4,6 +4,7 @@
   transition: all 0.3s ease; 
   z-index: 100000;
   margin-top: 50px;
+  width: 100vw;
 }
 
 .footer-container {
@@ -51,7 +52,10 @@
   transition: all 0.3s ease;
   text-decoration: none;
 }
-
+.footer-col ul li a {
+  text-decoration: none;
+  color: #fff;
+}
 .footer-col ul li:hover {
   color: #94a3b8;
 }

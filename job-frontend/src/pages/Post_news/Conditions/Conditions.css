@@ -1,6 +1,6 @@
 /* Layout chính */
 .setup-wrapper {
-  margin-left: 280px; /* Khớp với sidebar mặc định */
+  margin-left: 320px; /* Khớp với sidebar mặc định */
   margin-top: 90px; /* Khớp với header */
   min-height: calc(100vh - 90px - 220px);
   display: flex;
@@ -9,7 +9,7 @@
   padding: 40px 20px;
   background: #f5f5f5;
   transition: all 0.3s ease;
-  width: calc(100% - 280px);
+  width: calc(100% - 320px);
 }
 
 /* Khi sidebar thu nhỏ */
@@ -156,25 +156,125 @@
   transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Responsive cho thiết bị di động */
-@media (max-width: 768px) {
-  .setup-wrapper, .setup-wrapper.collapsed {
-    margin-left: 0;
-    width: 100%;
-    padding: 20px 15px;
+/* Responsive */
+/* Responsive: Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+
+  .setup-card {
+    max-width: 480px;
+    padding: 28px 32px;
   }
 }
 
-@media (max-width: 576px) {
+/* Responsive: Mobile ngang & dọc (max-width: 768px) */
+@media (max-width: 768px) {
+  .setup-wrapper {
+    margin-left: 90px !important; /* Ẩn sidebar, chiếm toàn bộ chiều rộng */
+    width: calc(100% - 100px) !important;
+    margin-top: 70px; /* Giảm margin-top cho phù hợp header mobile */
+    padding: 20px 16px;
+  }
+
   .setup-card {
+    max-width: 100%;
     padding: 24px 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   }
 
   .setup-title {
     font-size: 20px;
+    text-align: center;
+  }
+
+  .setup-subtitle {
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .setup-list {
+    gap: 14px;
+  }
+
+  .setup-item {
+    flex-wrap: wrap; /* Đề phòng nội dung quá dài */
+  }
+
+  .setup-left {
+    gap: 10px;
+    flex: 1;
+  }
+
+  .setup-check {
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
   }
 
   .setup-text {
     font-size: 14px;
+  }
+
+  .setup-arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .setup-progress-section {
+    margin-top: 28px;
+  }
+
+  .setup-percent {
+    font-size: 12px;
+  }
+
+  .setup-progress-bar {
+    height: 8px;
+  }
+}
+
+/* Responsive: Mobile nhỏ (max-width: 480px) */
+@media (max-width: 480px) {
+  .setup-wrapper {
+    margin-top: 60px;
+    padding: 16px 12px;
+  }
+
+  .setup-card {
+    padding: 20px 16px;
+  }
+
+  .setup-title {
+    font-size: 18px;
+  }
+
+  .setup-subtitle {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .setup-list {
+    gap: 12px;
+  }
+
+  .setup-text {
+    font-size: 13px;
+  }
+
+  .setup-check {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+  }
+
+  .setup-arrow {
+    width: 28px;
+    height: 28px;
+  }
+
+  .setup-progress-section {
+    margin-top: 24px;
   }
 }

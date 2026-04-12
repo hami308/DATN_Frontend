@@ -47,8 +47,9 @@ const jobCards = [
 ];
 function Homepage() {
   return (
+    <>
+    <Header />
     <div className="homepage">      
-      <Header />
       <section className="homepage-hero">
         <div className="homepage-hero-container">
           <div className="homepage-hero-text-block">
@@ -167,8 +168,9 @@ function Homepage() {
         </div>
       </div>
     </section>
-    <Footer />
     </div>
+    <Footer />
+    </>
   );
 }
 
