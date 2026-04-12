@@ -1,6 +1,8 @@
 .footer {
   background: var(--color-main);
   color: #fff;
+  transition: all 0.3s ease; 
+  z-index: 100000;
 }
 
 .footer-container {
@@ -46,6 +48,7 @@
   margin-bottom: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .footer-col ul li:hover {
