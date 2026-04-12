@@ -1,16 +1,23 @@
 .homepage {
     width : 100%;
+    position: relative;
+    top: 90px;
 }
 
 /* Hero section */
 .homepage-hero {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 60px 100px;
   background: #fff;
 }
-
+.homepage-hero-container{
+  width:75%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .homepage-hero-text-block {
   flex: 1;
   max-width: 800px;
@@ -43,7 +50,13 @@
   background: var(--color-main);
   flex-wrap: wrap;
 }
-
+.homepage-stats-container{
+  width: 75%;
+  display: flex;
+  justify-content: space-evenly;
+  background: var(--color-main);
+  flex-wrap: wrap;
+}
 .homepage-stat-box {
   display: flex;
   align-items: center;
@@ -54,7 +67,7 @@
   flex: 1;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   max-width: 300px;
-  min-width: 200px;
+  min-width: 150px;
   justify-content: center;
 }
 
@@ -94,24 +107,11 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
-}
-.homepage-job-item {
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
+  width: 75%;
+  justify-content: center;
+  margin: 0 auto;
 }
 
-
-.job-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--color-main);
-  margin-bottom: 8px;
-}
-.job-count {
-  font-size: 14px;
-  color: #666;
-}
 
 .mycvflow-container {
   text-align: center;
@@ -132,50 +132,6 @@
   align-items: center;
   gap: 50px;
   flex-wrap: wrap;
-}
-
-.mycvflow-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform 0.3s ease;
-}
-
-.mycvflow-step:hover {
-  transform: scale(1.05);
-}
-
-.mycvflow-icon {
-  font-size: 40px;
-  margin-bottom: 12px;
-  border: 2px dashed #888;
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #555;
-  background-color: #fff;
-  transition: all 0.3s ease;
-}
-
-.mycvflow-step:hover .mycvflow-icon {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  background-color: #eef6ff;
-}
-
-.mycvflow-text {
-  font-weight: bold;
-  font-size: 14px;
-  color: #444;
-  text-align: center;
-}
-
-.mycvflow-arrow {
-  font-size: 28px;
-  color: #aaa;
 }
 
 .homepage-job-cards{
@@ -287,8 +243,10 @@
   .homepage-hero {
     padding: 40px 5%;
   }
-
-  .homepage-stats {
+  .homepage-hero-container{
+    width: 100%;
+  }
+  .homepage-stats-container{
     padding: 30px 10px;
   }
 
@@ -298,8 +256,11 @@
 }
 
 @media (max-width: 768px) {
+  .homepage {
+    top: 60px;
+  }
   /* Hero Section */
-  .homepage-hero {
+.homepage-hero-container{
     flex-direction: column;
     text-align: center;
     padding: 40px 20px;
@@ -312,7 +273,7 @@
   }
 
   /* Stats Section */
-  .homepage-stats {
+  .homepage-stats-container {
     flex-direction: column;
     align-items: center;
     gap: 15px;
@@ -349,9 +310,7 @@
   .homepage-job-list {
     gap:0px;
   }
-  .homepage-job-item{
-    padding: 0px;
-  }
+
   .homepage-jobs {
     padding: 20px 15px;
     margin-bottom: 0;

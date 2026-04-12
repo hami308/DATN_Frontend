@@ -1,8 +1,9 @@
 import React from "react";
 import "./Footer.css";
 
-function Footer() {
+function Footer(){
   return (
+    // Sử dụng template literal để thay đổi class dựa trên trạng thái collapsed
     <footer className="footer">
       <div className="footer-container">
 
@@ -19,10 +20,10 @@ function Footer() {
         <div className="footer-col">
           <h3>Ứng viên</h3>
           <ul>
-            <li>Tìm việc làm</li>
-            <li>Tạo CV</li>
-            <li>Việc làm phù hợp</li>
-            <li>Công ty nổi bật</li>
+            <li><a href="#">Tìm việc làm</a></li>
+            <li><a href="#">Tạo CV</a></li>
+            <li><a href="#">Việc làm phù hợp</a></li>
+            <li><a href="#">Công ty nổi bật</a></li>
           </ul>
         </div>
 
@@ -30,10 +31,10 @@ function Footer() {
         <div className="footer-col">
           <h3>Nhà tuyển dụng</h3>
           <ul>
-            <li>Đăng tuyển dụng</li>
-            <li>Tìm ứng viên</li>
-            <li>Quản lý tin đăng</li>
-            <li>Giải pháp tuyển dụng</li>
+            <li><a href="#">Đăng tuyển dụng</a></li>
+            <li><a href="#">Tìm ứng viên</a></li>
+            <li><a href="#">Quản lý tin đăng</a></li>
+            <li><a href="#">Giải pháp tuyển dụng</a></li>
           </ul>
         </div>
 

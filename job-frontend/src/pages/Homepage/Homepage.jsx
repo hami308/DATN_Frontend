@@ -5,27 +5,8 @@ import heroImage from "../../assets/images/image.png";
 import JobCard from "../../components/JobCard/JobCard";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-
-function JobItem({ title, count }) {
-  return (
-    <div className="homepage-job-item">
-      <h4 className="job-title">{title}</h4>
-      <p className="job-count">{count} vị trí</p>
-    </div>
-  );
-}
-
-function MyCVFlow({ index, icon, title, isLast }) {
-  return (
-    <React.Fragment key={index}>
-      <div className="mycvflow-step">
-        <div className="mycvflow-icon">{icon}</div>
-        <p className="mycvflow-text">{title}</p>
-      </div>
-      {!isLast && <div className="mycvflow-arrow">➝</div>}
-    </React.Fragment>
-  );
-}
+import JobItem from "./components/JobIntem/JobItem";
+import MyCVFlow from "./components/MyCVFlow/MyCVFlow";
 
 const steps = [
     { icon: <span className="material-symbols-outlined">person_add</span>, title: "Tạo tài khoản" },
@@ -69,44 +50,48 @@ function Homepage() {
     <div className="homepage">      
       <Header />
       <section className="homepage-hero">
-        <div className="homepage-hero-text-block">
-          <h2 className="homepage-hero-title">Nơi bạn tìm thấy công việc lý tưởng</h2>
-          <p className="homepage-hero-text">
-            Cuộc sống đôi khi gặp phải những thử thách và trở ngại, nhưng chúng ta
-            luôn có thể vượt qua nếu kiên trì và nỗ lực. Đừng ngần ngại tìm kiếm
-            cơ hội và phát triển bản thân.
-          </p>
+        <div className="homepage-hero-container">
+          <div className="homepage-hero-text-block">
+            <h2 className="homepage-hero-title">Nơi bạn tìm thấy công việc lý tưởng</h2>
+            <p className="homepage-hero-text">
+              Cuộc sống đôi khi gặp phải những thử thách và trở ngại, nhưng chúng ta
+              luôn có thể vượt qua nếu kiên trì và nỗ lực. Đừng ngần ngại tìm kiếm
+              cơ hội và phát triển bản thân.
+            </p>
+          </div>       
+          <img src={heroImage} alt="Hero" className="homepage-hero-image" />
         </div>
-        <img src={heroImage} alt="Hero" className="homepage-hero-image" />
       </section>
 
       <section className="homepage-stats">
-        <div className="homepage-stat-box">
-          <span className="material-symbols-outlined homepage-stat-icon">work</span>
-          <div>
-            <h3>1,75,324</h3>
-            <p>Live Job</p>
+        <div className="homepage-stats-container">
+          <div className="homepage-stat-box">
+            <span className="material-symbols-outlined homepage-stat-icon">work</span>
+            <div>
+              <h3>1,75,324</h3>
+              <p>Live Job</p>
+            </div>
           </div>
-        </div>
-        <div className="homepage-stat-box">
-          <span className="material-symbols-outlined homepage-stat-icon">apartment</span>
-          <div>
-            <h3>97,354</h3>
-            <p>Companies</p>
+          <div className="homepage-stat-box">
+            <span className="material-symbols-outlined homepage-stat-icon">apartment</span>
+            <div>
+              <h3>97,354</h3>
+              <p>Companies</p>
+            </div>
           </div>
-        </div>
-        <div className="homepage-stat-box">
-          <span className="material-symbols-outlined homepage-stat-icon">group</span>
-          <div>
-            <h3>38,47,154</h3>
-            <p>Candidates</p>
+          <div className="homepage-stat-box">
+            <span className="material-symbols-outlined homepage-stat-icon">group</span>
+            <div>
+              <h3>38,47,154</h3>
+              <p>Candidates</p>
+            </div>
           </div>
-        </div>
-        <div className="homepage-stat-box">
-          <span className="material-symbols-outlined homepage-stat-icon">work</span>
-          <div>
-            <h3>7,532</h3>
-            <p>New Jobs</p>
+          <div className="homepage-stat-box">
+            <span className="material-symbols-outlined homepage-stat-icon">work</span>
+            <div>
+              <h3>7,532</h3>
+              <p>New Jobs</p>
+            </div>
           </div>
         </div>
       </section>

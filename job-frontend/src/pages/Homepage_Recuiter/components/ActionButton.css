@@ -1,0 +1,52 @@
+.home-recuiter-action-button {
+  background: white;
+  color: #333;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 80px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  text-decoration: none;
+}
+
+.home-recuiter-action-button:hover {
+  transform: translateY(-3px);
+}
+
+.home-recuiter-radio-icon {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  margin-top: 4px;
+}
+
+.home-recuiter-label {
+  flex: 1;
+  margin: 0 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.home-recuiter-arrow-icon {
+  font-size: 18px;
+  color: var(--color-primary);
+  display: flex;
+  align-items: flex-start;
+  justify-content:right ;
+}
+
+@media (max-width: 768px) {
+  .home-recuiter-action-button {
+    min-width: unset;
+    width: 100%;
+  }
+}
+@media (max-width: 480px) {
+    .home-recuiter-action-button {
+    padding: 12px;
+  }
+}
