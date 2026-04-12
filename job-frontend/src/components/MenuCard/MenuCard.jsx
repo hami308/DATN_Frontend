@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import "./MenuCard.css";
 
-const MenuCard = () => {
-  const [collapsed, setCollapsed] = useState(false);
+const MenuCard = ({ collapsed, setCollapsed }) => {
 
   const menuItems = [
     { icon: <span className="material-symbols-outlined">home</span>, label: "Trang chủ" },
