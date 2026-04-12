@@ -5,8 +5,8 @@
   justify-content: center;
   align-items: center;
   margin-top: 100px;
-  margin-left: 320px;
-  width: calc(100% - 320px);
+  margin-left: 350px;
+  width: calc(100% - 400px);
 }
 .createjob-wrapper.collapsed {
   margin-left: 50px;
@@ -268,46 +268,188 @@
   background: #4caf50;
   color: white;
 }
+/* ========== RESPONSIVE ========== */
+/* ========== RESPONSIVE ========== */
 
-/* Responsive */
-@media (max-width: 992px) {
-  .createjob-form-grid {
-    grid-template-columns: repeat(2, 1fr);
+/* Desktop nhỏ (laptop 1366px) */
+@media (max-width: 1280px) {
+  .createjob-wrapper {
+    margin-left: 330px;
+    width: calc(100% - 330px);
   }
-  
-  .createjob-salary-container {
-    grid-column: span 2;
+  .createjob-wrapper.collapsed {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+  }
+  .createjob-card {
+    max-width: 900px;
+    padding: 30px 35px;
+  }
+  .createjob-step-divider {
+    width: 60px;
   }
 }
 
-@media (max-width: 768px) {
-  .createjob-form-grid,
-  .createjob-form-grid-two-col {
-    grid-template-columns: 1fr;
+/* Tablet ngang (iPad Pro, 1024px) */
+@media (max-width: 1024px) {
+  .createjob-wrapper {
+    margin-left: 330px;
+    width: calc(100% - 330px);
   }
-
-  .createjob-salary-container {
-    grid-column: span 1;
+  .createjob-wrapper.collapsed {
+    margin-left: 60px;
+    width: calc(100% - 60px);
   }
-
   .createjob-card {
-    padding: 24px;
+    max-width: 850px;
+    padding: 28px 30px;
   }
+  .createjob-main-title {
+    font-size: 28px;
+    margin-bottom: 25px;
+  }
+  .createjob-steps-container {
+    gap: 12px;
+  }
+  .createjob-step-divider {
+    width: 50px;
+  }
+  .createjob-input,
+  .createjob-select,
+  .createjob-textarea {
+    padding: 10px 12px;
+    font-size: 13px;
+    box-sizing: border-box; 
+     min-width: 0; 
+  }
+}
 
+/* Tablet dọc & Mobile lớn (768px) */
+@media (max-width: 768px) {
+  .createjob-wrapper {
+    margin-left: 80px !important;
+    width: calc(100% - 100px) !important;
+    margin-top: 80px;
+    padding: 0 16px;
+  }
+  .createjob-card {
+    padding: 20px 18px;
+    border-radius: 12px;
+  }
   .createjob-main-title {
     font-size: 24px;
+    margin-bottom: 20px;
   }
-
+  /* Steps dọc */
   .createjob-steps-container {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
-    padding-left: 20px;
+    gap: 8px;
+    margin-bottom: 25px;
+    padding-left: 16px;
   }
-
+  .createjob-step-item {
+    font-size: 14px;
+  }
   .createjob-step-divider {
     width: 2px;
-    height: 25px;
-    margin-left: 13px;
+    height: 20px;
+    margin-left: 14px;
+  }
+  .createjob-step-number {
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
+  }
+  /* Grid 1 cột */
+  .createjob-form-grid,
+  .createjob-form-grid-two-col {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .createjob-salary-container {
+    grid-column: span 1;
+  }
+  .createjob-salary-flex {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .createjob-salary-flex input {
+    width: 100%;
+  }
+  .createjob-salary-separator {
+    align-self: center;
+  }
+  /* Section titles */
+  .createjob-section-title {
+    font-size: 18px;
+    margin: 18px 0 12px;
+  }
+  .createjob-section-title-step2 {
+    font-size: 16px;
+    margin: 20px 0 8px;
+  }
+  /* Buttons full width */
+  .step2-footer {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 30px;
+  }
+  .createjob-btn-back,
+  .createjob-btn-submit,
+  .createjob-btn-next {
+    width: 100%;
+    text-align: center;
+    padding: 12px 20px;
+  }
+  .createjob-action-footer {
+    justify-content: stretch;
+  }
+  .createjob-btn-next {
+    width: 100%;
+  }
+}
+
+/* Mobile nhỏ (dưới 480px) */
+@media (max-width: 480px) {
+  .createjob-wrapper {
+    margin-top: 70px;
+    padding: 0 12px;
+  }
+  .createjob-card {
+    padding: 16px 14px;
+  }
+  .createjob-main-title {
+    font-size: 20px;
+  }
+  .createjob-step-item {
+    font-size: 13px;
+  }
+  .createjob-step-number {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+  .createjob-label,
+  .createjob-label-sub {
+    font-size: 13px;
+  }
+  .createjob-input,
+  .createjob-select,
+  .createjob-textarea {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  .createjob-textarea-large {
+    min-height: 120px;
+  }
+  .createjob-section-title {
+    font-size: 17px;
+  }
+  .createjob-btn-back,
+  .createjob-btn-submit,
+  .createjob-btn-next {
+    font-size: 14px;
+    padding: 10px 16px;
   }
 }
