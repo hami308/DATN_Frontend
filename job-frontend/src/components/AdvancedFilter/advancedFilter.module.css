@@ -47,3 +47,58 @@
   accent-color: #2b6cb0;
   cursor: pointer;
 }
+@media (max-width: 1023px) {
+  .sidebar {
+    width: 240px;
+    padding: 14px;
+  }
+
+  .options {
+    gap: 8px 10px;
+  }
+
+  .options label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    padding: 16px;
+  }
+
+  .options {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 16px;
+  }
+
+  .options label {
+    font-size: 13px;
+    padding: 4px 0;
+  }
+
+  .options input[type="radio"] {
+    width: 16px;
+    height: 16px;
+  }
+
+  .section {
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+
+  .section h4 {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .options {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
