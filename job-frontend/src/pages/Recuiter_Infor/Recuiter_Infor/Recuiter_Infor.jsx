@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./Recuiter_Infor.css";
-import MenuCard from "../../components/MenuCard/MenuCard";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
+import MenuCard from "../../../components/MenuCard/MenuCard";
+import Header from "../../../components/Header/Header";
+import Footer from "../../../components/Footer/Footer";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";

@@ -6,7 +6,7 @@ import RegisterPage from "./pages/register/registerPage";
 import VerifyEmailPage from "./pages/verifyAccount/verifyEmailPage";
 import VerifyPhonePage from "./pages/verifyAccount/verifyPhonePage";
 import HomepageRecuiter from "./pages/Homepage_Recuiter/Homepage_Recuiter";
-import Recuiter_Infor from "./pages/Recuiter_Infor/Recuiter_Infor";
+import Recuiter_Infor from "./pages/Recuiter_Infor/Recuiter_Infor/Recuiter_Infor";
 import Conditions from "./pages/Post_news/Conditions/Conditions";
 import CreateJob from "./pages/Post_news/Create_news/Create_news";
 function App() {
