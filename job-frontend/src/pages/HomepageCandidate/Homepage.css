@@ -35,11 +35,6 @@
   align-self: flex-end;
 }
 
-/* search */
-.top > :last-child {
-  width: 100%;
-}
-
 /* filter + list */
 .body {
   flex: 1;
@@ -59,13 +54,78 @@
   padding-right: 8px;
 }
 
-/* responsive */
-@media (max-width: 768px) {
+/*resposive*/
+@media (max-width: 1481px) {
   .body {
-    grid-template-columns: 1fr;
+    grid-template-columns: 220px 1fr;
+    gap: 16px;
   }
 
+  .right {
+    padding: 16px;
+  }
+}
+@media (max-width: 1435px) {
+  .main {
+    display: flex;
+    flex-direction: row;
+    overflow: visible;
+  }
+
+  /* sidebar giữ nguyên bên trái */
+  .sidebar {
+    width: 70px; /* hoặc 260px nếu không collapse */
+    flex-shrink: 0;
+  }
+
+  .right {
+    flex: 1;
+    padding: 12px;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* TOP (Facecat + Searchbar) giữ trên */
+  .top {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  /* BODY chuyển sang dọc */
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow: visible;
+  }
+
+  /* FILTER full width */
+  .filter {
+    width: 100%;
+  }
+
+  /* LIST xuống dưới cùng */
   .list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    overflow: visible;
+    margin-top: 50px;
+  }
+
+  .list .job-card {
+  }
+
+  /* bỏ fixed height gây vỡ layout */
+  .homepage {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .main {
     overflow: visible;
   }
 }

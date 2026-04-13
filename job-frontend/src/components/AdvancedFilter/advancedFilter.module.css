@@ -102,3 +102,21 @@
     gap: 8px;
   }
 }
+@media (max-width: 1435px) {
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .options label {
+    flex: 1 1 140px; /* tự co giãn theo width */
+    min-width: 120px;
+  }
+  .sidebar {
+    width: auto;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    padding: 16px;
+  }
+}
