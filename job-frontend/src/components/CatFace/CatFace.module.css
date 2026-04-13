@@ -1,0 +1,124 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* bubble chữ */
+.bubble {
+  position: relative;
+  background: var(--color-secondary);
+  padding: 18px 28px;
+  border-radius: 20px;
+  font-weight: 600;
+  color: #1d4ed8;
+  font-size: 18px;
+  white-space: nowrap;
+
+  transform: translateX(-60px);
+  opacity: 0;
+  animation: slideText 0.6s ease-out 0.2s forwards;
+}
+
+/* mũi nhọn */
+.arrow {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 12px solid #e7f0fa;
+}
+
+/* avatar */
+.avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #8ee0e6;
+  padding: 6px;
+
+  transform: translateX(60px);
+  opacity: 0;
+  animation: slideCat 0.6s ease-out forwards;
+}
+
+/* animation chữ */
+@keyframes slideText {
+  from {
+    transform: translateX(-80px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* animation mèo */
+@keyframes slideCat {
+  from {
+    transform: translateX(80px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ================= tablet ================= */
+@media (max-width: 1024px) {
+  .bubble {
+    font-size: 16px;
+    padding: 14px 20px;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* ================= mobile ================= */
+@media (max-width: 768px) {
+  .wrapper {
+    gap: 8px;
+  }
+
+  .bubble {
+    font-size: 14px;
+    padding: 12px 16px;
+    border-radius: 14px;
+  }
+
+  .arrow {
+    right: -8px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #e7f0fa;
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    padding: 4px;
+  }
+}
+
+/* mobile nhỏ */
+@media (max-width: 480px) {
+  .bubble {
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+
+  .avatar {
+    width: 42px;
+    height: 42px;
+  }
+}
