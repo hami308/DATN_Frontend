@@ -11,7 +11,9 @@
   background: #f5f7fb;
   overflow: hidden;
 }
-
+.footer {
+  margin-top: 0px;
+}
 /* right content */
 .right {
   flex: 1;
