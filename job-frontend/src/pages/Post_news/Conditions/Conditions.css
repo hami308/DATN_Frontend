@@ -1,0 +1,280 @@
+/* Layout chính */
+.setup-wrapper {
+  margin-left: 320px; /* Khớp với sidebar mặc định */
+  margin-top: 90px; /* Khớp với header */
+  min-height: calc(100vh - 90px - 220px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: #f5f5f5;
+  transition: all 0.3s ease;
+  width: calc(100% - 350px);
+}
+
+/* Khi sidebar thu nhỏ */
+.setup-wrapper.collapsed {
+  margin-left: 50px;
+  width: calc(100% - 50px);
+}
+
+/* Card chứa nội dung */
+.setup-card {
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 32px 36px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.setup-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.setup-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+/* Danh sách các bước */
+.setup-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.setup-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+/* Logic mờ và chặn click khi bị khóa */
+.setup-item.locked {
+  opacity: 0.45;
+  pointer-events: none; /* Không thể click */
+  user-select: none;    /* Không thể bôi đen chữ */
+  filter: grayscale(0.6);
+}
+
+.setup-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Vòng tròn check */
+.setup-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.setup-check.done {
+  border: 2px solid #5f8d4e;
+  color: #5f8d4e;
+  background-color: #f0fdf4;
+}
+
+.setup-check.pending {
+  border: 2px solid #cbd5e1;
+  color: transparent;
+}
+
+.setup-text {
+  font-size: 16px;
+  color: #111827;
+  font-weight: 500;
+}
+
+/* Nút mũi tên */
+.setup-arrow {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: #f3f0ff;
+  color: #4f46e5;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.setup-arrow:hover {
+  background: #e5e0ff;
+  transform: translateX(3px);
+}
+
+/* Trạng thái nút khi bị khóa */
+.setup-item.locked .setup-arrow {
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+
+/* Phần tiến trình */
+.setup-progress-section {
+  margin-top: 34px;
+}
+
+.setup-percent {
+  display: block;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 8px;
+}
+
+.setup-progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.setup-progress-fill {
+  height: 100%;
+  background: #88a96b;
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive */
+/* Responsive: Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+
+  .setup-card {
+    max-width: 480px;
+    padding: 28px 32px;
+  }
+}
+
+/* Responsive: Mobile ngang & dọc (max-width: 768px) */
+@media (max-width: 768px) {
+  .setup-wrapper {
+    margin-left: 90px !important; /* Ẩn sidebar, chiếm toàn bộ chiều rộng */
+    width: calc(100% - 100px) !important;
+    margin-top: 70px; /* Giảm margin-top cho phù hợp header mobile */
+    padding: 20px 16px;
+  }
+
+  .setup-card {
+    max-width: 100%;
+    padding: 24px 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .setup-title {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .setup-subtitle {
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .setup-list {
+    gap: 14px;
+  }
+
+  .setup-item {
+    flex-wrap: wrap; /* Đề phòng nội dung quá dài */
+  }
+
+  .setup-left {
+    gap: 10px;
+    flex: 1;
+  }
+
+  .setup-check {
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+  }
+
+  .setup-text {
+    font-size: 14px;
+  }
+
+  .setup-arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .setup-progress-section {
+    margin-top: 28px;
+  }
+
+  .setup-percent {
+    font-size: 12px;
+  }
+
+  .setup-progress-bar {
+    height: 8px;
+  }
+}
+
+/* Responsive: Mobile nhỏ (max-width: 480px) */
+@media (max-width: 480px) {
+  .setup-wrapper {
+    margin-top: 60px;
+    padding: 16px 12px;
+  }
+
+  .setup-card {
+    padding: 20px 16px;
+  }
+
+  .setup-title {
+    font-size: 18px;
+  }
+
+  .setup-subtitle {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .setup-list {
+    gap: 12px;
+  }
+
+  .setup-text {
+    font-size: 13px;
+  }
+
+  .setup-check {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+  }
+
+  .setup-arrow {
+    width: 28px;
+    height: 28px;
+  }
+
+  .setup-progress-section {
+    margin-top: 24px;
+  }
+}

@@ -25,6 +25,7 @@
 .homepage-title {
   font-size: 26px;
   font-weight: bold;
+  color: white;
 }
 .homepage-join-btn {
   background: var(--color-accent);
