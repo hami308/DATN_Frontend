@@ -1,0 +1,58 @@
+.candidateInfor {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f5f7fb;
+}
+
+/* main content */
+.container {
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 90px;
+  min-width: 0;
+}
+
+/* sidebar */
+.container > :first-child {
+  flex-shrink: 0;
+}
+
+/* profile */
+.container > :last-child {
+  flex: 1;
+  min-width: 0;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+/* =================== tablet =================== */
+
+@media (max-width: 1024px) {
+  .container {
+    gap: 16px;
+    padding: 20px;
+  }
+}
+
+/* =================== mobile =================== */
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: row; /* ⭐ giữ sidebar bên trái */
+    gap: 12px;
+    padding: 12px;
+  }
+}
+
+/* =================== small mobile =================== */
+
+@media (max-width: 500px) {
+  .container {
+    gap: 8px;
+    padding: 8px;
+  }
+}

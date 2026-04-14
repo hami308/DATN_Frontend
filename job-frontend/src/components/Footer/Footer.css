@@ -1,16 +1,15 @@
 .footer {
   background: var(--color-main);
   color: #fff;
-  transition: all 0.3s ease; 
+  transition: all 0.3s ease;
   z-index: 100000;
-  margin-top: 50px;
   width: 100%;
   padding: 0px 40px;
 }
 
 .footer-container {
   max-width: 1200px;
-  margin: auto ;
+  margin: auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 40px;

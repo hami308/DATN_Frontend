@@ -1,5 +1,5 @@
 .homepage {
-  height: 1300px;
+  height: 1360px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -10,10 +10,9 @@
   flex: 1;
   background: #f5f7fb;
   overflow: hidden;
+  margin-top: 90px;
 }
-.footer {
-  margin-top: 0px;
-}
+
 /* right content */
 .right {
   flex: 1;
