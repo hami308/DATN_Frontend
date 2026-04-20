@@ -1,53 +1,147 @@
-import React from "react";
-import "./MenuCard.css";
+import { useState } from "react";
+import styles from "../Sidebar/Sidebar.module.css";
+import {
+  Home,
+  User,
+  FileText,
+  Briefcase,
+  Bell,
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+  Building2,
+  FileBadge,
+} from "lucide-react";
 
-const MenuCard = ({ collapsed, setCollapsed }) => {
-
-  const menuItems = [
-    { icon: <span className="material-symbols-outlined">home</span>, label: "Trang chủ" },
-    {
-      icon: <span className="material-symbols-outlined">person</span>,
-      label: "Trang cá nhân",
-      children: [
-        { label: "Thông tin cá nhân" },
-        { label: "Đổi mật khẩu" },
-        { label: "Thông tin công ty" },
-        { label: "Giấy đăng ký doanh nghiệp" },
-      ],
-    },
-    { icon: <span className="material-symbols-outlined">assignment</span>, label: "Quản lý CV" },
-    { icon: <span className="material-symbols-outlined">work</span>, label: "Quản lý việc làm" },
-    { icon: <span className="material-symbols-outlined">notifications</span>, label: "Thông báo" },
-    { icon: <span className="material-symbols-outlined">logout</span>, label: "Đăng xuất" },
-  ];
+export default function Sidebar() {
+  const [active, setActive] = useState("home");
+  const [openProfile, setOpenProfile] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
-      <button className="toggle-btn" onClick={() => setCollapsed(!collapsed)}>
-        {collapsed ? "<>" : "<>"}
+    <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
+      {/* Toggle Button */}
+      <button
+        className={styles.collapseBtn}
+        onClick={() => setCollapsed(!collapsed)}
+      >
+        {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
       </button>
-      <ul className="menu">
-        {menuItems.map((item, idx) => (
-          <li key={idx}>
-            <div className="menu-item">
-              <span className="material-icons">{item.icon}</span>
-              {!collapsed && <span className="label">{item.label}</span>}
+
+      {/* Trang chủ */}
+      <div
+        className={`${styles.item} ${active === "home" ? styles.active : ""}`}
+        onClick={() => setActive("home")}
+      >
+        <Home size={20} />
+        {!collapsed && <span>Trang chủ</span>}
+      </div>
+
+      {/* Trang cá nhân */}
+      <div>
+        <div
+          className={`${styles.item} ${
+            active.startsWith("profile") ? styles.active : ""
+          }`}
+          onClick={() => {
+            if (collapsed) {
+              setCollapsed(false);
+              setOpenProfile(true);
+            } else {
+              setOpenProfile(!openProfile);
+            }
+          }}
+        >
+          <User size={20} />
+          {!collapsed && (
+            <>
+              <span>Trang cá nhân</span>
+              <ChevronDown
+                size={16}
+                className={`${styles.arrow} ${
+                  openProfile ? styles.rotate : ""
+                }`}
+              />
+            </>
+          )}
+        </div>
+
+        {openProfile && !collapsed && (
+          <div className={styles.subMenu}>
+            <div
+              className={`${styles.subItem} ${
+                active === "profile-info" ? styles.activeSub : ""
+              }`}
+              onClick={() => setActive("profile-info")}
+            >
+              Thông tin cá nhân
             </div>
-            {!collapsed && item.children && (
-              <ul className="submenu">
-                {item.children.map((child, cIdx) => (
-                  <li key={cIdx} className="submenu-item">
-                    <span className="material-icons">{child.icon}</span>
-                    <span className="label">{child.label}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))}
-      </ul>
+
+            <div
+              className={`${styles.subItem} ${
+                active === "profile-pass" ? styles.activeSub : ""
+              }`}
+              onClick={() => setActive("profile-pass")}
+            >
+              Đổi mật khẩu
+            </div>
+
+            <div
+              className={`${styles.subItem} ${
+                active === "profile-company" ? styles.activeSub : ""
+              }`}
+              onClick={() => setActive("profile-company")}
+            >
+              <Building2 size={16} />
+              <span>Thông tin công ty</span>
+            </div>
+
+            <div
+              className={`${styles.subItem} ${
+                active === "profile-license" ? styles.activeSub : ""
+              }`}
+              onClick={() => setActive("profile-license")}
+            >
+              <FileBadge size={16} />
+              <span>Giấy đăng ký doanh nghiệp</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Quản lý CV */}
+      <div
+        className={`${styles.item} ${active === "cv" ? styles.active : ""}`}
+        onClick={() => setActive("cv")}
+      >
+        <FileText size={20} />
+        {!collapsed && <span>Quản lý CV</span>}
+      </div>
+
+      {/* Quản lý việc làm */}
+      <div
+        className={`${styles.item} ${active === "job" ? styles.active : ""}`}
+        onClick={() => setActive("job")}
+      >
+        <Briefcase size={20} />
+        {!collapsed && <span>Quản lý việc làm</span>}
+      </div>
+
+      {/* Thông báo */}
+      <div
+        className={`${styles.item} ${active === "noti" ? styles.active : ""}`}
+        onClick={() => setActive("noti")}
+      >
+        <Bell size={20} />
+        {!collapsed && <span>Thông báo</span>}
+      </div>
+
+      {/* Đăng xuất */}
+      <div className={styles.item}>
+        <LogOut size={20} />
+        {!collapsed && <span>Đăng xuất</span>}
+      </div>
     </div>
   );
-};
-
-export default MenuCard;
+}

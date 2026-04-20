@@ -32,7 +32,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
+  button {
+    font-family: Roboto, sans-serif;
+  }
   @media (max-width: 1024px) {
     font-size: 16px;
   }
