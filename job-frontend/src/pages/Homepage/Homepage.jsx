@@ -84,7 +84,7 @@ function Homepage() {
                 work
               </span>
               <div>
-                <h3>1,75,324</h3>
+                <h3>175,324</h3>
                 <p>Live Job</p>
               </div>
             </div>
@@ -102,7 +102,7 @@ function Homepage() {
                 group
               </span>
               <div>
-                <h3>38,47,154</h3>
+                <h3>3,847,154</h3>
                 <p>Candidates</p>
               </div>
             </div>
