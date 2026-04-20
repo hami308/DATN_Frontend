@@ -1,0 +1,124 @@
+.homepage {
+  display: flex;
+  flex-direction: column;
+}
+.pageHeader {
+  margin-top: 20px;
+}
+
+.pageHeader h2 {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+/* layout chính */
+.main {
+  display: flex;
+  flex: 1;
+  background: #f5f7fb;
+  margin-top: 90px;
+  overflow: hidden;
+}
+
+/* sidebar luôn bên trái */
+.main > :first-child {
+  flex-shrink: 0;
+}
+
+/* right content */
+.right {
+  flex: 1;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* body */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* list job */
+.list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* pagination */
+.paginationWrap {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* tablet */
+@media (max-width: 1481px) {
+  .right {
+    padding: 16px;
+  }
+}
+
+/* giữ sidebar bên trái */
+@media (max-width: 1380px) {
+  .main {
+    flex-direction: row;
+    overflow: hidden;
+  }
+
+  .right {
+    padding: 12px;
+  }
+
+  .body {
+    overflow: hidden;
+  }
+
+  .list {
+    overflow-y: auto;
+  }
+
+  .homepage {
+    min-height: 100vh;
+  }
+}
+
+/* mobile */
+@media (max-width: 1024px) {
+  .right {
+    padding: 10px;
+  }
+
+  .list {
+    gap: 12px;
+  }
+  .pageHeader {
+    margin-top: 16px;
+  }
+  .pageHeader h2 {
+    font-size: 24px;
+  }
+  .paginationWrap {
+    margin-top: 0px;
+  }
+}
+
+/* mobile nhỏ */
+@media (max-width: 768px) {
+  .main {
+    margin-top: 60px;
+  }
+
+  .right {
+    padding: 8px;
+  }
+}

@@ -15,6 +15,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Sidebar() {
   const [openProfile, setOpenProfile] = useState(false);
+  const [openJob, setOpenJob] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
   const navigate = useNavigate();
@@ -40,20 +41,13 @@ export default function Sidebar() {
         {!collapsed && <span>Trang chủ</span>}
       </div>
 
-      {/* Profile */}
+      {/* Trang cá nhân */}
       <div>
         <div
           className={`${styles.item} ${
             location.pathname.startsWith("/candidate") ? styles.active : ""
           }`}
-          onClick={() => {
-            if (collapsed) {
-              setCollapsed(false);
-              setOpenProfile(true);
-            } else {
-              setOpenProfile(!openProfile);
-            }
-          }}
+          onClick={() => setOpenProfile(!openProfile)}
         >
           <User size={20} />
           {!collapsed && (
@@ -72,7 +66,6 @@ export default function Sidebar() {
         {(openProfile || location.pathname.startsWith("/candidate")) &&
           !collapsed && (
             <div className={styles.subMenu}>
-              {/* Thông tin cá nhân */}
               <div
                 className={`${styles.subItem} ${
                   location.pathname === "/candidate-profile"
@@ -84,7 +77,6 @@ export default function Sidebar() {
                 Thông tin cá nhân
               </div>
 
-              {/* Đổi mật khẩu */}
               <div
                 className={`${styles.subItem} ${
                   location.pathname === "/candidate-change-password"
@@ -99,32 +91,71 @@ export default function Sidebar() {
           )}
       </div>
 
-      {/* CV */}
-      <div
-        className={`${styles.item} ${
-          location.pathname === "/candidate-cv" ? styles.active : ""
-        }`}
-      >
+      {/* Quản lý CV */}
+      <div className={styles.item}>
         <FileText size={20} />
         {!collapsed && <span>Quản lý CV</span>}
       </div>
 
-      {/* Job */}
-      <div
-        className={`${styles.item} ${
-          location.pathname === "/candidate-job" ? styles.active : ""
-        }`}
-      >
-        <Briefcase size={20} />
-        {!collapsed && <span>Quản lý việc làm</span>}
+      {/* Quản lý việc làm */}
+      <div>
+        <div
+          className={`${styles.item} ${
+            location.pathname.startsWith("/candidate-job") ? styles.active : ""
+          }`}
+          onClick={() => setOpenJob(!openJob)}
+        >
+          <Briefcase size={20} />
+          {!collapsed && (
+            <>
+              <span>Quản lý việc làm</span>
+              <ChevronDown
+                size={16}
+                className={`${styles.arrow} ${openJob ? styles.rotate : ""}`}
+              />
+            </>
+          )}
+        </div>
+
+        {(openJob || location.pathname.startsWith("/candidate-job")) &&
+          !collapsed && (
+            <div className={styles.subMenu}>
+              <div
+                className={`${styles.subItem} ${
+                  location.pathname === "/saved-jobs" ? styles.activeSub : ""
+                }`}
+                onClick={() => navigate("/saved-jobs")}
+              >
+                Việc làm đã lưu
+              </div>
+
+              <div
+                className={`${styles.subItem} ${
+                  location.pathname === "/candidate-job-applied"
+                    ? styles.activeSub
+                    : ""
+                }`}
+                onClick={() => navigate("/candidate-job-applied")}
+              >
+                Việc làm đã ứng tuyển
+              </div>
+
+              <div
+                className={`${styles.subItem} ${
+                  location.pathname === "/candidate-job-recommend"
+                    ? styles.activeSub
+                    : ""
+                }`}
+                onClick={() => navigate("/candidate-job-recommend")}
+              >
+                Việc làm phù hợp với bạn
+              </div>
+            </div>
+          )}
       </div>
 
-      {/* Notification */}
-      <div
-        className={`${styles.item} ${
-          location.pathname === "/candidate-noti" ? styles.active : ""
-        }`}
-      >
+      {/* Thông báo */}
+      <div className={styles.item}>
         <Bell size={20} />
         {!collapsed && <span>Thông báo</span>}
       </div>
