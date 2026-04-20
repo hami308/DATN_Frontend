@@ -7,7 +7,12 @@ import CatFace from "../../components/CatFace/CatFace";
 import AcvancedFilter from "../../components/AdvancedFilter/AdvancedFilter";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import logo from "../../assets/images/logo.png";
+import { useState } from "react";
+import Pagination from "../../components/Pagination/Pagination";
 export default function Homepage() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 5;
+
   const jobCards = [
     {
       logo: logo,
@@ -109,6 +114,10 @@ export default function Homepage() {
       deadline: "Còn 4 ngày",
     },
   ];
+  const indexOfLast = currentPage * jobsPerPage;
+  const indexOfFirst = indexOfLast - jobsPerPage;
+  const currentJobs = jobCards.slice(indexOfFirst, indexOfLast);
+  const totalPages = Math.ceil(jobCards.length / jobsPerPage);
   return (
     <div className={styles.homepage}>
       <Header />
@@ -128,7 +137,7 @@ export default function Homepage() {
             </div>
 
             <div className={styles.list}>
-              {jobCards.map((job, index) => (
+              {currentJobs.map((job, index) => (
                 <JobCard
                   key={index}
                   logo={job.logo}
@@ -139,6 +148,13 @@ export default function Homepage() {
                   deadline={job.deadline}
                 />
               ))}
+              <div className={styles.paginationWrap}>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              </div>
             </div>
           </div>
         </div>
