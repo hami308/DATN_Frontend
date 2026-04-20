@@ -1,7 +1,7 @@
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import "./Homepage.css";
-import Sidebar from "./components/Sidebar";
+import styles from "./Homepage.module.css";
+import Sidebar from "../../components/Sidebar/Sidebar";
 import JobCard from "../../components/JobCard/JobCard";
 import CatFace from "../../components/CatFace/CatFace";
 import AcvancedFilter from "../../components/AdvancedFilter/AdvancedFilter";
@@ -110,23 +110,24 @@ export default function Homepage() {
     },
   ];
   return (
-    <div className="homepage">
+    <div className={styles.homepage}>
       <Header />
 
-      <div className="main">
+      <div className={styles.main}>
         <Sidebar />
 
-        <div className="right">
-          <div className="top">
+        <div className={styles.right}>
+          <div className={styles.top}>
             <CatFace />
             <SearchBar />
           </div>
 
-          <div className="body">
-            <div className="filter">
+          <div className={styles.body}>
+            <div className={styles.filter}>
               <AcvancedFilter />
             </div>
-            <div className="list">
+
+            <div className={styles.list}>
               {jobCards.map((job, index) => (
                 <JobCard
                   key={index}
