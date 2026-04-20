@@ -196,6 +196,28 @@ input {
 /* RESPONSIVE */
 /* ========================= */
 
+@media (max-width: 1700px) {
+  .pic1,
+  .pic3 {
+    width: 400px;
+  }
+
+  .card {
+    width: 400px;
+    padding: 35px;
+  }
+}
+@media (max-width: 1600px) {
+  .pic1,
+  .pic3 {
+    width: 300px;
+  }
+
+  .card {
+    width: 400px;
+    padding: 35px;
+  }
+}
 @media (max-width: 1024px) {
   .pic1,
   .pic3 {

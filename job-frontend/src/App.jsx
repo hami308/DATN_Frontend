@@ -29,7 +29,7 @@ function App() {
 
         <Route path="/home-candidate" element={<HomepageCandidate />} />
         <Route path="/candidate-profile" element={<Candidate_Infor />} />
-        <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/candidate-change-password" element={<ChangePassword />} />
       </Routes>
     </BrowserRouter>
   );

@@ -5,7 +5,7 @@
   --color-accent: #bd0c47;
   --color-accent-hover: #cc0000;
   --gradient-main: linear-gradient(135deg, #060610, #063f6b);
-  --color-main: #302B63;
+  --color-main: linear-gradient(160deg, #0b0b21, #145688);
   /*----------------------*/
   --text: #6b6375;
   --text-h: #08060d;
@@ -121,8 +121,8 @@ code {
 }
 .material-symbols-outlined {
   font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
 }
