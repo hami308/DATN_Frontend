@@ -11,12 +11,15 @@ import {
   ChevronRight,
   ChevronDown,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
 export default function Sidebar() {
-  const [active, setActive] = useState("home");
   const [openProfile, setOpenProfile] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+
   const navigate = useNavigate();
+  const location = useLocation();
+
   return (
     <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
       <button
@@ -26,20 +29,22 @@ export default function Sidebar() {
         {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
       </button>
 
+      {/* Trang chủ */}
       <div
-        className={`${styles.item} ${active === "home" ? styles.active : ""}`}
-        onClick={() => {
-          setActive("home");
-          navigate("/home-candidate");
-        }}
+        className={`${styles.item} ${
+          location.pathname === "/home-candidate" ? styles.active : ""
+        }`}
+        onClick={() => navigate("/home-candidate")}
       >
         <Home size={20} />
         {!collapsed && <span>Trang chủ</span>}
       </div>
+
+      {/* Profile */}
       <div>
         <div
           className={`${styles.item} ${
-            active.startsWith("profile") ? styles.active : ""
+            location.pathname.startsWith("/candidate") ? styles.active : ""
           }`}
           onClick={() => {
             if (collapsed) {
@@ -64,59 +69,67 @@ export default function Sidebar() {
           )}
         </div>
 
-        {openProfile && !collapsed && (
-          <div className={styles.subMenu}>
-            <div
-              className={`${styles.subItem} ${
-                active === "profile-info" ? styles.activeSub : ""
-              }`}
-              onClick={() => {
-                setActive("profile-info");
-                navigate("/candidate-profile");
-              }}
-            >
-              Thông tin cá nhân
-            </div>
+        {(openProfile || location.pathname.startsWith("/candidate")) &&
+          !collapsed && (
+            <div className={styles.subMenu}>
+              {/* Thông tin cá nhân */}
+              <div
+                className={`${styles.subItem} ${
+                  location.pathname === "/candidate-profile"
+                    ? styles.activeSub
+                    : ""
+                }`}
+                onClick={() => navigate("/candidate-profile")}
+              >
+                Thông tin cá nhân
+              </div>
 
-            <div
-              className={`${styles.subItem} ${
-                active === "profile-pass" ? styles.activeSub : ""
-              }`}
-              onClick={() => {
-                setActive("profile-pass");
-                navigate("/candidate-change-password");
-              }}
-            >
-              Đổi mật khẩu
+              {/* Đổi mật khẩu */}
+              <div
+                className={`${styles.subItem} ${
+                  location.pathname === "/candidate-change-password"
+                    ? styles.activeSub
+                    : ""
+                }`}
+                onClick={() => navigate("/candidate-change-password")}
+              >
+                Đổi mật khẩu
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
 
+      {/* CV */}
       <div
-        className={`${styles.item} ${active === "cv" ? styles.active : ""}`}
-        onClick={() => setActive("cv")}
+        className={`${styles.item} ${
+          location.pathname === "/candidate-cv" ? styles.active : ""
+        }`}
       >
         <FileText size={20} />
         {!collapsed && <span>Quản lý CV</span>}
       </div>
 
+      {/* Job */}
       <div
-        className={`${styles.item} ${active === "job" ? styles.active : ""}`}
-        onClick={() => setActive("job")}
+        className={`${styles.item} ${
+          location.pathname === "/candidate-job" ? styles.active : ""
+        }`}
       >
         <Briefcase size={20} />
         {!collapsed && <span>Quản lý việc làm</span>}
       </div>
 
+      {/* Notification */}
       <div
-        className={`${styles.item} ${active === "noti" ? styles.active : ""}`}
-        onClick={() => setActive("noti")}
+        className={`${styles.item} ${
+          location.pathname === "/candidate-noti" ? styles.active : ""
+        }`}
       >
         <Bell size={20} />
         {!collapsed && <span>Thông báo</span>}
       </div>
 
+      {/* Logout */}
       <div className={styles.item}>
         <LogOut size={20} />
         {!collapsed && <span>Đăng xuất</span>}
