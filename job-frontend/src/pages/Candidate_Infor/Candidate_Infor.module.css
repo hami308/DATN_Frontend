@@ -1,7 +1,6 @@
 .candidateInfor {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   background: #f5f7fb;
 }
 

@@ -11,12 +11,12 @@ import {
   ChevronRight,
   ChevronDown,
 } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 export default function Sidebar() {
   const [active, setActive] = useState("home");
   const [openProfile, setOpenProfile] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
       <button
@@ -28,7 +28,10 @@ export default function Sidebar() {
 
       <div
         className={`${styles.item} ${active === "home" ? styles.active : ""}`}
-        onClick={() => setActive("home")}
+        onClick={() => {
+          setActive("home");
+          navigate("/home-candidate");
+        }}
       >
         <Home size={20} />
         {!collapsed && <span>Trang chủ</span>}
@@ -67,7 +70,10 @@ export default function Sidebar() {
               className={`${styles.subItem} ${
                 active === "profile-info" ? styles.activeSub : ""
               }`}
-              onClick={() => setActive("profile-info")}
+              onClick={() => {
+                setActive("profile-info");
+                navigate("/candidate-profile");
+              }}
             >
               Thông tin cá nhân
             </div>
@@ -76,7 +82,10 @@ export default function Sidebar() {
               className={`${styles.subItem} ${
                 active === "profile-pass" ? styles.activeSub : ""
               }`}
-              onClick={() => setActive("profile-pass")}
+              onClick={() => {
+                setActive("profile-pass");
+                navigate("/candidate-change-password");
+              }}
             >
               Đổi mật khẩu
             </div>
