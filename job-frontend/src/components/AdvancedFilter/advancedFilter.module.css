@@ -120,6 +120,11 @@
     margin-bottom: 16px;
     padding: 16px;
     overflow: auto;
+    height: 650px;
+  }
+}
+@media (max-width: 1380px) {
+  .sidebar {
     height: 300px;
   }
 }

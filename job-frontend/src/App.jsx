@@ -13,6 +13,7 @@ import HomepageCandidate from "./pages/HomepageCandidate/HomepageCandidate";
 import Candidate_Infor from "./pages/Candidate_Infor/Candidate_Infor";
 import ChangePassword from "./pages/ChangePasssword/ChangePasssword";
 import SavedJob from "./pages/Saved_jobs/Saved_job";
+import Applied_jobs from "./pages/Applied_jobs/Applied_jobs";
 function App() {
   return (
     <BrowserRouter>
@@ -32,6 +33,7 @@ function App() {
         <Route path="/candidate-profile" element={<Candidate_Infor />} />
         <Route path="/candidate-change-password" element={<ChangePassword />} />
         <Route path="/saved-jobs" element={<SavedJob />} />
+        <Route path="/applied-jobs" element={<Applied_jobs />} />
       </Routes>
     </BrowserRouter>
   );

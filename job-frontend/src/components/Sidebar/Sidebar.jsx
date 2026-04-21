@@ -131,11 +131,9 @@ export default function Sidebar() {
 
               <div
                 className={`${styles.subItem} ${
-                  location.pathname === "/candidate-job-applied"
-                    ? styles.activeSub
-                    : ""
+                  location.pathname === "/applied-jobs" ? styles.activeSub : ""
                 }`}
-                onClick={() => navigate("/candidate-job-applied")}
+                onClick={() => navigate("/applied-jobs")}
               >
                 Việc làm đã ứng tuyển
               </div>
