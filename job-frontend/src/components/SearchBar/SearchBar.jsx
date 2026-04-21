@@ -1,6 +1,7 @@
 import styles from "./searchBar.module.css";
 
 export default function SearchBar() {
+  const role="recuiter";
   return (
     <div className={styles.wrapper}>
       <div className={styles.searchBar}>
@@ -22,12 +23,22 @@ export default function SearchBar() {
         </div>
 
         {/* Địa điểm */}
-        <select className={styles.select}>
-          <option>Địa điểm</option>
-          <option>Hà Nội</option>
-          <option>Đà Nẵng</option>
-          <option>TP HCM</option>
-        </select>
+        {role === "candidate" ? (
+          <select className={styles.select}>
+            <option>Địa điểm</option>
+            <option>Hà Nội</option>
+            <option>Đà Nẵng</option>
+            <option>TP HCM</option>
+          </select>
+        ):(
+          <select className={styles.select}>
+            <option>Đang ứng tuyển</option>
+            <option>Chưa hiển thị</option>
+            <option>Đã hết hạn</option>
+            <option>Đã đóng</option>
+          </select>
+        )}
+        
 
         <button className={styles.btn}>Tìm kiếm</button>
       </div>
