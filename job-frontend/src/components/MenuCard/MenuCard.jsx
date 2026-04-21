@@ -1,23 +1,23 @@
 import { useState } from "react";
 import styles from "../Sidebar/Sidebar.module.css";
 import {
-  Home,
   User,
-  FileText,
   Briefcase,
   Bell,
   LogOut,
+  PlusCircle,
   ChevronLeft,
   ChevronRight,
   ChevronDown,
-  Building2,
-  FileBadge,
 } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Sidebar() {
-  const [active, setActive] = useState("home");
   const [openProfile, setOpenProfile] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
@@ -29,20 +29,16 @@ export default function Sidebar() {
         {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
       </button>
 
-      {/* Trang chủ */}
-      <div
-        className={`${styles.item} ${active === "home" ? styles.active : ""}`}
-        onClick={() => setActive("home")}
-      >
-        <Home size={20} />
-        {!collapsed && <span>Trang chủ</span>}
-      </div>
-
       {/* Trang cá nhân */}
       <div>
         <div
           className={`${styles.item} ${
-            active.startsWith("profile") ? styles.active : ""
+            location.pathname === "/recuiter-profile" ||
+            location.pathname === "/change-password" ||
+            location.pathname === "/company-profile" ||
+            location.pathname === "/business-paper"
+              ? styles.active
+              : ""
           }`}
           onClick={() => {
             if (collapsed) {
@@ -67,69 +63,93 @@ export default function Sidebar() {
           )}
         </div>
 
-        {openProfile && !collapsed && (
-          <div className={styles.subMenu}>
-            <div
-              className={`${styles.subItem} ${
-                active === "profile-info" ? styles.activeSub : ""
-              }`}
-              onClick={() => setActive("profile-info")}
-            >
-              Thông tin cá nhân
-            </div>
+        {(openProfile ||
+          location.pathname === "/recuiter-profile" ||
+          location.pathname === "/change-password" ||
+          location.pathname === "/company-profile" ||
+          location.pathname === "/business-paper") &&
+          !collapsed && (
+            <div className={styles.subMenu}>
+              <div
+                className={`${styles.subItem} ${
+                  location.pathname === "/recuiter-profile"
+                    ? styles.activeSub
+                    : ""
+                }`}
+                onClick={() => navigate("/recuiter-profile")}
+              >
+                Thông tin cá nhân
+              </div>
 
-            <div
-              className={`${styles.subItem} ${
-                active === "profile-pass" ? styles.activeSub : ""
-              }`}
-              onClick={() => setActive("profile-pass")}
-            >
-              Đổi mật khẩu
-            </div>
+              <div
+                className={`${styles.subItem} ${
+                  location.pathname === "/change-password"
+                    ? styles.activeSub
+                    : ""
+                }`}
+                onClick={() => navigate("/change-password")}
+              >
+                Đổi mật khẩu
+              </div>
 
-            <div
-              className={`${styles.subItem} ${
-                active === "profile-company" ? styles.activeSub : ""
-              }`}
-              onClick={() => setActive("profile-company")}
-            >
-              <span>Thông tin công ty</span>
-            </div>
+              <div
+                className={`${styles.subItem} ${
+                  location.pathname === "/company-profile"
+                    ? styles.activeSub
+                    : ""
+                }`}
+                onClick={() => navigate("/company-profile")}
+              >
+                Thông tin công ty
+              </div>
 
-            <div
-              className={`${styles.subItem} ${
-                active === "profile-license" ? styles.activeSub : ""
-              }`}
-              onClick={() => setActive("profile-license")}
-            >
-              <span>Giấy đăng ký doanh nghiệp</span>
+              <div
+                className={`${styles.subItem} ${
+                  location.pathname === "/business-paper"
+                    ? styles.activeSub
+                    : ""
+                }`}
+                onClick={() => navigate("/business-paper")}
+              >
+                Giấy đăng ký doanh nghiệp
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
 
-      {/* Quản lý CV */}
+      {/* Quản lý tuyển dụng */}
       <div
-        className={`${styles.item} ${active === "cv" ? styles.active : ""}`}
-        onClick={() => setActive("cv")}
-      >
-        <FileText size={20} />
-        {!collapsed && <span>Quản lý CV</span>}
-      </div>
-
-      {/* Quản lý việc làm */}
-      <div
-        className={`${styles.item} ${active === "job" ? styles.active : ""}`}
-        onClick={() => setActive("job")}
+        className={`${styles.item} ${
+          location.pathname === "/manage-recruitment" ||
+          location.pathname === "/manage-recruitment"
+            ? styles.active
+            : ""
+        }`}
+        onClick={() => navigate("/manage-recruitment")}
       >
         <Briefcase size={20} />
-        {!collapsed && <span>Quản lý việc làm</span>}
+        {!collapsed && <span>Quản lý tuyển dụng</span>}
+      </div>
+
+      {/* Đăng tin tuyển dụng */}
+      <div
+        className={`${styles.item} ${
+          location.pathname === "/post-news/create-job" ? styles.active : ""
+        }`}
+        onClick={() => navigate("/post-news/create-job")}
+      >
+        <PlusCircle size={20} />
+        {!collapsed && <span>Đăng tin tuyển dụng</span>}
       </div>
 
       {/* Thông báo */}
       <div
-        className={`${styles.item} ${active === "noti" ? styles.active : ""}`}
-        onClick={() => setActive("noti")}
+        className={`${styles.item} ${
+          location.pathname === "/company-notification"
+            ? styles.active
+            : ""
+        }`}
+        onClick={() => navigate("/company-notification")}
       >
         <Bell size={20} />
         {!collapsed && <span>Thông báo</span>}
