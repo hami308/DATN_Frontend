@@ -33,7 +33,6 @@
 @media (max-width: 1024px) {
   .container {
     gap: 16px;
-    padding: 20px;
   }
 }
 
@@ -43,7 +42,7 @@
   .container {
     flex-direction: row; /* ⭐ giữ sidebar bên trái */
     gap: 12px;
-    padding: 12px;
+    margin-top: 60px;
   }
 }
 
