@@ -1,0 +1,181 @@
+.verifyPaperPage {
+  display: flex;
+  margin-top: 90px;
+}
+
+.verifyPaperContainer {
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.verifyPaperContainer h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
+}
+
+.verifyPaperContainer p {
+  margin-bottom: 15px;
+}
+
+.verifyPaperBox {
+  border: 2px dashed #aaa;
+  padding: 30px 20px;
+  border-radius: 8px;
+  background: #f3f3f3;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Ẩn input gốc */
+.verifyPaperInput {
+  display: none;
+}
+
+/* Nút chọn file */
+.verifyPaperUploadBtn {
+  background: #666;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.verifyPaperUploadBtn:hover {
+  background: #444;
+}
+
+/* Tên file */
+.verifyPaperFileName {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Text xanh */
+.verifyPaperLabel {
+  margin-top: 18px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a33b8;
+}
+
+.verifyPaperNote {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #777;
+}
+
+.verifyPaperWarning {
+  margin-top: 15px;
+  padding: 12px 14px;
+  background: #fde1e1;
+  border-radius: 8px;
+  color: #c51d1d;
+  font-size: 14px;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.verifyPaperIllustration {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.verifyPaperSampleDoc {
+  margin-top: 10px;
+  width: 100%;
+  height: 260px;
+  border: 1px solid #ccc;
+  background: #eee;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.verifyPaperSampleImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: zoom-in;
+  transition: transform 0.3s ease;
+}
+
+.verifyPaperSampleImage:hover {
+  transform: scale(1.03);
+}
+
+.verifyPaperSaveBtn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.verifyPaperSaveBtn:hover {
+  background: #0056b3;
+}
+
+/* Modal phóng to */
+.verifyPaperModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.verifyPaperZoomImage {
+  max-width: 95%;
+  max-height: 95%;
+  object-fit: contain;
+  border-radius: 8px;
+  background: white;
+}
+@media (max-width: 1024px) {
+  .verifyPaperContainer {
+    padding: 15px;
+    max-width: 400px;
+  }
+
+  .verifyPaperSampleDoc {
+    height: 200px;
+  }
+}
+@media (max-width: 768px) {
+  .verifyPaperPage{
+    margin-top: 60px;
+  }
+  .verifyPaperContainer {
+    padding: 10px;
+    max-width: 100%;
+    margin: 10px;
+  }
+
+  .verifyPaperSampleDoc {
+    height: 150px;
+  }
+}
