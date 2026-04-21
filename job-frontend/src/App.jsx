@@ -13,6 +13,8 @@ import HomepageCandidate from "./pages/HomepageCandidate/HomepageCandidate";
 import Candidate_Infor from "./pages/Candidate_Infor/Candidate_Infor";
 import ChangePassword from "./pages/ChangePasssword/ChangePasssword";
 import SavedJob from "./pages/Saved_jobs/Saved_job";
+import Company_Infor from "./pages/Company_Infor/Company_Infor/Company_Infor";
+import Verify_paper from "./pages/Company_Infor/Verify_paper/Verify_paper";
 function App() {
   return (
     <BrowserRouter>
@@ -27,11 +29,12 @@ function App() {
         <Route path="/recuiter-profile" element={<Recuiter_Infor />} />
         <Route path="/post-news/conditions" element={<Conditions />} />
         <Route path="/post-news/create-job" element={<CreateJob />} />
-
+        <Route path="/company-profile" element={<Company_Infor />} />
         <Route path="/home-candidate" element={<HomepageCandidate />} />
         <Route path="/candidate-profile" element={<Candidate_Infor />} />
         <Route path="/candidate-change-password" element={<ChangePassword />} />
-        <Route path="/saved-jobs" element={<SavedJob />} />
+        <Route path="/saved-jobs" element={<SavedJob />} />        
+        <Route path="/business-paper" element={<Verify_paper />} />
       </Routes>
     </BrowserRouter>
   );

@@ -93,7 +93,6 @@ export default function Sidebar() {
               }`}
               onClick={() => setActive("profile-company")}
             >
-              <Building2 size={16} />
               <span>Thông tin công ty</span>
             </div>
 
@@ -103,7 +102,6 @@ export default function Sidebar() {
               }`}
               onClick={() => setActive("profile-license")}
             >
-              <FileBadge size={16} />
               <span>Giấy đăng ký doanh nghiệp</span>
             </div>
           </div>

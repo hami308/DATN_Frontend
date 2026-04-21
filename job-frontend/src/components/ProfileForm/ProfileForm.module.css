@@ -164,9 +164,9 @@
 
   .email {
     font-size: 13px;
+    text-align: left; /* ⭐ căn trái để dễ đọc */
   }
   .header {
-    flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 8px;
