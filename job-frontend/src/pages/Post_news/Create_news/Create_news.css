@@ -41,7 +41,7 @@
 ========================= */
 .createjob-main-title {
   text-align: center;
-  font-size: 42px;
+  font-size: 32px;
   font-weight: 700;
   color: #111827;
   margin-bottom: 35px;
@@ -237,7 +237,7 @@
 /* Laptop nhỏ */
 @media (max-width: 1200px) {
   .createjob-main-title {
-    font-size: 34px;
+    font-size: 28px;
   }
 
   .createjob-form-grid {
@@ -265,7 +265,7 @@
   }
 
   .createjob-main-title {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .createjob-form-grid,
@@ -303,7 +303,7 @@
 /* Mobile */
 @media (max-width: 480px) {
   .createjob-main-title {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .createjob-section-title {

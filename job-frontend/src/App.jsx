@@ -15,6 +15,7 @@ import ChangePassword from "./pages/ChangePasssword/ChangePasssword";
 import SavedJob from "./pages/Saved_jobs/Saved_job";
 import Company_Infor from "./pages/Company_Infor/Company_Infor/Company_Infor";
 import Verify_paper from "./pages/Company_Infor/Verify_paper/Verify_paper";
+import ManageRecuitment from "./pages/Manage_Recuitment/Manage_Recuitment";
 import Applied_jobs from "./pages/Applied_jobs/Applied_jobs";
 function App() {
   return (
@@ -33,9 +34,12 @@ function App() {
         <Route path="/company-profile" element={<Company_Infor />} />
         <Route path="/home-candidate" element={<HomepageCandidate />} />
         <Route path="/candidate-profile" element={<Candidate_Infor />} />
+        <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/saved-jobs" element={<SavedJob />} />        
         <Route path="/candidate-change-password" element={<ChangePassword />} />
         <Route path="/saved-jobs" element={<SavedJob />} />
         <Route path="/business-paper" element={<Verify_paper />} />
+        <Route path="/manage-recruitment" element={<ManageRecuitment />} />
         <Route path="/saved-jobs" element={<SavedJob />} />
         <Route path="/applied-jobs" element={<Applied_jobs />} />
       </Routes>
