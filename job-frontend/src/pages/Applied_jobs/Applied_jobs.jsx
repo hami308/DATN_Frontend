@@ -2,7 +2,7 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import styles from "./Applied_jobs.module.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import JobCard from "../../components/JobCard/JobCard";
+import JobComponent from "../../components/Job_component/Job_component";
 import Combobox from "../../components/Combobox/Combobox";
 import logo from "../../assets/images/logo.png";
 import { useState } from "react";
@@ -20,98 +20,66 @@ export default function Homepage() {
       salary_min: 30000,
       salary_max: 35000,
       deadline: "Còn 4 ngày",
+      status: "Đã ứng tuyển",
+      role: "Recuiter",
     },
     {
       logo: logo,
-      title: "Software Engineer",
+      title: "Frontend Developer",
       type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
+      location: "Hà Nội",
+      salary_min: 30000,
+      salary_max: 35000,
+      deadline: "Còn 7 ngày",
+      status: "Đã ứng tuyển",
+      role: "Candidate",
     },
     {
       logo: logo,
-      title: "Software Engineer",
+      title: "Backend Engineer",
       type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
+      location: "TP. Hồ Chí Minh",
+      salary_min: 30000,
+      salary_max: 35000,
+      deadline: "Còn 10 ngày",
+      status: "Nhà tuyển dụng đã xem",
+      role: "Recuiter",
     },
     {
       logo: logo,
-      title: "Software Engineer",
+      title: "Backend Engineer",
       type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
+      location: "TP. Hồ Chí Minh",
+      salary_min: 30000,
+      salary_max: 35000,
+      deadline: "Còn 10 ngày",
+      status: "Nhà tuyển dụng đã xem",
+      role: "Recuiter",
     },
     {
       logo: logo,
-      title: "Software Engineer",
+      title: "Backend Engineer",
       type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
+      location: "TP. Hồ Chí Minh",
+      salary_min: 30000,
+      salary_max: 35000,
+      deadline: "Còn 10 ngày",
+      status: "Nhà tuyển dụng đã xem",
+      role: "Recuiter",
     },
     {
       logo: logo,
-      title: "Software Engineer",
+      title: "Backend Engineer",
       type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
+      location: "TP. Hồ Chí Minh",
+      salary_min: 30000,
+      salary_max: 35000,
+      deadline: "Còn 10 ngày",
+      status: "Nhà tuyển dụng đã xem",
+      role: "Recuiter",
     },
   ];
+
   const indexOfLast = currentPage * jobsPerPage;
   const indexOfFirst = indexOfLast - jobsPerPage;
   const currentJobs = jobCards.slice(indexOfFirst, indexOfLast);
@@ -140,7 +108,7 @@ export default function Homepage() {
             </div>
             <div className={styles.list}>
               {currentJobs.map((job, index) => (
-                <JobCard
+                <JobComponent
                   key={index}
                   logo={job.logo}
                   title={job.title}
@@ -148,6 +116,7 @@ export default function Homepage() {
                   location={job.location}
                   salary={job.salary_min + "VND–" + job.salary_max + "VND"}
                   deadline={job.deadline}
+                  status={job.status}
                 />
               ))}
               <div className={styles.paginationWrap}>

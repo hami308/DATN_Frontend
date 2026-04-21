@@ -167,7 +167,14 @@ export default function Sidebar() {
       </div>
 
       {/* Logout */}
-      <div className={styles.item}>
+      <div
+        className={styles.item}
+        onClick={() => {
+          localStorage.removeItem("token");
+          sessionStorage.clear();
+          navigate("/login");
+        }}
+      >
         <LogOut size={20} />
         {!collapsed && <span>Đăng xuất</span>}
       </div>
