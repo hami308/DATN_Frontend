@@ -1,0 +1,191 @@
+.container {
+  padding: 24px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  margin-bottom: 16px;
+  font-size: 26px;
+  font-weight: 600;
+  color: #333;
+}
+
+.cvPanel {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.cvPanel.hasPreview {
+  justify-content: flex-start;
+}
+
+/* upload */
+.uploadBox {
+  width: 240px;
+  height: 160px;
+  border: 2px dashed #dcdcdc;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.uploadBox:hover {
+  border-color: #1677ff;
+  background: #f0f6ff;
+}
+
+.uploadContent {
+  text-align: center;
+  font-size: 14px;
+  color: #444;
+}
+
+.uploadContent span {
+  display: block;
+  font-size: 12px;
+  margin-top: 6px;
+  color: #888;
+}
+
+.uploadIcon {
+  font-size: 28px;
+  margin-bottom: 6px;
+  color: #1677ff;
+}
+
+/* preview */
+.preview {
+  flex: 1;
+  max-width: 500px;
+  cursor: pointer;
+}
+
+.cvFrame {
+  height: 420px;
+  object-fit: contain;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.cvInfo {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.cvName {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #222;
+}
+
+/* job */
+.jobSection {
+  margin-top: 36px;
+}
+
+.jobSection h2 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #333;
+}
+
+.list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.paginationWrap {
+  display: flex;
+  justify-content: center;
+}
+
+/* ========================= */
+/* tablet */
+/* ========================= */
+@media (max-width: 992px) {
+  .cvPanel {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cvPanel.hasPreview {
+    align-items: stretch;
+  }
+
+  .uploadBox {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .preview {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .cvFrame {
+    height: 380px;
+  }
+}
+
+/* ========================= */
+/* mobile */
+/* ========================= */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .cvPanel {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .cvFrame {
+    height: 320px;
+  }
+
+  .jobSection h2 {
+    font-size: 18px;
+  }
+}
+
+/* ========================= */
+/* mobile nhỏ */
+/* ========================= */
+@media (max-width: 480px) {
+  .uploadBox {
+    height: 140px;
+  }
+
+  .cvFrame {
+    height: 260px;
+  }
+
+  .uploadContent {
+    font-size: 13px;
+  }
+
+  .uploadIcon {
+    font-size: 24px;
+  }
+}

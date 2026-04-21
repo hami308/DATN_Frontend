@@ -16,6 +16,7 @@ import SavedJob from "./pages/Saved_jobs/Saved_job";
 import Company_Infor from "./pages/Company_Infor/Company_Infor/Company_Infor";
 import Verify_paper from "./pages/Company_Infor/Verify_paper/Verify_paper";
 import Applied_jobs from "./pages/Applied_jobs/Applied_jobs";
+import CV_management from "./pages/CV_management/CV_management";
 function App() {
   return (
     <BrowserRouter>
@@ -38,6 +39,7 @@ function App() {
         <Route path="/business-paper" element={<Verify_paper />} />
         <Route path="/saved-jobs" element={<SavedJob />} />
         <Route path="/applied-jobs" element={<Applied_jobs />} />
+        <Route path="/cv-management" element={<CV_management />} />
       </Routes>
     </BrowserRouter>
   );

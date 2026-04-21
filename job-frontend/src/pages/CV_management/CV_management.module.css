@@ -1,0 +1,35 @@
+.homepage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin-top: 90px;
+}
+
+/* layout chính */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: row; /* luôn ngang */
+  background: #f5f7fb;
+}
+
+/* content */
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: 24px;
+}
+@media (max-width: 480px) {
+  .homepage {
+    margin-top: 60px;
+  }
+
+  .content {
+    padding: 8px;
+  }
+}
+@media (max-width: 768px) {
+  .homepage {
+    margin-top: 60px;
+  }
+}

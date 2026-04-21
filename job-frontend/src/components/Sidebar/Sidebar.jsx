@@ -21,6 +21,13 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const isProfileActive = location.pathname.startsWith("/candidate");
+
+  const isJobActive =
+    location.pathname === "/saved-jobs" ||
+    location.pathname === "/applied-jobs" ||
+    location.pathname === "/candidate-job-recommend";
+
   return (
     <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
       <button
@@ -44,9 +51,7 @@ export default function Sidebar() {
       {/* Trang cá nhân */}
       <div>
         <div
-          className={`${styles.item} ${
-            location.pathname.startsWith("/candidate") ? styles.active : ""
-          }`}
+          className={`${styles.item} ${isProfileActive ? styles.active : ""}`}
           onClick={() => setOpenProfile(!openProfile)}
         >
           <User size={20} />
@@ -56,43 +61,47 @@ export default function Sidebar() {
               <ChevronDown
                 size={16}
                 className={`${styles.arrow} ${
-                  openProfile ? styles.rotate : ""
+                  openProfile || isProfileActive ? styles.rotate : ""
                 }`}
               />
             </>
           )}
         </div>
 
-        {(openProfile || location.pathname.startsWith("/candidate")) &&
-          !collapsed && (
-            <div className={styles.subMenu}>
-              <div
-                className={`${styles.subItem} ${
-                  location.pathname === "/candidate-profile"
-                    ? styles.activeSub
-                    : ""
-                }`}
-                onClick={() => navigate("/candidate-profile")}
-              >
-                Thông tin cá nhân
-              </div>
-
-              <div
-                className={`${styles.subItem} ${
-                  location.pathname === "/candidate-change-password"
-                    ? styles.activeSub
-                    : ""
-                }`}
-                onClick={() => navigate("/candidate-change-password")}
-              >
-                Đổi mật khẩu
-              </div>
+        {(openProfile || isProfileActive) && !collapsed && (
+          <div className={styles.subMenu}>
+            <div
+              className={`${styles.subItem} ${
+                location.pathname === "/candidate-profile"
+                  ? styles.activeSub
+                  : ""
+              }`}
+              onClick={() => navigate("/candidate-profile")}
+            >
+              Thông tin cá nhân
             </div>
-          )}
+
+            <div
+              className={`${styles.subItem} ${
+                location.pathname === "/candidate-change-password"
+                  ? styles.activeSub
+                  : ""
+              }`}
+              onClick={() => navigate("/candidate-change-password")}
+            >
+              Đổi mật khẩu
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Quản lý CV */}
-      <div className={styles.item}>
+      <div
+        className={`${styles.item} ${
+          location.pathname === "/cv-management" ? styles.active : ""
+        }`}
+        onClick={() => navigate("/cv-management")}
+      >
         <FileText size={20} />
         {!collapsed && <span>Quản lý CV</span>}
       </div>
@@ -100,9 +109,7 @@ export default function Sidebar() {
       {/* Quản lý việc làm */}
       <div>
         <div
-          className={`${styles.item} ${
-            location.pathname.startsWith("/candidate-job") ? styles.active : ""
-          }`}
+          className={`${styles.item} ${isJobActive ? styles.active : ""}`}
           onClick={() => setOpenJob(!openJob)}
         >
           <Briefcase size={20} />
@@ -111,45 +118,46 @@ export default function Sidebar() {
               <span>Quản lý việc làm</span>
               <ChevronDown
                 size={16}
-                className={`${styles.arrow} ${openJob ? styles.rotate : ""}`}
+                className={`${styles.arrow} ${
+                  openJob || isJobActive ? styles.rotate : ""
+                }`}
               />
             </>
           )}
         </div>
 
-        {(openJob || location.pathname.startsWith("/candidate-job")) &&
-          !collapsed && (
-            <div className={styles.subMenu}>
-              <div
-                className={`${styles.subItem} ${
-                  location.pathname === "/saved-jobs" ? styles.activeSub : ""
-                }`}
-                onClick={() => navigate("/saved-jobs")}
-              >
-                Việc làm đã lưu
-              </div>
-
-              <div
-                className={`${styles.subItem} ${
-                  location.pathname === "/applied-jobs" ? styles.activeSub : ""
-                }`}
-                onClick={() => navigate("/applied-jobs")}
-              >
-                Việc làm đã ứng tuyển
-              </div>
-
-              <div
-                className={`${styles.subItem} ${
-                  location.pathname === "/candidate-job-recommend"
-                    ? styles.activeSub
-                    : ""
-                }`}
-                onClick={() => navigate("/candidate-job-recommend")}
-              >
-                Việc làm phù hợp với bạn
-              </div>
+        {(openJob || isJobActive) && !collapsed && (
+          <div className={styles.subMenu}>
+            <div
+              className={`${styles.subItem} ${
+                location.pathname === "/saved-jobs" ? styles.activeSub : ""
+              }`}
+              onClick={() => navigate("/saved-jobs")}
+            >
+              Việc làm đã lưu
             </div>
-          )}
+
+            <div
+              className={`${styles.subItem} ${
+                location.pathname === "/applied-jobs" ? styles.activeSub : ""
+              }`}
+              onClick={() => navigate("/applied-jobs")}
+            >
+              Việc làm đã ứng tuyển
+            </div>
+
+            <div
+              className={`${styles.subItem} ${
+                location.pathname === "/candidate-job-recommend"
+                  ? styles.activeSub
+                  : ""
+              }`}
+              onClick={() => navigate("/candidate-job-recommend")}
+            >
+              Việc làm phù hợp với bạn
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Thông báo */}
