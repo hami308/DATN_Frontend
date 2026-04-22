@@ -98,16 +98,27 @@
 
 .companyUploadLogoBtn {
   right: -8px;
-  background: var(--color-primary);
-  color: #fff;
+  background: white;
 }
 
 .companyRemoveLogoBtn {
-  right: 36px;
+  position: absolute;
+  top: -6px;
+  right: -6px;
+
   background: #dc3545;
   color: #fff;
-}
 
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 12px;
+}
 /* Info */
 .companyInfo h3 {
   font-size: 18px;
@@ -179,11 +190,11 @@
   }
   .companyMain {
     margin-top: 60px;
-    }
-    .companyContent {
-        margin-left: 10px;
-        margin-right: 10px;
-    }
+  }
+  .companyContent {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
   .companyFormGroup {
     align-items: flex-start;
     gap: 10px;
@@ -195,7 +206,7 @@
   }
 }
 @media (max-width: 480px) {
-    .companyFormGroup {
+  .companyFormGroup {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
@@ -206,11 +217,9 @@
   }
 
   .companyFormGroup input[type="text"],
-    .companyFormGroup input[type="email"],
-    .companyFormGroup input[type="url"] {
-
+  .companyFormGroup input[type="email"],
+  .companyFormGroup input[type="url"] {
     text-align: left;
-    padding:0;
-    }
-
+    padding: 0;
+  }
 }
