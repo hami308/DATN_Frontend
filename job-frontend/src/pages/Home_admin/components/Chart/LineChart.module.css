@@ -1,0 +1,47 @@
+/* container tổng */
+.container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+/* header */
+.header {
+  margin-bottom: 16px;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.header h2 {
+  margin: 6px 0 0;
+  font-size: 22px;
+}
+
+/* filter */
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+/* combobox */
+.select {
+  background: #f1e8ff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  outline: none;
+  font-weight: 500;
+}
+
+/* box chứa chart */
+.chartBox {
+  background: #fafafa;
+  padding: 10px;
+  border-radius: 12px;
+}

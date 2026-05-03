@@ -1,0 +1,95 @@
+/* ===== CONTAINER ===== */
+.container {
+  padding: 20px;
+  background: #f5f7fb;
+}
+
+/* ===== HEADER ===== */
+.header {
+  margin-bottom: 20px;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 18px;
+  text-align: left;
+}
+
+.header h2 {
+  margin-top: 6px;
+  font-size: 22px;
+  text-align: left;
+}
+
+/* ===== ROW ===== */
+.row {
+  display: flex;
+  gap: 20px;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  flex: 1;
+}
+
+/* card lớn */
+.large {
+  flex: 2;
+}
+
+/* card nhỏ */
+.small {
+  flex: 1;
+}
+
+/* spacing */
+.mt20 {
+  margin-top: 20px;
+}
+
+/* title */
+.card h4 {
+  margin-bottom: 12px;
+}
+
+/* ========================= */
+/* ===== RESPONSIVE ======== */
+/* ========================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .row {
+    flex-wrap: wrap;
+  }
+
+  .large {
+    flex: 100%;
+  }
+
+  .small {
+    flex: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+
+  .container {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 5px;
+  }
+
+  .header h2 {
+    font-size: 18px;
+  }
+}

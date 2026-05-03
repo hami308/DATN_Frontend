@@ -19,6 +19,7 @@ import ManageRecuitment from "./pages/Manage_Recuitment/Manage_Recuitment";
 import Applied_jobs from "./pages/Applied_jobs/Applied_jobs";
 import CV_management from "./pages/CV_management/CV_management";
 import Company_page from "./pages/Company_page/Company_page";
+import Home_admin from "./pages/Home_admin/Home_admin";
 function App() {
   return (
     <BrowserRouter>
@@ -46,6 +47,7 @@ function App() {
         <Route path="/applied-jobs" element={<Applied_jobs />} />
         <Route path="/cv-management" element={<CV_management />} />
         <Route path="/company-detail" element={<Company_page />} />
+        <Route path="/home-admin" element={<Home_admin />} />
       </Routes>
     </BrowserRouter>
   );
