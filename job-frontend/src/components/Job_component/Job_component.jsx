@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./Job_component.css";
 import logo_img from "../../assets/images/logo.png";
 import Close_Job from "../Popup/Close_Job/Close_Job";
+import Extend_Job from "../Popup/Extend_Job/Extend_Job";
 
 function JobComponent({
   logo,
@@ -14,7 +15,8 @@ function JobComponent({
 }) {
   const role = "recuiter";
   const [showMenu, setShowMenu] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
+  const [showClosePopup, setShowClosePopup] = useState(false);
+  const [showExtendPopup, setShowExtendPopup] = useState(false);
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -79,33 +81,31 @@ function JobComponent({
 
             {showMenu && (
               <div className="job-component-dropdown">
-                <div onClick={() => { 
-                  // xử lý xem chi tiết
-                  setShowMenu(false);
-                }}>Xem chi tiết tin</div>
+                <div onClick={() => setShowMenu(false)}>Xem chi tiết tin</div>
 
-                <div onClick={() => { 
-                  setShowPopup(true); 
-                  setShowMenu(false);
-                }}>Đóng tin</div>
+                <div
+                  onClick={() => {
+                    setShowClosePopup(true);
+                    setShowMenu(false);
+                  }}
+                >
+                  Đóng tin
+                </div>
 
-                <div onClick={() => { 
-                  // xử lý xem danh sách ứng viên
-                  setShowMenu(false);
-                }}>Xem danh sách ứng viên</div>
+                <div onClick={() => setShowMenu(false)}>Xem danh sách ứng viên</div>
 
-                <div onClick={() => { 
-                  // xử lý gia hạn tin
-                  setShowMenu(false);
-                }}>Gia hạn tin</div>
+                <div
+                  onClick={() => {
+                    setShowExtendPopup(true);
+                    setShowMenu(false);
+                  }}
+                >
+                  Gia hạn tin
+                </div>
 
-                <div onClick={() => { 
-                  // xử lý chỉnh sửa tin
-                  setShowMenu(false);
-                }}>Chỉnh sửa tin</div>
+                <div onClick={() => setShowMenu(false)}>Chỉnh sửa tin</div>
               </div>
             )}
-
           </div>
         ) : (
           <span className="material-symbols-outlined job-component-bookmark">
@@ -114,9 +114,20 @@ function JobComponent({
         )}
       </div>
 
-      {/* POPUP */}
-      {showPopup && (
-        <Close_Job onCancel={() => setShowPopup(false)} />
+      {/* POPUP ĐÓNG TIN */}
+      {showClosePopup && (
+        <Close_Job onCancel={() => setShowClosePopup(false)} onConfirm={() => {
+          // xử lý đóng tin
+          setShowClosePopup(false);
+        }} />
+      )}
+
+      {/* POPUP GIA HẠN TIN */}
+      {showExtendPopup && (
+        <Extend_Job onCancel={() => setShowExtendPopup(false)} onConfirm={(date) => {
+          console.log("Gia hạn đến:", date);
+          setShowExtendPopup(false);
+        }} />
       )}
     </div>
   );
