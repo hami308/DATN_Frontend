@@ -1,0 +1,63 @@
+.jobConfirmOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5); /* overlay mờ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.jobConfirmContainer {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  width: 400px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.jobConfirmTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+.jobConfirmContent p {
+  margin: 6px 0;
+  text-align: left;
+}
+
+.jobConfirmActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.jobConfirmCancel {
+  background: #fff;
+  border: 1px solid #000;
+  padding: 8px 16px;
+  margin-right: 10px;
+  cursor: pointer;
+  color: var(--color-accent);
+  border-radius: 4px;
+}
+.jobConfirmCancel:hover {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+.jobConfirmSubmit {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.jobConfirmSubmit:hover {
+  background: #191d59;
+}

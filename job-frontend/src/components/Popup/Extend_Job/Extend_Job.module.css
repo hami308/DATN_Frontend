@@ -1,0 +1,103 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal {
+  width: 640px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 40px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 28px;
+  color: #1f2937;
+}
+
+/* GRID 2 CỘT */
+.grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  row-gap: 18px;
+  column-gap: 10px;
+}
+
+/* LABEL */
+.grid span {
+  font-size: 20px;
+  color: #6b7280;
+  text-align: left;
+}
+
+/* VALUE */
+.grid p {
+  margin: 0;
+  font-size: 20px;
+  color: #111827;
+  font-weight: 500;
+  text-align: left;
+}
+
+/* ACTION */
+.actions {
+  display: flex;
+  justify-content: right;
+  gap: 20px;
+  margin-top: 32px;
+}
+
+/* CANCEL */
+.cancel {
+  padding: 10px 28px;
+  border-radius: 4px;
+  border: 2px solid #000;
+  background: #f3f4f6;
+  color: var(--color-accent);
+  font-weight: 500;
+  cursor: pointer;
+}
+.cancel:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+/* SUBMIT */
+.submit {
+  padding: 10px 28px;
+  border-radius: 4px;
+  border: none;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background: #191d59;
+}
+.extend_date{
+  text-align: left;
+}
+.dateInput {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.dateInput:focus {
+  outline: none;
+  border-color: #356ac3;
+  box-shadow: 0 0 0 2px rgba(53,106,195,0.2);
+}
