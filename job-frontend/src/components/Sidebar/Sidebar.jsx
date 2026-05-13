@@ -145,17 +145,6 @@ export default function Sidebar() {
             >
               Việc làm đã ứng tuyển
             </div>
-
-            <div
-              className={`${styles.subItem} ${
-                location.pathname === "/candidate-job-recommend"
-                  ? styles.activeSub
-                  : ""
-              }`}
-              onClick={() => navigate("/candidate-job-recommend")}
-            >
-              Việc làm phù hợp với bạn
-            </div>
           </div>
         )}
       </div>

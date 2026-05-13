@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import MenuCard from "../../components/MenuCard/MenuCard";
+import SideBar from "../../components/Sidebar/Sidebar";
 import Component_job from "../../components/component_job/component_job";
 import "./Job_Details.css";
 
@@ -41,13 +42,15 @@ const relatedJobs = [
     },
 ];
 function Job_Details() {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
 
+    const role = user?.role;
     return (
         <>
             <Header />
 
             <div className="job-details-container">
-                <MenuCard />
+                {role === "candidate" ? <SideBar /> : <MenuCard />}
                 <div className="job-details">
                 <div className="job-details-posting-container">
                     <div className="job-details-card">
