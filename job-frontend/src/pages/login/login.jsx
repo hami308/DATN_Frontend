@@ -30,6 +30,11 @@ export default function Login() {
       password: "123456",
       role: "recruiter",
     },
+    {
+      email: "admin@gmail.com",
+      password: "123456",
+      role: "admin",
+    },
   ];
 
   // =========================
@@ -39,7 +44,7 @@ export default function Login() {
     setError("");
 
     const user = mockUsers.find(
-      (u) => u.email === email && u.password === password
+      (u) => u.email === email && u.password === password,
     );
 
     if (!user) {
@@ -55,6 +60,8 @@ export default function Login() {
       navigate("/home-candidate");
     } else if (user.role === "recruiter") {
       navigate("/manage-recruitment");
+    } else if (user.role === "admin") {
+      navigate("/home-admin");
     }
   };
 
