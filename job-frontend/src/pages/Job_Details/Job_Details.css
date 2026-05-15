@@ -79,8 +79,8 @@
 
 .apply-button,
 .save-button {
-    height: 60px;
-    border-radius: 16px;
+    height: 50px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -143,12 +143,12 @@
 }
 
 .info-label {
-    font-size: 22px;
+    font-size: 18px;
     color: #7b7b7b;
 }
 
 .info-value {
-    font-size: 24px;
+    font-size: 18px;
     color: #1d1d1d;
 }
 
@@ -196,6 +196,7 @@
     flex-direction: column;
     gap: 20px;
     margin-top:20px;
+    min-width:250px;
 }
 
 .info-card {
@@ -209,7 +210,7 @@
 }
 
 .purple-card h3 {
-    font-size: 22px;
+    font-size: 18px;
     margin-bottom: 12px;
     font-weight: 600;
 }
@@ -219,15 +220,14 @@
     align-items: center;
     gap: 10px;
     margin-bottom: 24px;
-    min-width:300px;
 }
 .detail-item span{
-  font-size: 26px;
+  font-size: 18px;
 }
 
 .detail-item p {
     margin: 0;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.5;
 }
 .list-jobs {
