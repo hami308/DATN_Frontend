@@ -78,6 +78,7 @@ export default function AdminSidebar() {
         className={styles.item}
         onClick={() => {
           localStorage.removeItem("token");
+          localStorage.removeItem("user");
           sessionStorage.clear();
           navigate("/login");
         }}

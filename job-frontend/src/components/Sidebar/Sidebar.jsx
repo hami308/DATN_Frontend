@@ -160,6 +160,7 @@ export default function Sidebar() {
         className={styles.item}
         onClick={() => {
           localStorage.removeItem("token");
+          localStorage.removeItem("user");
           sessionStorage.clear();
           navigate("/login");
         }}
