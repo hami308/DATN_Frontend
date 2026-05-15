@@ -21,6 +21,7 @@ import CV_management from "./pages/CV_management/CV_management";
 import Company_page from "./pages/Company_page/Company_page";
 import Home_admin from "./pages/Home_admin/Home_admin";
 import Job_Details from "./pages/Job_Details/Job_Details";
+import CV_list from "./pages/Manage_Recuitment/CV_list/CV_list";
 function App() {
   return (
     <BrowserRouter>
@@ -50,6 +51,7 @@ function App() {
         <Route path="/company-detail" element={<Company_page />} />
         <Route path="/home-admin" element={<Home_admin />} />
         <Route path="/job-details/:id" element={<Job_Details />} />
+        <Route path="/job-candidate-list" element={<CV_list/>}/>
       </Routes>
     </BrowserRouter>
   );

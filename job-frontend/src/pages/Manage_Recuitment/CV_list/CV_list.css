@@ -1,0 +1,207 @@
+.cv-list-container {
+  display: flex;
+  margin-top: 90px;
+}
+
+/* MAIN CARD */
+.cv-list-dashboard-container {
+  width: 100%;
+  max-width: 820px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  padding: 22px 28px 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin:20px auto;
+}
+
+/* HEADER */
+.cv-list-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.cv-list-position-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: #202124;
+  margin: 0;
+}
+
+/* ẨN badge tổng hồ sơ */
+.cv-list-stats-badge {
+  display: none;
+}
+
+/* TABLE */
+.cv-list-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.cv-list-candidates-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* HEADER */
+.cv-list-candidates-table th {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #666;
+  padding: 20px 10px 30px;
+   border: 1px solid #e0e0e0;
+}
+
+/* BODY */
+.cv-list-candidates-table td {
+  text-align: center;
+  vertical-align: middle;
+  font-size: 17px;
+  border: 1px solid #e0e0e0;
+  color: #222;
+}
+.cv-list-action-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* BUTTON CHUNG */
+.cv-list-action-buttons button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  border: none;
+  outline: none;
+
+  padding: 10px 16px;
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* ACTIVE */
+.cv-list-action-buttons button:active {
+  transform: scale(0.96);
+}
+
+/* STATUS CENTER */
+.cv-list-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: auto;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* NAME */
+.cv-list-candidate-name {
+  font-weight: 500;
+  text-align: center;
+}
+
+/* NAME */
+.cv-list-candidate-name {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+
+/* STATUS COLORS */
+.cv-list-status-pending {
+  background: #d8d6f3;
+  color: #2c2c2c;
+}
+
+.cv-list-status-viewed {
+  background: #d6c76d;
+  color: #2c2c2c;
+}
+
+.cv-list-status-approved {
+  background: #bdd3b2;
+  color: #2c2c2c;
+}
+
+.cv-list-status-rejected {
+  background: #dcc9c3;
+  color: #2c2c2c;
+}
+
+/* BUTTON */
+.cv-list-btn-view,
+.cv-list-btn-approve,
+.cv-list-btn-reject {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: #372c7c;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.cv-list-btn-view:hover,
+.cv-list-btn-approve:hover,
+.cv-list-btn-reject:hover {
+  opacity: 0.7;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .cv-list-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .cv-list-dashboard-container {
+    max-width: 100%;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .cv-list-container {
+    padding: 0 15px 50px;
+  }
+
+  .cv-list-dashboard-container {
+    padding: 20px;
+  }
+
+  .cv-list-position-title {
+    font-size: 24px;
+  }
+
+  .cv-list-candidates-table th,
+  .cv-list-candidates-table td {
+    font-size: 14px;
+  }
+
+  .cv-list-action-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    
+  }
+
+  .cv-list-status-badge {
+    min-width: unset;
+    font-size: 13px;
+  }
+}
