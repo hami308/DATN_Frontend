@@ -29,7 +29,14 @@ input {
 
   background: rgba(255, 255, 255, 0.9);
 }
-
+.error {
+  width: 100%;
+  color:red;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+}
 .row {
   display: flex;
   gap: 20px;
@@ -143,5 +150,9 @@ input {
     margin-top: 15px;
     display: block;
     text-align: left;
+  }
+   .error {
+    font-size: 13px;
+    padding: 10px 12px;
   }
 }
