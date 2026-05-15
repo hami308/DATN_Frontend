@@ -89,7 +89,22 @@
   padding: 16px 0;
   font-size: 15px;
 }
-
+.row input{
+  text-align: right;
+}
+.datePickerWrapper {
+  display: block;
+  width: 160px;
+  margin-left: auto;
+}
+.dateInput {
+  width: 100%;
+  text-align: right;
+}
+.readOnlyInput {
+  color: #666;
+  cursor: not-allowed;
+}
 /* divider */
 .divider {
   height: 1px;
@@ -140,6 +155,15 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
+  }
+
+  .datePickerWrapper,
+  .dateInput {
+    width: 100%;
+  }
+
+  .dateInput {
+    text-align: left;
   }
 
   .gender {
