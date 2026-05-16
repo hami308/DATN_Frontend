@@ -2,8 +2,10 @@ const BASE_URL = "http://localhost:3000/api";
 
 const request = async (method, url, data, options = {}) => {
   const token = localStorage.getItem("token");
+  const isFormData = data instanceof FormData;
+
   const headers = {
-    "Content-Type": "application/json",
+    ...(!isFormData ? { "Content-Type": "application/json" } : {}),
     ...options.headers,
   };
 
@@ -15,7 +17,7 @@ const request = async (method, url, data, options = {}) => {
     ...options,
     method,
     headers,
-    body: data !== undefined ? JSON.stringify(data) : undefined,
+    body: data !== undefined ? (isFormData ? data : JSON.stringify(data)) : undefined,
   });
 
   const contentType = response.headers.get("content-type");
