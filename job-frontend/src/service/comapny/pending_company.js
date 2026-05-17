@@ -17,6 +17,12 @@ export const getMyPendingCompanies = async () => {
   return response.data;
 };
 
+export const getAllPendingCompanies = async () => {
+  const response = await axiosClient.get("/companies/pending");
+
+  return response.data;
+};
+
 export const updatePendingCompany = async (
   pendingCompanyId,
   data
@@ -24,6 +30,14 @@ export const updatePendingCompany = async (
   const response = await axiosClient.patch(
     `/companies/pending/${pendingCompanyId}`,
     data
+  );
+
+  return response.data;
+};
+
+export const approvePendingCompany = async (pendingCompanyId) => {
+  const response = await axiosClient.patch(
+    `/companies/pending/${pendingCompanyId}/approve`,
   );
 
   return response.data;
