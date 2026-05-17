@@ -33,8 +33,8 @@ function App() {
         <Route path="/register/:role" element={<RegisterPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/verify-phone" element={<VerifyPhonePage />} />
-        <Route path="/home-recuiter" element={<HomepageRecuiter />} />
-        <Route path="/recuiter-profile" element={<Recuiter_Infor />} />
+        <Route path="/home-recruiter" element={<HomepageRecuiter />} />
+        <Route path="/recruiter-profile" element={<Recuiter_Infor />} />
         <Route path="/post-news/conditions" element={<Conditions />} />
         <Route path="/post-news/create-job" element={<CreateJob />} />
         <Route path="/company-profile" element={<Company_Infor />} />

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Header from "../../../components/Header/Header";
 import MenuCard from "../../../components/MenuCard/MenuCard";
 import Footer from "../../../components/Footer/Footer";
@@ -24,18 +25,22 @@ export default function Conditions() {
         {
           title: "Xác thực số điện thoại",
           done: Boolean(response.data?.isVerifyPhone),
+          href: "/verify-phone",
         },
         {
           title: "Cập nhật thông tin công ty",
           done: Boolean(response.data?.hasCompanyInfo),
+          href: "/company-profile",
         },
         {
           title: "Cập nhật giấy đăng ký doanh nghiệp",
           done: Boolean(response.data?.isCertificateApproved),
+          href: "/business-paper",
         },
         {
           title: "Đăng tin tuyển dụng đầu tiên",
           done: Boolean(response.data?.hasFirstJob),
+          href: "/post-news/create-job",
         },
       ]);
     } catch (err) {
@@ -109,7 +114,11 @@ export default function Conditions() {
                               step.done ? "done" : "pending"
                             }`}
                           >
-                            {step.done ? "✔" : ""}
+                            <span className="material-symbols-outlined">
+                              {step.done
+                                ? "check_circle"
+                                : "radio_button_unchecked"}
+                            </span>
                           </span>
 
                           <span className="setup-text">
@@ -117,17 +126,26 @@ export default function Conditions() {
                           </span>
                         </div>
 
-                        <button
-                          className="setup-arrow"
-                          disabled={isLocked}
-                          title={
-                            isLocked
-                              ? "Vui lòng hoàn thành các bước trước"
-                              : ""
-                          }
-                        >
-                          ➜
-                        </button>
+                        {isLocked ? (
+                          <span
+                            className="setup-arrow disabled"
+                            title="Vui lòng hoàn thành các bước trước"
+                          >
+                            <span className="material-symbols-outlined">
+                              arrow_forward
+                            </span>
+                          </span>
+                        ) : (
+                          <Link
+                            to={step.href}
+                            className="setup-arrow"
+                            aria-label={`Đi tới ${step.title}`}
+                          >
+                            <span className="material-symbols-outlined">
+                              arrow_forward
+                            </span>
+                          </Link>
+                        )}
                       </div>
                     );
                   })}

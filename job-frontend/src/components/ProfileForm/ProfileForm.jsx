@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./ProfileForm.module.css";
@@ -429,13 +430,24 @@ export default function ProfileForm() {
         <span>Số điện thoại</span>
 
         <div className={styles.field}>
-          <input
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="Nhập số điện thoại"
-            className={errors.phone ? styles.inputError : ""}
-          />
+          <div className={styles.phoneValue}>
+            <input
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Nhập số điện thoại"
+              className={errors.phone ? styles.inputError : ""}
+            />
+
+            <Link
+              to="/verify-phone"
+              className={styles.verifyPhoneLink}
+              title="Xác thực số điện thoại"
+              aria-label="Xác thực số điện thoại"
+            >
+              <span className="material-symbols-outlined">check_circle</span>
+            </Link>
+          </div>
 
           {errors.phone && (
             <p className={styles.fieldError}>{errors.phone}</p>

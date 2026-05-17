@@ -92,6 +92,35 @@
   padding: 16px 0;
   font-size: 15px;
 }
+
+.verifyPhoneLink {
+  display: inline-flex;
+  align-items: center;
+  color: #35206f;
+  text-decoration: none;
+}
+
+.verifyPhoneLink .material-symbols-outlined {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.verifyPhoneLink:hover {
+  color: var(--color-primary);
+}
+
+.phoneValue {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.phoneValue input {
+  flex: 1;
+  min-width: 0;
+}
+
 .row input{
   text-align: right;
 }
@@ -232,6 +261,10 @@
 
   .row span:last-child {
     font-size: 13px;
+    width: 100%;
+  }
+
+  .phoneValue {
     width: 100%;
   }
 
