@@ -11,13 +11,37 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { getRecruiterConditions } from "../../service/recruiter/check_condition";
 
 export default function Sidebar() {
   const [openProfile, setOpenProfile] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const [checkingPostConditions, setCheckingPostConditions] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handlePostNewsClick = async () => {
+    if (checkingPostConditions) return;
+
+    try {
+      setCheckingPostConditions(true);
+      const response = await getRecruiterConditions();
+      const conditions = response.data || {};
+      const canCreateJob =
+        Boolean(conditions.isVerifyPhone) &&
+        Boolean(conditions.hasCompanyInfo) &&
+        Boolean(conditions.isCertificateApproved);
+
+      navigate(
+        canCreateJob ? "/post-news/create-job" : "/post-news/conditions"
+      );
+    } catch {
+      navigate("/post-news/conditions");
+    } finally {
+      setCheckingPostConditions(false);
+    }
+  };
 
   return (
     <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
@@ -72,11 +96,11 @@ export default function Sidebar() {
             <div className={styles.subMenu}>
               <div
                 className={`${styles.subItem} ${
-                  location.pathname === "/recuiter-profile"
+                  location.pathname === "/recruiter-profile"
                     ? styles.activeSub
                     : ""
                 }`}
-                onClick={() => navigate("/recuiter-profile")}
+                onClick={() => navigate("/recruiter-profile")}
               >
                 Thông tin cá nhân
               </div>
@@ -134,9 +158,12 @@ export default function Sidebar() {
       {/* Đăng tin tuyển dụng */}
       <div
         className={`${styles.item} ${
-          location.pathname === "/post-news/create-job" ? styles.active : ""
+          location.pathname === "/post-news/create-job" ||
+          location.pathname === "/post-news/conditions"
+            ? styles.active
+            : ""
         }`}
-        onClick={() => navigate("/post-news/create-job")}
+        onClick={handlePostNewsClick}
       >
         <PlusCircle size={20} />
         {!collapsed && <span>Đăng tin tuyển dụng</span>}
