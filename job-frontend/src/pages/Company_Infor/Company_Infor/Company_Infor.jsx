@@ -8,7 +8,8 @@ import styles from "./Company_Infor.module.css";
 
 import {
   getAllCompanies,
-  getCompanyById,
+  getCompaniesByNameFromCompanyTable,
+  getCompanyInfor,
 } from "../../../service/comapny/company_infor";
 
 import { getRecruiterInfor } from "../../../service/recruiter/recruiter_infor";
@@ -74,13 +75,57 @@ export default function Company_Infor() {
     );
   };
 
+  const getCompanyFromResponse = (response, selectedCompanyName) => {
+    const companiesData =
+      response?.companies ||
+      response?.data?.companies ||
+      response?.data ||
+      response;
+
+    if (Array.isArray(companiesData)) {
+      return (
+        companiesData.find((company) => company?.name === selectedCompanyName) ||
+        companiesData[0] ||
+        null
+      );
+    }
+
+    return (
+      companiesData?.company ||
+      companiesData?.data?.company ||
+      companiesData?.data ||
+      companiesData
+    );
+  };
+
+  const getRecruiterCompanyId = (recruiter) =>
+    recruiter?.company_id ||
+    recruiter?.companyId ||
+    recruiter?.company?.company_id ||
+    recruiter?.company?.id;
+
+  const getPendingCompaniesFromResponse = (response) => {
+    const pendingCompanies =
+      response?.pendingCompanies ||
+      response?.data?.pendingCompanies ||
+      response?.data ||
+      response;
+
+    if (Array.isArray(pendingCompanies)) {
+      return pendingCompanies;
+    }
+
+    return pendingCompanies ? [pendingCompanies] : [];
+  };
+
   async function fetchInitialData() {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
-
       const companyRes = await getAllCompanies();
       const companyData =
-        companyRes.companies || companyRes.data || companyRes;
+        companyRes.companies ||
+        companyRes.data?.companies ||
+        companyRes.data ||
+        companyRes;
 
       setCompanies(Array.isArray(companyData) ? companyData : []);
 
@@ -93,7 +138,7 @@ export default function Company_Infor() {
 
       setIndustries(Array.isArray(industryData) ? industryData : []);
 
-      const recruiterRes = await getRecruiterInfor(user.id);
+      const recruiterRes = await getRecruiterInfor();
 
       const recruiterData =
         recruiterRes.recruiter ||
@@ -101,14 +146,14 @@ export default function Company_Infor() {
         recruiterRes.data ||
         recruiterRes;
 
-      if (recruiterData?.company_id) {
+      const recruiterCompanyId = getRecruiterCompanyId(recruiterData);
+
+      if (recruiterCompanyId) {
         setHasCompany(true);
         setIsOtherCompany(false);
-        setCompanyId(String(recruiterData.company_id));
+        setCompanyId(String(recruiterCompanyId));
 
-        const selectedCompanyRes = await getCompanyById(
-          recruiterData.company_id
-        );
+        const selectedCompanyRes = await getCompanyInfor(recruiterCompanyId);
 
         const selectedCompany =
           selectedCompanyRes.company ||
@@ -123,12 +168,7 @@ export default function Company_Infor() {
       setHasCompany(false);
 
       const pendingRes = await getMyPendingCompanies();
-
-      const pendingCompanies =
-        pendingRes?.pendingCompanies ||
-        pendingRes?.data?.pendingCompanies ||
-        pendingRes?.data ||
-        [];
+      const pendingCompanies = getPendingCompaniesFromResponse(pendingRes);
 
       if (Array.isArray(pendingCompanies) && pendingCompanies.length > 0) {
         const pendingCompany = pendingCompanies[pendingCompanies.length - 1];
@@ -202,14 +242,23 @@ export default function Company_Infor() {
       return;
     }
 
-    try {
-      const response = await getCompanyById(value);
+    const selectedCompany = companies.find(
+      (company) => String(company.company_id || company.id) === String(value)
+    );
 
-      const company =
-        response.company ||
-        response.data?.company ||
-        response.data ||
-        response;
+    const selectedCompanyName = selectedCompany?.name;
+
+    if (!selectedCompanyName) {
+      resetCompanyForm();
+      return;
+    }
+
+    try {
+      const response = await getCompaniesByNameFromCompanyTable(
+        selectedCompanyName
+      );
+
+      const company = getCompanyFromResponse(response, selectedCompanyName);
 
       fillCompanyForm(company);
     } catch (error) {

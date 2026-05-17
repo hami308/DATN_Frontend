@@ -18,7 +18,6 @@ export default function Conditions() {
       setError("");
 
       const response = await getRecruiterConditions();
-
       setFullName(response.data?.fullName || "Nhà tuyển dụng");
 
       setSteps([
@@ -32,7 +31,7 @@ export default function Conditions() {
         },
         {
           title: "Cập nhật giấy đăng ký doanh nghiệp",
-          done: Boolean(response.data?.hasCertificate),
+          done: Boolean(response.data?.isCertificateApproved),
         },
         {
           title: "Đăng tin tuyển dụng đầu tiên",
