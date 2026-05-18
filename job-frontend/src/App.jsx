@@ -24,6 +24,7 @@ import AdminCompanyVerification from "./pages/Home_admin/AdminCompanyVerificatio
 import Job_Details from "./pages/Job_Details/Job_Details";
 import CV_list from "./pages/Manage_Recuitment/CV_list/CV_list";
 import Account_page from "./pages/Account_management/Account_page";
+import Company_management from "./pages/Company_management/company_page";
 function App() {
   return (
     <BrowserRouter>
@@ -53,7 +54,7 @@ function App() {
         <Route path="/saved-jobs" element={<SavedJob />} />
         <Route path="/applied-jobs" element={<Applied_jobs />} />
         <Route path="/cv-management" element={<CV_management />} />
-        <Route path="/company-detail" element={<Company_page />} />
+        <Route path="/company-detail/:companyId" element={<Company_page />} />
         <Route path="/home-admin" element={<Home_admin />} />
         <Route path="/admin-dashboard" element={<Home_admin />} />
         <Route
@@ -63,6 +64,7 @@ function App() {
         <Route path="/job-details/:id" element={<Job_Details />} />
         <Route path="/job-applicants/:jobId" element={<CV_list />} />
         <Route path="/admin-account-management" element={<Account_page />} />
+        <Route path="/admin-company-management" element={<Company_management />} />
       </Routes>
     </BrowserRouter>
   );

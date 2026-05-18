@@ -4,7 +4,7 @@ import {
   Home,
   User,
   FileText,
-  Briefcase,
+  Building2,
   LogOut,
   ChevronLeft,
   ChevronRight,
@@ -17,25 +17,24 @@ export default function AdminSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Dashboard
-  const isDashboardActive =
-    location.pathname === "/admin-dashboard";
+  const isDashboardActive = location.pathname === "/admin-dashboard";
 
-  // Quản lý tài khoản
   const isAccountManagementActive =
     location.pathname === "/admin-account-management" ||
-    location.pathname.startsWith("/admin-account-management/");
-    location.pathname.startsWith("/recruiter-profile/{profileId}");
+    location.pathname.startsWith("/admin-account-management/") ||
+    location.pathname.startsWith("/recruiter-profile/");
 
-  // Xác nhận công ty
   const isCompanyVerificationActive =
     location.pathname === "/admin-company-verification" ||
     location.pathname.startsWith("/admin-company-verification/");
 
+  const isCompanyManagementActive =
+    location.pathname === "/admin-company-management" ||
+    location.pathname.startsWith("/admin-company-management/");
+    location.pathname.startsWith("/company-detail/");
 
   return (
     <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
-      {/* Collapse button */}
       <button
         className={styles.collapseBtn}
         onClick={() => setCollapsed((prev) => !prev)}
@@ -43,7 +42,6 @@ export default function AdminSidebar() {
         {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
       </button>
 
-      {/* Dashboard */}
       <div
         className={`${styles.item} ${
           isDashboardActive ? styles.active : ""
@@ -54,7 +52,6 @@ export default function AdminSidebar() {
         {!collapsed && <span>Dashboard</span>}
       </div>
 
-      {/* Quản lý tài khoản */}
       <div
         className={`${styles.item} ${
           isAccountManagementActive ? styles.active : ""
@@ -65,7 +62,16 @@ export default function AdminSidebar() {
         {!collapsed && <span>Quản lý tài khoản</span>}
       </div>
 
-      {/* Xác nhận giấy tờ */}
+      <div
+        className={`${styles.item} ${
+          isCompanyManagementActive ? styles.active : ""
+        }`}
+        onClick={() => navigate("/admin-company-management")}
+      >
+        <Building2 size={20} />
+        {!collapsed && <span>Quản lý công ty</span>}
+      </div>
+
       <div
         className={`${styles.item} ${
           isCompanyVerificationActive ? styles.active : ""
@@ -76,7 +82,6 @@ export default function AdminSidebar() {
         {!collapsed && <span>Xác nhận giấy tờ</span>}
       </div>
 
-      {/* Logout */}
       <div
         className={styles.item}
         onClick={() => {

@@ -13,6 +13,12 @@ export const getAllCompanies = async () => {
   return response.data;
 };
 
+export const getCompanyDetailById = async (companyId) => {
+  const response = await axiosClient.get(`/companies/profile/${companyId}`);
+
+  return response.data;
+};
+
 export const getInforCompanyByname = async (companyName) => {
   const params = new URLSearchParams({ name: companyName });
   const response = await axiosClient.get(`/companies/by-name?${params}`);

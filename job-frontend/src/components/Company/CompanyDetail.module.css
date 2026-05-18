@@ -1,173 +1,389 @@
-.container {
-  display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
-  gap: 40px;
-  padding: 40px;
+.companyDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 0;
   text-align: left;
 }
 
-/* LEFT */
-
-.left {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.hero {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+  padding: 10px 10px;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(14, 165, 233, 0.08)),
+    #ffffff;
 }
 
-.header {
+.logoWrap {
   display: flex;
   align-items: center;
-  gap: 16px;
-}
-.logo {
-  width: 60px;
-  height: 60px;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border: 1px solid #dbeafe;
   border-radius: 8px;
+  background: #ffffff;
+  color: #2563eb;
   overflow: hidden;
-  background: white;
-  border: 1px solid #eee;
-  border-radius: 50%;
 }
 
-.logo img {
+.logoWrap img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-}
-.name {
-  margin: 0;
-}
-
-.tax {
-  color: #777;
-  font-size: 14px;
+  color: transparent;
+  font-size: 0;
 }
 
-.desc {
-  line-height: 1.6;
-  color: #444;
+.heroInfo {
+  min-width: 0;
+  text-align: left;
 }
 
-.tags {
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.heroInfo h1 {
+  margin: 6px 0 10px;
+  color: #0f172a;
+  font-size: 24px;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.metaList {
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
+  gap: 10px;
 }
 
-.tags span {
-  padding: 5px 12px;
-  background: var(--color-secondary);
-  border-radius: 6px;
+.metaList span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.84);
+  color: #475569;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 18px;
+}
+
+.panel,
+.contactPanel,
+.recruiterSection,
+.empty {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.panel,
+.contactPanel,
+.recruiterSection {
+  padding: 22px 24px;
+  text-align: left;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.panelHeader h2,
+.sectionTitle h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.description {
+  margin: 0;
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.7;
+  text-align: left;
+  white-space: pre-line;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.tagList span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 6px 12px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contactList a,
+.contactList > div {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #0f172a;
+  text-decoration: none;
+  text-align: left;
+}
+
+.contactList svg {
+  color: #2563eb;
+}
+
+.contactList span {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.contactList strong {
+  display: block;
+  margin-top: 2px;
+  color: #0f172a;
+  font-size: 14px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.sectionTitle span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.sectionTitle strong {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 34px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.recruiterGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 14px;
+}
+
+.recruiterCard {
+  display: grid;
+  width: fit-content;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #2563eb;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  color: transparent;
+  font-size: 0;
+}
+
+.recruiterInfo {
+  min-width: 0;
+}
+
+.recruiterInfo h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.recruiterInfo p {
+  margin: 3px 0 0;
+  color: #64748b;
   font-size: 13px;
 }
 
-/* RIGHT */
-
-.right {
+.recruiterContacts {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
 }
 
-.contactCard {
-  background: linear-gradient(160deg, #1b1b54, #145688);
+.recruiterContacts span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  color: #475569;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.recruiterCard button {
+  height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.muted {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.empty,
+.emptyRecruiter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 180px;
   padding: 24px;
-  border-radius: 12px;
-  color: #f3f4f6;
+  color: #64748b;
+  text-align: center;
 }
 
-.contactCard h3 {
-  margin-bottom: 16px;
-  font-size: 18px;
+.emptyRecruiter {
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  text-align: left;
 }
 
-.row {
-  display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 10px;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+.emptyRecruiter svg {
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.emptyRecruiter h3 {
+  margin: 0 0 4px;
+  color: #0f172a;
   font-size: 16px;
 }
 
-.row span:last-child {
-  word-break: break-word;
+.emptyRecruiter p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.55;
 }
 
-.row:last-child {
-  border-bottom: none;
-}
-
-/* ========================= */
-/* TABLET */
-/* ========================= */
-
-@media (max-width: 1300px) {
-  .container {
+@media (max-width: 1180px) {
+  .grid {
     grid-template-columns: 1fr;
-    gap: 30px;
-    padding: 30px;
+  }
+
+  .contactPanel {
+    max-width: none;
   }
 }
-
-/* ========================= */
-/* MOBILE */
-/* ========================= */
 
 @media (max-width: 768px) {
-  .container {
-    padding: 20px;
-    margin-top: 70px;
+  .companyDetail {
+    gap: 14px;
   }
 
-  .header {
-    align-items: flex-start;
-  }
-
-  .logo {
-    width: 40px;
-    height: 40px;
-  }
-
-  .name {
-    font-size: 18px;
-  }
-
-  .desc {
-    font-size: 14px;
-  }
-
-  .row {
+  .hero {
     grid-template-columns: 1fr;
-    gap: 4px;
-    font-size: 14px;
-  }
-
-  .row span:first-child {
-    opacity: 0.8;
-    font-size: 13px;
-  }
-
-  .contactCard {
+    min-height: 0;
     padding: 18px;
   }
-}
 
-/* ========================= */
-/* SMALL MOBILE */
-/* ========================= */
-
-@media (max-width: 480px) {
-  .container {
-    padding: 16px;
+  .logoWrap {
+    width: 76px;
+    height: 76px;
   }
 
-  .tags span {
-    font-size: 12px;
-    padding: 4px 8px;
+  .heroInfo h1 {
+    font-size: 24px;
   }
 
-  .contactCard h3 {
-    font-size: 16px;
+  .recruiterGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .recruiterCard {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .recruiterCard button {
+    grid-column: 1 / -1;
+    width: 100%;
   }
 }

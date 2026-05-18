@@ -1,88 +1,240 @@
-import { useEffect, useState } from "react";
+import {
+  BadgeInfo,
+  Building2,
+  ExternalLink,
+  Globe2,
+  Mail,
+  MapPin,
+  Phone,
+  UserRound,
+  UsersRound,
+} from "lucide-react";
 import styles from "./CompanyDetail.module.css";
 
-export default function CompanyDetail() {
-  const [company, setCompany] = useState(null);
+const getCompanyId = (company) => company?.company_id || company?.id;
 
-  useEffect(() => {
-    // FAKE API
-    setTimeout(() => {
-      setCompany(fakeCompany);
-    }, 300);
-  }, []);
+const getIndustries = (company) => {
+  const industries = company?.industries || company?.industry || [];
 
-  if (!company) return <div className={styles.loading}>Loading...</div>;
+  if (!Array.isArray(industries)) return [];
+
+  return industries
+    .map((industry) => {
+      if (typeof industry === "string") return industry;
+      return industry?.name || industry?.industry_name || industry?.title;
+    })
+    .filter(Boolean);
+};
+
+const getRecruiters = (company) => {
+  const recruiters =
+    company?.recruiters ||
+    company?.recruiter_list ||
+    company?.company_recruiters ||
+    company?.members ||
+    [];
+
+  if (Array.isArray(recruiters)) return recruiters;
+  if (recruiters && typeof recruiters === "object") return [recruiters];
+
+  return [];
+};
+
+const getContactRows = (company) => [
+  {
+    label: "Website",
+    value: company?.url_website || company?.website,
+    icon: Globe2,
+    href: company?.url_website || company?.website,
+  },
+  {
+    label: "Facebook",
+    value: company?.url_facebook || company?.facebook,
+    icon: ExternalLink,
+    href: company?.url_facebook || company?.facebook,
+  },
+  {
+    label: "Địa chỉ",
+    value: company?.location || company?.address,
+    icon: MapPin,
+  },
+  {
+    label: "Số điện thoại",
+    value: company?.phone,
+    icon: Phone,
+    href: company?.phone ? `tel:${company.phone}` : "",
+  },
+];
+
+const normalizeUrl = (url) => {
+  if (!url) return "";
+  return /^https?:\/\//i.test(url) ? url : `https://${url}`;
+};
+
+export default function CompanyDetail({ company }) {
+  if (!company) {
+    return (
+      <section className={styles.empty}>
+        <Building2 size={34} />
+        <p>Chưa có thông tin công ty để hiển thị.</p>
+      </section>
+    );
+  }
+
+  const companyId = getCompanyId(company);
+  const industries = getIndustries(company);
+  const recruiters = getRecruiters(company);
+  const contactRows = getContactRows(company).filter((row) => row.value);
+  const logo = company.logo || company.logo_url || company.avatar;
 
   return (
-    <div className={styles.container}>
-      {/* LEFT */}
-      <div className={styles.left}>
-        <div className={styles.header}>
-          <div className={styles.logo}>
-            <img src={company.logo} alt="logo" />
+    <div className={styles.companyDetail}>
+      <section className={styles.hero}>
+        <div className={styles.logoWrap}>
+          {logo ? (
+            <img src={logo} alt={company.name || "Company logo"} />
+          ) : (
+            <Building2 size={34} />
+          )}
+        </div>
+
+        <div className={styles.heroInfo}>
+          <h1>{company.name || "Chưa cập nhật tên công ty"}</h1>
+          <div className={styles.metaList}>
+            {company.tax_code || company.taxCode ? (
+              <span>
+                Mã số thuế: {company.tax_code || company.taxCode}
+              </span>
+            ) : null}
+            {company.location || company.address ? (
+              <span>
+                <MapPin size={16} />
+                {company.location || company.address}
+              </span>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      <div className={styles.grid}>
+        <section className={styles.panel}>
+          <div className={styles.panelHeader}>
+            <h2>Giới thiệu</h2>
+          </div>
+          <p className={styles.description}>
+            {company.description || "Công ty chưa cập nhật phần giới thiệu."}
+          </p>
+
+          <div className={styles.tagList}>
+            {industries.length > 0 ? (
+              industries.map((industry) => <span key={industry}>{industry}</span>)
+            ) : (
+              <span>Chưa cập nhật ngành nghề</span>
+            )}
+          </div>
+        </section>
+
+        <aside className={styles.contactPanel}>
+          <div className={styles.panelHeader}>
+            <h2>Liên hệ</h2>
           </div>
 
+          {contactRows.length > 0 ? (
+            <div className={styles.contactList}>
+              {contactRows.map((row) => {
+                const Icon = row.icon;
+                const content = (
+                  <>
+                    <Icon size={18} />
+                    <div>
+                      <span>{row.label}</span>
+                      <strong>{row.value}</strong>
+                    </div>
+                  </>
+                );
+
+                if (row.href) {
+                  const href = row.href.startsWith("tel:")
+                    ? row.href
+                    : normalizeUrl(row.href);
+                  return (
+                    <a key={row.label} href={href} target="_blank" rel="noreferrer">
+                      {content}
+                    </a>
+                  );
+                }
+
+                return <div key={row.label}>{content}</div>;
+              })}
+            </div>
+          ) : (
+            <p className={styles.muted}>Công ty chưa cập nhật thông tin liên hệ.</p>
+          )}
+        </aside>
+      </div>
+
+      <section className={styles.recruiterSection}>
+        <div className={styles.sectionTitle}>
           <div>
-            <h2 className={styles.name}>{company.name}</h2>
-            <p className={styles.tax}>Mã số thuế : {company.taxCode}</p>
+            <h2>Đội ngũ tuyển dụng</h2>
           </div>
+          <strong>{recruiters.length}</strong>
         </div>
 
-        <p className={styles.desc}>{company.description}</p>
+        {recruiters.length > 0 ? (
+          <div className={styles.recruiterGrid}>
+            {recruiters.map((recruiter, index) => {
+              const recruiterId = recruiter.id || recruiter.recruiter_id;
+              const avatar = recruiter.avatar || recruiter.avatar_url;
 
-        <div className={styles.tags}>
-          {company.tags.map((tag, index) => (
-            <span key={index}>{tag}</span>
-          ))}
-        </div>
-      </div>
-
-      {/* RIGHT */}
-      <div className={styles.right}>
-        <div className={styles.contactCard}>
-          <h3>Thông tin liên hệ</h3>
-
-          <div className={styles.row}>
-            <span>Link website</span>
-            <span>{company.contact.website}</span>
+              return (
+                <article
+                  className={styles.recruiterCard}
+                  key={recruiterId || `${companyId}-${index}`}
+                >
+                  <div className={styles.avatar}>
+                    {avatar ? (
+                      <img src={avatar} alt={recruiter.full_name || "Recruiter"} />
+                    ) : (
+                      <UserRound size={24} />
+                    )}
+                  </div>
+                  <div className={styles.recruiterInfo}>
+                    <h3>
+                      {recruiter.full_name ||
+                        recruiter.name ||
+                        recruiter.email ||
+                        "Recruiter"}
+                    </h3>
+                    <div className={styles.recruiterContacts}>
+                      {recruiter.email ? (
+                        <span>
+                          <Mail size={14} />
+                          {recruiter.email}
+                        </span>
+                      ) : null}
+                      {recruiter.phone ? (
+                        <span>
+                          <Phone size={14} />
+                          {recruiter.phone}
+                        </span>
+                      ) : null}
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
           </div>
-
-          <div className={styles.row}>
-            <span>Link facebook</span>
-            <span>{company.contact.facebook}</span>
+        ) : (
+          <div className={styles.emptyRecruiter}>
+            <UsersRound size={28} />
+            <div>
+              <h3>Chưa có recruiter</h3>
+              <p>Công ty chưa có nhân sự tuyển dụng được hiển thị.</p>
+            </div>
           </div>
-
-          <div className={styles.row}>
-            <span>Địa điểm</span>
-            <span>{company.contact.location}</span>
-          </div>
-
-          <div className={styles.row}>
-            <span>Số điện thoại</span>
-            <span>{company.contact.phone}</span>
-          </div>
-        </div>
-      </div>
+        )}
+      </section>
     </div>
   );
 }
-
-/* FAKE DATA */
-const fakeCompany = {
-  name: "Công ty FPT",
-  taxCode: "2423354654",
-
-  description:
-    "FPT Corporation là một trong những tập đoàn công nghệ hàng đầu tại Việt Nam, hoạt động trong các lĩnh vực công nghệ thông tin, viễn thông và giáo dục. Với môi trường làm việc năng động, sáng tạo và nhiều cơ hội phát triển, FPT luôn thu hút nhân tài trong và ngoài nước.",
-
-  tags: ["Giáo dục", "Công nghệ", "AI"],
-  logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbLXeSuHzUZjF3AoyG1M6_TCKx8DfIkA-bng&s",
-  contact: {
-    website: "https://fpt.com.vn",
-    facebook: "https://facebook.com/fpt",
-    location: "Đà Nẵng",
-    phone: "0769768428",
-  },
-
-  shareLink: "https://topcv.vn/cong-ty/fpt",
-};
