@@ -1,15 +1,13 @@
-export function TopLocationCard() {
-  const data = [
-    { name: "TP.HCM", jobs: 1200 },
-    { name: "Hà Nội", jobs: 950 },
-    { name: "Đà Nẵng", jobs: 600 },
-  ];
+export function TopLocationCard({ data = [] }) {
+  if (data.length === 0) {
+    return <div>Chưa có dữ liệu địa điểm.</div>;
+  }
 
   return (
     <div>
-      {data.map((item, i) => (
+      {data.map((item, index) => (
         <div
-          key={i}
+          key={`${item.name}-${index}`}
           style={{
             padding: 12,
             background: "#fff",

@@ -49,6 +49,7 @@ export default function CompanyVerification() {
   const [companies, setCompanies] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true);
   const [confirming, setConfirming] = useState(false);
   const [error, setError] = useState("");
@@ -87,9 +88,15 @@ export default function CompanyVerification() {
   const filteredCompanies = useMemo(() => {
     const keyword = search.trim().toLowerCase();
 
-    if (!keyword) return companies;
-
     return companies.filter((company) => {
+      const status = company?.status || "pending";
+
+      if (statusFilter !== "all" && status !== statusFilter) {
+        return false;
+      }
+
+      if (!keyword) return true;
+
       const haystack = [
         company?.name,
         company?.tax_code,
@@ -102,7 +109,7 @@ export default function CompanyVerification() {
 
       return haystack.includes(keyword);
     });
-  }, [companies, search]);
+  }, [companies, search, statusFilter]);
 
   const selectedCompany =
     filteredCompanies.find((company) => getCompanyId(company) === selectedId) ||
@@ -202,6 +209,20 @@ export default function CompanyVerification() {
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Tìm theo tên, mã số thuế"
             />
+          </div>
+
+          <div className={styles.filterBox}>
+            <label htmlFor="company-status-filter">Trạng thái</label>
+            <select
+              id="company-status-filter"
+              value={statusFilter}
+              onChange={(event) => setStatusFilter(event.target.value)}
+            >
+              <option value="all">Tất cả trạng thái</option>
+              <option value="pending">Chờ xác nhận</option>
+              <option value="approved">Đã xác nhận</option>
+              <option value="rejected">Đã từ chối</option>
+            </select>
           </div>
 
           <div className={styles.companyList}>

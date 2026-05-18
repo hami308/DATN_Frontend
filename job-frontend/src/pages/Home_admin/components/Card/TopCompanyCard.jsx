@@ -1,15 +1,13 @@
-export function TopCompanyCard() {
-  const data = [
-    { name: "FPT Software", jobs: 300 },
-    { name: "VNG", jobs: 250 },
-    { name: "Viettel", jobs: 200 },
-  ];
+export function TopCompanyCard({ data = [] }) {
+  if (data.length === 0) {
+    return <div>Chưa có dữ liệu công ty.</div>;
+  }
 
   return (
     <div>
-      {data.map((item, i) => (
+      {data.map((item, index) => (
         <div
-          key={i}
+          key={`${item.company_id || item.name}-${index}`}
           style={{
             padding: 12,
             background: "#fff",

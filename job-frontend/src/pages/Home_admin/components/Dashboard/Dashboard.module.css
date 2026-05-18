@@ -21,6 +21,26 @@
   text-align: left;
 }
 
+.state,
+.error {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: left;
+}
+
+.state {
+  background: #eef2ff;
+  color: #372c7c;
+}
+
+.error {
+  background: #fff5f5;
+  color: #b42318;
+  border: 1px solid #ffd6d6;
+}
+
 /* ===== ROW ===== */
 .row {
   display: flex;
@@ -49,6 +69,11 @@
 /* spacing */
 .mt20 {
   margin-top: 20px;
+}
+
+.isLoading {
+  opacity: 0.65;
+  pointer-events: none;
 }
 
 /* title */
