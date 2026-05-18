@@ -21,8 +21,31 @@
     margin-bottom: 20px;
     gap: 20px;
 }
+.manage-job-state{
+    width: 75%;
+    min-height: 120px;
+    margin: 0 auto;
+    border: 1px solid #edeff5;
+    border-radius: 12px;
+    background: #fff;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    font-size: 15px;
+}
+.manage-job-state.error{
+    color: #b42318;
+    background: #fff5f5;
+    border-color: #ffd6d6;
+}
 @media (max-width: 1024px) {
     .manage-job-list .job-component{
+        width: 90%;
+    }
+    .manage-job-state{
         width: 90%;
     }
     .manage-recuitment-header{
