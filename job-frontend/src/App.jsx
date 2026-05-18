@@ -57,7 +57,7 @@ function App() {
           element={<AdminCompanyVerification />}
         />
         <Route path="/job-details/:id" element={<Job_Details />} />
-        <Route path="/job-candidate-list" element={<CV_list/>}/>
+        <Route path="/job-applicants/:jobId" element={<CV_list/>}/>
       </Routes>
     </BrowserRouter>
   );

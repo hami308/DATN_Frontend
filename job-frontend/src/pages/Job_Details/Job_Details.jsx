@@ -1,301 +1,401 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import MenuCard from "../../components/MenuCard/MenuCard";
 import SideBar from "../../components/Sidebar/Sidebar";
 import Component_job from "../../components/component_job/component_job";
+import { getJobDetailApi } from "../../service/job/job_detail";
+import { getMyCompanyJobsApi } from "../../service/job/my_company_jobs";
 import "./Job_Details.css";
 
 import Logo from "../../assets/images/logo.png";
-const relatedJobs = [
-    {
-        id: 1,
-        title: "Senior UX Designer",
-        logo: Logo,
-        company_name: "ABC Group",
-        location: "Đà Nẵng",
-        salary: "10-20 triệu VNĐ",
-    },
-    {
-        id: 2,
-        title: "Frontend Developer",
-        logo: Logo,
-        company_name: "FPT Software",
-        location: "Hồ Chí Minh",
-        salary: "15-25 triệu VNĐ",
-    },
-    {
-        id: 3,
-        title: "Backend Developer",
-        logo: Logo,
-        company_name: "VNG Corporation",
-        location: "Hà Nội",
-        salary: "18-30 triệu VNĐ",
-    },
-    {
-        id: 4,
-        title: "UI Designer",
-        logo: Logo,
-        company_name: "Shopee",
-        location: "Đà Nẵng",
-        salary: "12-18 triệu VNĐ",
-    },
-];
+
+const getErrorMessage = (error) => {
+  if (typeof error === "string") return error;
+
+  return (
+    error?.message ||
+    error?.data?.message ||
+    error?.error ||
+    "Không thể tải chi tiết tin tuyển dụng."
+  );
+};
+
+const formatCurrency = (value) => {
+  if (value === null || value === undefined || value === "") return "";
+
+  const numberValue = Number(value);
+
+  if (Number.isNaN(numberValue)) return "";
+
+  return `${new Intl.NumberFormat("vi-VN").format(numberValue)} triệu VND`;
+};
+
+const formatSalary = (min, max) => {
+  const minSalary = formatCurrency(min);
+  const maxSalary = formatCurrency(max);
+
+  if (minSalary && maxSalary) return `${minSalary} - ${maxSalary}`;
+  if (minSalary) return `Từ ${minSalary}`;
+  if (maxSalary) return `Đến ${maxSalary}`;
+
+  return "Thỏa thuận";
+};
+
+const formatDate = (value) => {
+  if (!value) return "Chưa cập nhật";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) return "Chưa cập nhật";
+
+  return new Intl.DateTimeFormat("vi-VN").format(date);
+};
+
+const formatExperience = (min, max) => {
+  const minExp = min === null || min === undefined ? "" : Number(min);
+  const maxExp = max === null || max === undefined ? "" : Number(max);
+
+  if (minExp !== "" && maxExp !== "") return `${minExp} - ${maxExp} năm`;
+  if (minExp !== "") return `Từ ${minExp} năm`;
+  if (maxExp !== "") return `Đến ${maxExp} năm`;
+
+  return "Không yêu cầu";
+};
+
+const getText = (value, fallback = "Chưa cập nhật") => {
+  if (value === null || value === undefined || value === "") return fallback;
+
+  return value;
+};
+
 function Job_Details() {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const role = user?.role;
 
-    const role = user?.role;
-    return (
-        <>
-            <Header />
+  const [job, setJob] = useState(null);
+  const [companyJobs, setCompanyJobs] = useState([]);
+  const [relatedLoading, setRelatedLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-            <div className="job-details-container">
-                {role === "candidate" ? <SideBar /> : <MenuCard />}
-                <div className="job-details">
-                <div className="job-details-posting-container">
-                    <div className="job-details-card">
+  useEffect(() => {
+    let isMounted = true;
 
-                        {/* HEADER */}
-                        <div className="job-details-header">
-                            <div className="company-badge">
+    const fetchJobDetail = async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-                                {/* LEFT */}
-                                <div className="company-left">
-                                    <img
-                                        className="logo"
-                                        src={Logo}
-                                        alt="Company Logo"
-                                    />
+        const response = await getJobDetailApi(id);
 
-                                    <div className="job-details-title-infor">
-                                        <h1 className="job-details-title">
-                                            Senior UX Designer
-                                        </h1>
+        if (isMounted) {
+          setJob(response?.data?.job || null);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setError(getErrorMessage(error));
+          setJob(null);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
 
-                                        <span className="company-name">
-                                            ABC Group
-                                        </span>
-                                    </div>
-                                </div>
+    fetchJobDetail();
 
-                                {/* RIGHT */}
-                                <div className="job-details-button">
-                                    <button className="apply-button">
-                                        Ứng tuyển ngay
-                                    </button>
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
-                                    <button className="save-button">
-                                        <span className="material-symbols-outlined">
-                                            favorite
-                                        </span>
+  useEffect(() => {
+    let isMounted = true;
 
-                                        Lưu tin
-                                    </button>
-                                </div>
-                            </div>
+    const fetchCompanyJobs = async () => {
+      try {
+        setRelatedLoading(true);
+
+        const response = await getMyCompanyJobsApi({ status: 1 });
+        const jobs = response?.data?.jobs || [];
+
+        if (isMounted) {
+          setCompanyJobs(jobs);
+        }
+      } catch {
+        if (isMounted) {
+          setCompanyJobs([]);
+        }
+      } finally {
+        if (isMounted) {
+          setRelatedLoading(false);
+        }
+      }
+    };
+
+    fetchCompanyJobs();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const viewModel = useMemo(() => {
+    if (!job) return null;
+
+    const company = job.company || {};
+    const recruiter = job.recruiter || {};
+    const industries = Array.isArray(job.industries) ? job.industries : [];
+
+    return {
+      title: getText(job.name, "Tin tuyển dụng"),
+      logo: company.logo || Logo,
+      companyId: company.company_id || job.company_id,
+      companyName: getText(company.name, "Chưa cập nhật công ty"),
+      companyDescription: getText(company.description, ""),
+      salary: formatSalary(job.salary_min, job.salary_max),
+      location: getText(job.location || company.location),
+      experience: formatExperience(job.exp_min, job.exp_max),
+      level: getText(job.level_name || job.level?.name),
+      description: getText(job.description),
+      requirement: getText(job.job_requirement),
+      benefit: getText(job.job_benefit),
+      jobType: getText(job.job_type_name || job.job_type?.name),
+      expire: formatDate(job.expire),
+      candidateNumber: getText(job.candidate_number),
+      industries: industries.map((industry) => industry.name).join(", "),
+      recruiterName: getText(recruiter.full_name),
+      recruiterPhone: getText(recruiter.phone),
+    };
+  }, [job]);
+
+  const relatedCompanyJobs = useMemo(() => {
+    if (!viewModel) return [];
+
+    return companyJobs
+      .filter((item) => String(item.id) !== String(id))
+      .filter((item) => Number(item.status) === 1)
+      .filter(
+        (item) =>
+          !viewModel.companyId ||
+          !item.company_id ||
+          String(item.company_id) === String(viewModel.companyId)
+      )
+      .map((item) => ({
+        id: item.id,
+        title: item.name || "Tin tuyển dụng",
+        logo: viewModel.logo,
+        company_name: viewModel.companyName,
+        location: item.location || viewModel.location,
+        salary: formatSalary(item.salary_min, item.salary_max),
+      }));
+  }, [companyJobs, id, viewModel]);
+
+  return (
+    <>
+      <Header />
+
+      <div className="job-details-container">
+        {role === "candidate" ? <SideBar /> : <MenuCard />}
+
+        <main className="job-details">
+          <section className="job-details-posting-container">
+            <div className="job-details-card">
+              {loading ? (
+                <div className="job-details-state">Đang tải chi tiết tin...</div>
+              ) : error ? (
+                <div className="job-details-state error">{error}</div>
+              ) : viewModel ? (
+                <>
+                  <div className="job-details-hero">
+                    <div className="company-badge">
+                      <div className="company-left">
+                        <img
+                          className="logo"
+                          src={viewModel.logo}
+                          alt="Company Logo"
+                        />
+
+                        <div className="job-details-title-infor">
+                           <h1 className="job-details-title">
+                            {viewModel.title}
+                          </h1>
+                          <span className="company-name">
+                            {viewModel.companyName}
+                          </span>
+                         
+                        
                         </div>
+                      </div>
 
-                        {/* INFO GRID */}
-                        <div className="job-details-info-grid">
+                      <div className="job-details-button">
+                        <button className="apply-button">Ứng tuyển ngay</button>
 
-                            <div className="info-box">
-                                <span className="info-label">
-                                    Mức lương
-                                </span>
-
-                                <span className="info-value">
-                                    10-20 triệu VNĐ
-                                </span>
-                            </div>
-
-                            <div className="info-box">
-                                <span className="info-label">
-                                    Địa điểm
-                                </span>
-
-                                <span className="info-value">
-                                    Đà Nẵng
-                                </span>
-                            </div>
-
-                            <div className="info-box">
-                                <span className="info-label">
-                                    Kinh nghiệm
-                                </span>
-
-                                <span className="info-value">
-                                    5 năm
-                                </span>
-                            </div>
-
-                            <div className="info-box">
-                                <span className="info-label">
-                                    Cấp bậc
-                                </span>
-
-                                <span className="info-value">
-                                    Senior
-                                </span>
-                            </div>
-                        </div>
-
-                        {/* CONTENT */}
-                        <div className="job-details-content">
-
-                            {/* LEFT */}
-                            <div className="main-column">
-
-                                {/* DESCRIPTION */}
-                                <section className="job-details-section">
-                                    <h2>Mô tả công việc</h2>
-
-                                    <div className="section-text">
-                                        <p>
-                                            Phát triển ứng dụng web với giao diện
-                                            responsive cho hệ thống vận hành.
-                                            Xây dựng dashboard, báo cáo và KPI
-                                            phục vụ quản lý. Thiết kế data table
-                                            hỗ trợ filter, sort, pagination.
-                                            Tham gia thiết kế database schema,
-                                            xây dựng API và business logic.
-                                            Xử lý dữ liệu phía backend và trả
-                                            kết quả cho frontend. Tối ưu hiệu
-                                            suất truy vấn và xử lý dữ liệu nhằm
-                                            đảm bảo hệ thống hoạt động ổn định
-                                            và hiệu quả.
-                                        </p>
-                                    </div>
-                                </section>
-
-                                {/* REQUIREMENTS */}
-                                <section className="job-details-section">
-                                    <h2>Yêu cầu</h2>
-
-                                    <div className="section-text">
-                                        <p>
-                                            Có kinh nghiệm phát triển web với
-                                            JavaScript/ TypeScript, ưu tiên
-                                            React. Hiểu và làm việc được với
-                                            REST API, database quan hệ.
-                                            Sử dụng Git tốt, có tư duy logic
-                                            và khả năng xử lý vấn đề. Biết làm
-                                            UI, gọi API và hiểu responsive.
-                                        </p>
-                                    </div>
-                                </section>
-
-                                {/* BENEFITS */}
-                                <section className="job-details-section">
-                                    <h2>Quyền lợi</h2>
-
-                                    <div className="section-text">
-                                        <p>
-                                            Mức lương cạnh tranh theo năng lực.
-                                            Review lương 2 lần/năm. Thưởng Lễ,
-                                            Tết, sinh nhật và nhiều chế độ
-                                            phúc lợi khác. Tham gia đầy đủ
-                                            BHXH/BHYT theo quy định của luật
-                                            lao động. Du lịch và team building
-                                            ít nhất 2 lần/năm. Có cơ hội thăng
-                                            tiến và phát triển sự nghiệp lâu dài.
-                                        </p>
-                                    </div>
-                                </section>
-                            </div>
-
-                            {/* RIGHT */}
-                            <div className="sidebar-column">
-
-                                {/* JOB DETAIL */}
-                                <div className="info-card purple-card">
-                                    <h3>CHI TIẾT CÔNG VIỆC</h3>
-
-                                    <div className="detail-item">
-                                        <span className="material-symbols-outlined">
-                                            schedule
-                                        </span>
-
-                                        <p>
-                                            Hình thức làm việc : Full time
-                                        </p>
-                                    </div>
-
-                                    <div className="detail-item">
-                                        <span className="material-symbols-outlined">
-                                            calendar_month
-                                        </span>
-
-                                        <p>
-                                            Hạn chót ứng tuyển : 30/4/2026
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* RECRUITER */}
-                                <div className="info-card purple-card">
-                                    <h3>
-                                        THÔNG TIN NGƯỜI TUYỂN DỤNG
-                                    </h3>
-
-                                    <div className="detail-item">
-                                        <span className="material-symbols-outlined">
-                                            person
-                                        </span>
-
-                                        <p>
-                                            Nguyễn Thị Lan Anh
-                                        </p>
-                                    </div>
-
-                                    <div className="detail-item">
-                                        <span className="material-symbols-outlined">
-                                            phone
-                                        </span>
-
-                                        <p>
-                                            0876546786
-                                        </p>
-                                    </div>
-
-                                    <div className="detail-item">
-                                        <span className="material-symbols-outlined">
-                                            email
-                                        </span>
-
-                                        <p>
-                                            lanhanh@gmail.com
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
+                        <button className="save-button">
+                          <span className="material-symbols-outlined">
+                            favorite
+                          </span>
+                          Lưu tin
+                        </button>
+                      </div>
                     </div>
-                </div>
-                <div className="list-jobs">
-                    <h2 className="list-jobs-title">
-                        Công việc liên quan
-                    </h2>
 
-                    <div className="related-jobs-list">
-                        {relatedJobs.map((job) => (
-                            <Component_job
-                                key={job.id}
-                                title={job.title}
-                                logo={job.logo}
-                                company_name={job.company_name}
-                                location={job.location}
-                                salary={job.salary}
-                            />
-                        ))}
+                    {viewModel.companyDescription && (
+                      <p className="company-summary">
+                        {viewModel.companyDescription}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="job-details-info-grid">
+                    <div className="info-box">
+                      <span className="material-symbols-outlined">payments</span>
+                      <span className="info-label">Mức lương</span>
+                      <span className="info-value">{viewModel.salary}</span>
                     </div>
+
+                    <div className="info-box">
+                      <span className="material-symbols-outlined">
+                        location_on
+                      </span>
+                      <span className="info-label">Địa điểm</span>
+                      <span className="info-value">{viewModel.location}</span>
+                    </div>
+
+                    <div className="info-box">
+                      <span className="material-symbols-outlined">timeline</span>
+                      <span className="info-label">Kinh nghiệm</span>
+                      <span className="info-value">{viewModel.experience}</span>
+                    </div>
+
+                    <div className="info-box">
+                      <span className="material-symbols-outlined">workspace_premium</span>
+                      <span className="info-label">Cấp bậc</span>
+                      <span className="info-value">{viewModel.level}</span>
+                    </div>
+                  </div>
+
+                  <div className="job-details-content">
+                    <div className="main-column">
+                      <section className="job-details-section">
+                        <h2>Mô tả công việc</h2>
+                        <div className="section-text">
+                          <p>{viewModel.description}</p>
+                        </div>
+                      </section>
+
+                      <section className="job-details-section">
+                        <h2>Yêu cầu ứng viên</h2>
+                        <div className="section-text">
+                          <p>{viewModel.requirement}</p>
+                        </div>
+                      </section>
+
+                      <section className="job-details-section">
+                        <h2>Quyền lợi</h2>
+                        <div className="section-text">
+                          <p>{viewModel.benefit}</p>
+                        </div>
+                      </section>
+                    </div>
+
+                    <aside className="sidebar-column">
+                      <div className="info-card">
+                        <h3>Chi tiết công việc</h3>
+
+                        <div className="detail-item">
+                          <span className="material-symbols-outlined">
+                            schedule
+                          </span>
+                          <p>Hình thức: {viewModel.jobType}</p>
+                        </div>
+
+                        <div className="detail-item">
+                          <span className="material-symbols-outlined">
+                            calendar_month
+                          </span>
+                          <p>Hạn ứng tuyển: {viewModel.expire}</p>
+                        </div>
+
+                        <div className="detail-item">
+                          <span className="material-symbols-outlined">
+                            groups
+                          </span>
+                          <p>Số lượng tuyển: {viewModel.candidateNumber}</p>
+                        </div>
+
+                        <div className="detail-item">
+                          <span className="material-symbols-outlined">
+                            work
+                          </span>
+                          <p>Lĩnh vực: {viewModel.industries || "Chưa cập nhật"}</p>
+                        </div>
+                      </div>
+
+                      <div className="info-card">
+                        <h3>Người tuyển dụng</h3>
+
+                        <div className="detail-item">
+                          <span className="material-symbols-outlined">
+                            person
+                          </span>
+                          <p>{viewModel.recruiterName}</p>
+                        </div>
+
+                        <div className="detail-item">
+                          <span className="material-symbols-outlined">
+                            phone
+                          </span>
+                          <p>{viewModel.recruiterPhone}</p>
+                        </div>
+                      </div>
+                    </aside>
+                  </div>
+                </>
+              ) : (
+                <div className="job-details-state">
+                  Không tìm thấy tin tuyển dụng.
                 </div>
-                </div>
+              )}
             </div>
+          </section>
 
-            <Footer />
-        </>
-    );
+          <aside className="list-jobs">
+            <h2 className="list-jobs-title">Công việc cùng công ty</h2>
+
+            <div className="related-jobs-list">
+              {relatedLoading ? (
+                <div className="related-jobs-state">Đang tải...</div>
+              ) : relatedCompanyJobs.length > 0 ? (
+                relatedCompanyJobs.map((job) => (
+                  <Component_job
+                    key={job.id}
+                    title={job.title}
+                    logo={job.logo}
+                    company_name={job.company_name}
+                    location={job.location}
+                    salary={job.salary}
+                    onClick={() => navigate(`/job-details/${job.id}`)}
+                  />
+                ))
+              ) : (
+                <div className="related-jobs-state">
+                  Chưa có công việc khác trong cùng công ty.
+                </div>
+              )}
+            </div>
+          </aside>
+        </main>
+      </div>
+
+      <Footer />
+    </>
+  );
 }
 
 export default Job_Details;
