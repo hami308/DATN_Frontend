@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Create_news.css";
@@ -6,6 +7,8 @@ import Header from "../../../components/Header/Header";
 import MenuCard from "../../../components/MenuCard/MenuCard";
 import Footer from "../../../components/Footer/Footer";
 import { createJobApi } from "../../../service/job/create_job";
+import { getJobDetailApi } from "../../../service/job/job_detail";
+import { updateJob } from "../../../service/job/update_job";
 import { getJobTypesApi } from "../../../service/job/job_type";
 import { getLevelsApi } from "../../../service/level/level";
 import { getAllIndustries } from "../../../service/industry/industry";
@@ -41,6 +44,16 @@ const formatDateToDisplayDate = (date) => {
   return `${day}/${month}/${year}`;
 };
 
+const formatDateFromApi = (value) => {
+  if (!value) return "";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) return "";
+
+  return formatDateToDisplayDate(date);
+};
+
 const toIsoDateFromDisplayDate = (value) => {
   const match = value.trim().match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
 
@@ -73,18 +86,23 @@ const parseDisplayDate = (value) => {
   return new Date(year, month - 1, day);
 };
 
-const getSubmitErrorMessage = (error) => {
+const getSubmitErrorMessage = (error, isEditMode = false) => {
   if (typeof error === "string") return error;
 
   return (
     error?.response?.data?.message ||
     error?.message ||
     error?.error ||
-    "Không thể tạo tin tuyển dụng."
+    (isEditMode
+      ? "Không thể cập nhật tin tuyển dụng."
+      : "Không thể tạo tin tuyển dụng.")
   );
 };
 
 export default function CreateJob() {
+  const { id } = useParams();
+  const isEditMode = Boolean(id);
+
   const [collapsed, setCollapsed] = useState(false);
   const [step, setStep] = useState(1);
 
@@ -120,16 +138,32 @@ export default function CreateJob() {
     deadline: "",
   });
 
+  const selectedIndustryIds = formData.industryIds.map(Number);
+
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
         setLoadingData(true);
+        setSubmitError("");
+        setSubmitSuccess("");
 
-        const [jobTypeResponse, industryResponse, levelResponse] = await Promise.all([
+        const requests = [
           getJobTypesApi(),
           getAllIndustries(),
           getLevelsApi(),
-        ]);
+        ];
+
+        if (isEditMode) {
+          requests.push(getJobDetailApi(id));
+        }
+
+        const [
+          jobTypeResponse,
+          industryResponse,
+          levelResponse,
+          jobDetailResponse,
+        ] = await Promise.all(requests);
+
         setJobTypes(jobTypeResponse?.data?.jobTypes || []);
         setLevels(levelResponse?.data?.levels || []);
 
@@ -138,16 +172,48 @@ export default function CreateJob() {
             industryResponse?.data ||
             []
         );
+
+        if (isEditMode) {
+          const job = jobDetailResponse?.data?.job || jobDetailResponse?.data;
+
+          if (!job) {
+            setSubmitError("Không tìm thấy tin tuyển dụng.");
+            return;
+          }
+
+          setFormData({
+            title: job.name || "",
+            level: job.id_level ? String(job.id_level) : "",
+            quantity: job.candidate_number ?? "",
+            industryIds: Array.isArray(job.industries)
+              ? job.industries.map((item) => Number(item.id))
+              : [],
+            minExperience: job.exp_min ?? "",
+            maxExperience: job.exp_max ?? "",
+            minSalary: job.salary_min ?? "",
+            maxSalary: job.salary_max ?? "",
+            description: job.description || "",
+            requirement: job.job_requirement || "",
+            location: job.location || "",
+            benefit: job.job_benefit || "",
+            workingType: job.job_type_id ? String(job.job_type_id) : "",
+            deadline: formatDateFromApi(job.expire),
+          });
+        }
       } catch (error) {
         console.error("Lỗi lấy dữ liệu ban đầu:", error);
-        setSubmitError("Không thể tải danh sách lĩnh vực, cấp độ hoặc hình thức làm việc.");
+        setSubmitError(
+          isEditMode
+            ? "Không thể tải thông tin tin tuyển dụng."
+            : "Không thể tải danh sách lĩnh vực, cấp độ hoặc hình thức làm việc."
+        );
       } finally {
         setLoadingData(false);
       }
     };
 
     fetchInitialData();
-  }, []);
+  }, [id, isEditMode]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -183,27 +249,34 @@ export default function CreateJob() {
   };
 
   const handleToggleIndustry = (industryId) => {
+    const currentId = Number(industryId);
+
     setFormData((prev) => {
-      const selected = prev.industryIds.includes(industryId);
+      const prevIds = prev.industryIds.map(Number);
+      const selected = prevIds.includes(currentId);
 
       return {
         ...prev,
         industryIds: selected
-          ? prev.industryIds.filter((id) => id !== industryId)
-          : [...prev.industryIds, industryId],
+          ? prevIds.filter((item) => item !== currentId)
+          : [...prevIds, currentId],
       };
     });
   };
 
   const removeIndustry = (industryId) => {
+    const currentId = Number(industryId);
+
     setFormData((prev) => ({
       ...prev,
-      industryIds: prev.industryIds.filter((id) => id !== industryId),
+      industryIds: prev.industryIds
+        .map(Number)
+        .filter((item) => item !== currentId),
     }));
   };
 
   const selectedIndustries = industries.filter((industry) =>
-    formData.industryIds.includes(industry.id)
+    selectedIndustryIds.includes(Number(industry.id))
   );
 
   const selectedJobType = jobTypes.find(
@@ -278,7 +351,7 @@ export default function CreateJob() {
 
     const payload = {
       name: formData.title.trim(),
-      industryIds: formData.industryIds,
+      industryIds: formData.industryIds.map(Number),
       candidateNumber: toNumberOrNull(formData.quantity),
       expMin: toNumberOrNull(formData.minExperience),
       expMax: toNumberOrNull(formData.maxExperience),
@@ -296,11 +369,18 @@ export default function CreateJob() {
     try {
       setSubmitting(true);
 
-      const response = await createJobApi(payload);
+      const response = isEditMode
+        ? await updateJob(id, payload)
+        : await createJobApi(payload);
 
-      setSubmitSuccess(response?.message || "Đăng bài thành công.");
+      setSubmitSuccess(
+        response?.message ||
+          (isEditMode
+            ? "Cập nhật tin tuyển dụng thành công."
+            : "Đăng bài thành công.")
+      );
     } catch (error) {
-      setSubmitError(getSubmitErrorMessage(error));
+      setSubmitError(getSubmitErrorMessage(error, isEditMode));
     } finally {
       setSubmitting(false);
     }
@@ -315,7 +395,11 @@ export default function CreateJob() {
 
         <div className="createjob-wrapper">
           <div className="createjob-card">
-            <h2 className="createjob-main-title">Tạo tin tuyển dụng mới</h2>
+            <h2 className="createjob-main-title">
+              {isEditMode
+                ? "Chỉnh sửa tin tuyển dụng"
+                : "Tạo tin tuyển dụng mới"}
+            </h2>
 
             <div className="createjob-steps-container">
               <div
@@ -339,9 +423,17 @@ export default function CreateJob() {
                 }`}
               >
                 <span className="createjob-step-number">Ⅱ</span>
-                <span>Quyền lợi, thời gian & Đăng bài</span>
+                <span>
+                  {isEditMode
+                    ? "Quyền lợi, thời gian & Lưu thay đổi"
+                    : "Quyền lợi, thời gian & Đăng bài"}
+                </span>
               </div>
             </div>
+
+            {loadingData && (
+              <p className="createjob-submit-message">Đang tải dữ liệu...</p>
+            )}
 
             {step === 1 ? (
               <>
@@ -436,26 +528,30 @@ export default function CreateJob() {
                               Không có lĩnh vực
                             </div>
                           ) : (
-                            industries.map((industry) => (
-                              <div
-                                key={industry.id}
-                                className={`industry-option ${
-                                  formData.industryIds.includes(industry.id)
-                                    ? "selected"
-                                    : ""
-                                }`}
-                                onClick={() => handleToggleIndustry(industry.id)}
-                              >
-                                <input
-                                  type="checkbox"
-                                  checked={formData.industryIds.includes(
-                                    industry.id
-                                  )}
-                                  readOnly
-                                />
-                                <span>{industry.name}</span>
-                              </div>
-                            ))
+                            industries.map((industry) => {
+                              const isChecked = selectedIndustryIds.includes(
+                                Number(industry.id)
+                              );
+
+                              return (
+                                <div
+                                  key={industry.id}
+                                  className={`industry-option ${
+                                    isChecked ? "selected" : ""
+                                  }`}
+                                  onClick={() =>
+                                    handleToggleIndustry(industry.id)
+                                  }
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={isChecked}
+                                    readOnly
+                                  />
+                                  <span>{industry.name}</span>
+                                </div>
+                              );
+                            })
                           )}
                         </div>
                       )}
@@ -563,7 +659,11 @@ export default function CreateJob() {
                 )}
 
                 <div className="footer-btn">
-                  <button className="btn-primary" onClick={handleNextStep}>
+                  <button
+                    className="btn-primary"
+                    onClick={handleNextStep}
+                    disabled={loadingData}
+                  >
                     Tiếp tục
                   </button>
                 </div>
@@ -598,8 +698,7 @@ export default function CreateJob() {
                     disabled={loadingData}
                   >
                     <span>
-                      {selectedJobType?.name ||
-                        "Chọn hình thức làm việc"}
+                      {selectedJobType?.name || "Chọn hình thức làm việc"}
                     </span>
                     <span className="createjob-jobtype-arrow">⌄</span>
                   </button>
@@ -696,9 +795,15 @@ export default function CreateJob() {
                   <button
                     className="btn-primary"
                     onClick={handleSubmit}
-                    disabled={submitting}
+                    disabled={submitting || loadingData}
                   >
-                    {submitting ? "Đang đăng bài..." : "Đăng bài"}
+                    {submitting
+                      ? isEditMode
+                        ? "Đang lưu..."
+                        : "Đang đăng bài..."
+                      : isEditMode
+                        ? "Lưu"
+                        : "Đăng bài"}
                   </button>
                 </div>
               </>

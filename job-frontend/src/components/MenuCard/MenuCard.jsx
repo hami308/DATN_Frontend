@@ -21,13 +21,31 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const isProfileActive =
+    location.pathname === "/recruiter-profile" ||
+    location.pathname === "/change-password" ||
+    location.pathname === "/company-profile" ||
+    location.pathname === "/business-paper";
+
+  const isManageRecruitmentActive =
+    location.pathname === "/manage-recruitment" ||
+    location.pathname.startsWith("/job-details/") ||
+    location.pathname.startsWith("/job-applicants/") ||
+    location.pathname.startsWith("/post-news/create-job/");
+
+  const isPostNewsActive =
+    location.pathname === "/post-news/create-job" ||
+    location.pathname === "/post-news/conditions";
+
   const handlePostNewsClick = async () => {
     if (checkingPostConditions) return;
 
     try {
       setCheckingPostConditions(true);
+
       const response = await getRecruiterConditions();
       const conditions = response.data || {};
+
       const canCreateJob =
         Boolean(conditions.isVerifyPhone) &&
         Boolean(conditions.hasCompanyInfo) &&
@@ -36,7 +54,8 @@ export default function Sidebar() {
       navigate(
         canCreateJob ? "/post-news/create-job" : "/post-news/conditions"
       );
-    } catch {
+    } catch (error) {
+      console.error("Lỗi kiểm tra điều kiện đăng tin:", error);
       navigate("/post-news/conditions");
     } finally {
       setCheckingPostConditions(false);
@@ -45,109 +64,92 @@ export default function Sidebar() {
 
   return (
     <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
-      {/* Toggle Button */}
       <button
         className={styles.collapseBtn}
-        onClick={() => setCollapsed(!collapsed)}
+        onClick={() => setCollapsed((prev) => !prev)}
       >
         {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
       </button>
 
-      {/* Trang cá nhân */}
       <div>
         <div
-          className={`${styles.item} ${
-            location.pathname === "/recuiter-profile" ||
-            location.pathname === "/change-password" ||
-            location.pathname === "/company-profile" ||
-            location.pathname === "/business-paper"
-              ? styles.active
-              : ""
-          }`}
+          className={`${styles.item} ${isProfileActive ? styles.active : ""}`}
           onClick={() => {
             if (collapsed) {
               setCollapsed(false);
               setOpenProfile(true);
             } else {
-              setOpenProfile(!openProfile);
+              setOpenProfile((prev) => !prev);
             }
           }}
         >
           <User size={20} />
+
           {!collapsed && (
             <>
               <span>Trang cá nhân</span>
               <ChevronDown
                 size={16}
                 className={`${styles.arrow} ${
-                  openProfile ? styles.rotate : ""
+                  openProfile || isProfileActive ? styles.rotate : ""
                 }`}
               />
             </>
           )}
         </div>
 
-        {(openProfile ||
-          location.pathname === "/recuiter-profile" ||
-          location.pathname === "/change-password" ||
-          location.pathname === "/company-profile" ||
-          location.pathname === "/business-paper") &&
-          !collapsed && (
-            <div className={styles.subMenu}>
-              <div
-                className={`${styles.subItem} ${
-                  location.pathname === "/recruiter-profile"
-                    ? styles.activeSub
-                    : ""
-                }`}
-                onClick={() => navigate("/recruiter-profile")}
-              >
-                Thông tin cá nhân
-              </div>
-
-              <div
-                className={`${styles.subItem} ${
-                  location.pathname === "/change-password"
-                    ? styles.activeSub
-                    : ""
-                }`}
-                onClick={() => navigate("/change-password")}
-              >
-                Đổi mật khẩu
-              </div>
-
-              <div
-                className={`${styles.subItem} ${
-                  location.pathname === "/company-profile"
-                    ? styles.activeSub
-                    : ""
-                }`}
-                onClick={() => navigate("/company-profile")}
-              >
-                Thông tin công ty
-              </div>
-
-              <div
-                className={`${styles.subItem} ${
-                  location.pathname === "/business-paper"
-                    ? styles.activeSub
-                    : ""
-                }`}
-                onClick={() => navigate("/business-paper")}
-              >
-                Giấy đăng ký doanh nghiệp
-              </div>
+        {(openProfile || isProfileActive) && !collapsed && (
+          <div className={styles.subMenu}>
+            <div
+              className={`${styles.subItem} ${
+                location.pathname === "/recruiter-profile"
+                  ? styles.activeSub
+                  : ""
+              }`}
+              onClick={() => navigate("/recruiter-profile")}
+            >
+              Thông tin cá nhân
             </div>
-          )}
+
+            <div
+              className={`${styles.subItem} ${
+                location.pathname === "/change-password"
+                  ? styles.activeSub
+                  : ""
+              }`}
+              onClick={() => navigate("/change-password")}
+            >
+              Đổi mật khẩu
+            </div>
+
+            <div
+              className={`${styles.subItem} ${
+                location.pathname === "/company-profile"
+                  ? styles.activeSub
+                  : ""
+              }`}
+              onClick={() => navigate("/company-profile")}
+            >
+              Thông tin công ty
+            </div>
+
+            <div
+              className={`${styles.subItem} ${
+                location.pathname === "/business-paper"
+                  ? styles.activeSub
+                  : ""
+              }`}
+              onClick={() => navigate("/business-paper")}
+            >
+              Giấy đăng ký doanh nghiệp
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Quản lý tuyển dụng */}
       <div
         className={`${styles.item} ${
-          location.pathname === "/manage-recruitment" ||
-          location.pathname === "/manage-recruitment"
-            ? styles.active
-            : ""
+          isManageRecruitmentActive ? styles.active : ""
         }`}
         onClick={() => navigate("/manage-recruitment")}
       >
@@ -155,31 +157,26 @@ export default function Sidebar() {
         {!collapsed && <span>Quản lý tuyển dụng</span>}
       </div>
 
-      {/* Đăng tin tuyển dụng */}
       <div
-        className={`${styles.item} ${
-          location.pathname === "/post-news/create-job" ||
-          location.pathname === "/post-news/conditions"
-            ? styles.active
-            : ""
-        }`}
+        className={`${styles.item} ${isPostNewsActive ? styles.active : ""}`}
         onClick={handlePostNewsClick}
       >
         <PlusCircle size={20} />
-        {!collapsed && <span>Đăng tin tuyển dụng</span>}
+        {!collapsed && (
+          <span>
+            {checkingPostConditions ? "Đang kiểm tra..." : "Đăng tin tuyển dụng"}
+          </span>
+        )}
       </div>
 
-      {/* Thông báo */}
-      <div
-        className={`${styles.item} `}
-      >
+      <div className={styles.item}>
         <Bell size={20} />
         {!collapsed && <span>Thông báo</span>}
       </div>
 
-      {/* Đăng xuất */}
-      <div className={styles.item}
-         onClick={() => {
+      <div
+        className={styles.item}
+        onClick={() => {
           localStorage.removeItem("token");
           localStorage.removeItem("user");
           sessionStorage.clear();

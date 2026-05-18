@@ -37,6 +37,7 @@ function App() {
         <Route path="/recruiter-profile" element={<Recuiter_Infor />} />
         <Route path="/post-news/conditions" element={<Conditions />} />
         <Route path="/post-news/create-job" element={<CreateJob />} />
+        <Route path="/post-news/create-job/:id" element={<CreateJob />} />
         <Route path="/company-profile" element={<Company_Infor />} />
         <Route path="/home-candidate" element={<HomepageCandidate />} />
         <Route path="/candidate-profile" element={<Candidate_Infor />} />

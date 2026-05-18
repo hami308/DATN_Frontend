@@ -188,7 +188,7 @@ function JobComponent({
 
                 <div
                   onClick={() => {
-                    navigate(`/post-news/create-job`);
+                    navigate(`/post-news/create-job/${id}`);
                     setShowMenu(false);
                   }}
                 >
