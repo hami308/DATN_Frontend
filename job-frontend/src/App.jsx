@@ -20,7 +20,9 @@ import Applied_jobs from "./pages/Applied_jobs/Applied_jobs";
 import CV_management from "./pages/CV_management/CV_management";
 import Company_page from "./pages/Company_page/Company_page";
 import Home_admin from "./pages/Home_admin/Home_admin";
+import AdminCompanyVerification from "./pages/Home_admin/AdminCompanyVerification";
 import Job_Details from "./pages/Job_Details/Job_Details";
+import CV_list from "./pages/Manage_Recuitment/CV_list/CV_list";
 import Account_page from "./pages/Account_management/Account_page";
 function App() {
   return (
@@ -32,10 +34,11 @@ function App() {
         <Route path="/register/:role" element={<RegisterPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/verify-phone" element={<VerifyPhonePage />} />
-        <Route path="/home-recuiter" element={<HomepageRecuiter />} />
-        <Route path="/recuiter-profile" element={<Recuiter_Infor />} />
+        <Route path="/home-recruiter" element={<HomepageRecuiter />} />
+        <Route path="/recruiter-profile" element={<Recuiter_Infor />} />
         <Route path="/post-news/conditions" element={<Conditions />} />
         <Route path="/post-news/create-job" element={<CreateJob />} />
+        <Route path="/post-news/create-job/:id" element={<CreateJob />} />
         <Route path="/company-profile" element={<Company_Infor />} />
         <Route path="/home-candidate" element={<HomepageCandidate />} />
         <Route path="/candidate-profile" element={<Candidate_Infor />} />
@@ -50,7 +53,13 @@ function App() {
         <Route path="/cv-management" element={<CV_management />} />
         <Route path="/company-detail" element={<Company_page />} />
         <Route path="/home-admin" element={<Home_admin />} />
+        <Route path="/admin-dashboard" element={<Home_admin />} />
+        <Route
+          path="/admin-company-verification"
+          element={<AdminCompanyVerification />}
+        />
         <Route path="/job-details/:id" element={<Job_Details />} />
+        <Route path="/job-applicants/:jobId" element={<CV_list />} />
         <Route path="/admin-account-management" element={<Account_page />} />
       </Routes>
     </BrowserRouter>

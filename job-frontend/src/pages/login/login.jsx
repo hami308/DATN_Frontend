@@ -5,63 +5,52 @@ import pic3 from "../../assets/image/pic3.png";
 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { loginApi } from "../../service/auth/login";
 
 export default function Login() {
   const navigate = useNavigate();
 
-  // =========================
-  // STATE
-  // =========================
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // =========================
-  // MOCK DATA
-  // =========================
-  const mockUsers = [
-    {
-      email: "candidate@gmail.com",
-      password: "123456",
-      role: "candidate",
-    },
-    {
-      email: "recruiter@gmail.com",
-      password: "123456",
-      role: "recruiter",
-    },
-    {
-      email: "admin@gmail.com",
-      password: "123456",
-      role: "admin",
-    },
-  ];
+  const handleLogin = async () => {
+    try {
+      setError("");
 
-  // =========================
-  // HANDLE LOGIN
-  // =========================
-  const handleLogin = () => {
-    setError("");
+      if (!email || !password) {
+        setError("Vui lòng nhập email và mật khẩu");
+        return;
+      }
 
-    const user = mockUsers.find(
-      (u) => u.email === email && u.password === password,
-    );
+      setLoading(true);
 
-    if (!user) {
-      setError("Sai email hoặc mật khẩu!");
-      return;
-    }
+      const result = await loginApi({
+        email,
+        password,
+      });
+      const user = result.data.user;
+      const token = result.data.token;
 
-    // lưu mock user vào localStorage
-    localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
-    // điều hướng theo role
-    if (user.role === "candidate") {
-      navigate("/home-candidate");
-    } else if (user.role === "recruiter") {
-      navigate("/manage-recruitment");
-    } else if (user.role === "admin") {
-      navigate("/home-admin");
+      if (user.role === "candidate") {
+        navigate("/home-candidate");
+      } else if (user.role === "recruiter") {
+        navigate("/manage-recruitment");
+      } else if (user.role === "admin") {
+        navigate("/home-admin");
+      }
+    } catch (error) {
+      setError(
+        error.response?.data?.message ||
+          error.message ||
+          "Đăng nhập thất bại"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,16 +60,13 @@ export default function Login() {
       <img src={pic3} className={styles.pic3} alt="" />
 
       <div className={styles.card}>
-        {/* LOGO */}
         <div className={styles.logo}>
           <img src={logo} className={styles.logoIcon} alt="" />
           <span>MyCV</span>
         </div>
 
-        {/* TITLE */}
         <h2 className={styles.title}>Đăng nhập</h2>
 
-        {/* FORM */}
         <div className={styles.form}>
           <label>Email</label>
 
@@ -102,17 +88,18 @@ export default function Login() {
 
           <div className={styles.forgot}>Quên mật khẩu ?</div>
 
-          {/* ERROR */}
           {error && <p className={styles.error}>{error}</p>}
 
-          {/* LOGIN BUTTON */}
-          <button className={styles.loginBtn} onClick={handleLogin}>
-            Đăng nhập
+          <button
+            className={styles.loginBtn}
+            onClick={handleLogin}
+            disabled={loading}
+          >
+            {loading ? "Đang đăng nhập..." : "Đăng nhập"}
           </button>
 
           <div className={styles.or}>hoặc tiếp tục với</div>
 
-          {/* GOOGLE */}
           <button className={styles.googleBtn}>
             <img
               src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -120,7 +107,6 @@ export default function Login() {
             />
           </button>
 
-          {/* REGISTER */}
           <div className={styles.register}>
             Bạn chưa có tài khoản ?
             <span onClick={() => navigate("/registerChoice")}>
@@ -130,7 +116,6 @@ export default function Login() {
           </div>
         </div>
 
-        {/* BACK */}
         <button className={styles.backBtn} onClick={() => navigate("/")}>
           ← Quay lại
         </button>

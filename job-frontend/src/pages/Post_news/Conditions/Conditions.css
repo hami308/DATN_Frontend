@@ -67,25 +67,26 @@
 
 /* ===== Check ===== */
 .setup-check {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+  width: 32px;
+  height: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 13px;
-  font-weight: bold;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.setup-check .material-symbols-outlined {
+  font-size: 32px;
+  line-height: 1;
 }
 
 .setup-check.done {
-  border: 2px solid #5f8d4e;
-  color: #5f8d4e;
-  background: #f0fdf4;
+  color: #35206f;
 }
 
 .setup-check.pending {
-  border: 2px solid #cbd5e1;
-  color: transparent;
+  color: #cbd5e1;
 }
 
 .setup-text {
@@ -104,11 +105,30 @@
   color: #4f46e5;
   cursor: pointer;
   transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.setup-arrow .material-symbols-outlined {
+  font-size: 20px;
+  line-height: 1;
 }
 
 .setup-arrow:hover {
   background: #e5e0ff;
   transform: translateX(3px);
+}
+
+.setup-arrow.disabled {
+  cursor: not-allowed;
+}
+
+.setup-arrow.disabled:hover {
+  background: #f3f0ff;
+  transform: none;
 }
 
 /* ===== Progress ===== */

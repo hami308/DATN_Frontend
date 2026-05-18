@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./Job_component.css";
 
 import { useNavigate } from "react-router-dom";
@@ -17,18 +17,58 @@ function JobComponent({
   salary,
   deadline,
   status,
+  statusCode,
+  level,
+  candidateNumber,
+  expire,
+  expireText,
+  onCloseJob,
+  onExtendJob,
+  onReopenJob,
 }) {
   const navigate = useNavigate();
-
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-    const role = user?.role;
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const role = user?.role;
 
   const [showMenu, setShowMenu] = useState(false);
   const [showClosePopup, setShowClosePopup] = useState(false);
   const [showExtendPopup, setShowExtendPopup] = useState(false);
 
   const menuRef = useRef(null);
+  const isClosed = Number(statusCode) === 0;
+
+  const jobInfo = useMemo(
+    () => ({
+      id,
+      logo,
+      title,
+      type,
+      location,
+      salary,
+      deadline,
+      status,
+      statusCode,
+      level,
+      candidateNumber,
+      expire,
+      expireText: expireText || deadline,
+    }),
+    [
+      id,
+      logo,
+      title,
+      type,
+      location,
+      salary,
+      deadline,
+      status,
+      statusCode,
+      level,
+      candidateNumber,
+      expire,
+      expireText,
+    ]
+  );
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -39,13 +79,11 @@ function JobComponent({
 
     document.addEventListener("mousedown", handleClickOutside);
 
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
     <div className="job-component">
-      {/* LEFT */}
       <div className="job-component-left">
         <img
           src={logo || logo_img}
@@ -73,9 +111,7 @@ function JobComponent({
             </div>
 
             <div className="job-component-info-item">
-              <span className="material-symbols-outlined">
-                attach_money
-              </span>
+              <span className="material-symbols-outlined">payments</span>
               <span>{salary}</span>
             </div>
 
@@ -87,7 +123,6 @@ function JobComponent({
         </div>
       </div>
 
-      {/* RIGHT */}
       <div className="job-component-right">
         <button className="job-component-status-btn">{status}</button>
 
@@ -102,7 +137,6 @@ function JobComponent({
 
             {showMenu && (
               <div className="job-component-dropdown">
-                {/* JOB DETAILS */}
                 <div
                   onClick={() => {
                     navigate(`/job-details/${id}`);
@@ -112,17 +146,17 @@ function JobComponent({
                   Xem chi tiết tin
                 </div>
 
-                {/* CLOSE JOB */}
-                <div
-                  onClick={() => {
-                    setShowClosePopup(true);
-                    setShowMenu(false);
-                  }}
-                >
-                  Đóng tin
-                </div>
+                {!isClosed && (
+                  <div
+                    onClick={() => {
+                      setShowClosePopup(true);
+                      setShowMenu(false);
+                    }}
+                  >
+                    Đóng tin
+                  </div>
+                )}
 
-                {/* APPLICANTS */}
                 <div
                   onClick={() => {
                     navigate(`/job-applicants/${id}`);
@@ -132,20 +166,29 @@ function JobComponent({
                   Xem danh sách ứng viên
                 </div>
 
-                {/* EXTEND */}
-                <div
-                  onClick={() => {
-                    setShowExtendPopup(true);
-                    setShowMenu(false);
-                  }}
-                >
-                  Gia hạn tin
-                </div>
+                {isClosed ? (
+                  <div
+                    onClick={() => {
+                      onReopenJob?.(jobInfo);
+                      setShowMenu(false);
+                    }}
+                  >
+                    Mở lại tin tuyển dụng
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => {
+                      setShowExtendPopup(true);
+                      setShowMenu(false);
+                    }}
+                  >
+                    Gia hạn tin
+                  </div>
+                )}
 
-                {/* EDIT */}
                 <div
                   onClick={() => {
-                    navigate(`/post-news/create-job`);
+                    navigate(`/post-news/create-job/${id}`);
                     setShowMenu(false);
                   }}
                 >
@@ -161,23 +204,23 @@ function JobComponent({
         )}
       </div>
 
-      {/* POPUP ĐÓNG TIN */}
       {showClosePopup && (
         <Close_Job
+          job={jobInfo}
           onCancel={() => setShowClosePopup(false)}
-          onConfirm={() => {
-            // xử lý đóng tin
+          onConfirm={(job) => {
+            onCloseJob?.(job);
             setShowClosePopup(false);
           }}
         />
       )}
 
-      {/* POPUP GIA HẠN TIN */}
       {showExtendPopup && (
         <Extend_Job
+          job={jobInfo}
           onCancel={() => setShowExtendPopup(false)}
-          onConfirm={(date) => {
-            console.log("Gia hạn đến:", date);
+          onConfirm={(date, job) => {
+            onExtendJob?.(date, job);
             setShowExtendPopup(false);
           }}
         />

@@ -1,13 +1,34 @@
-import React from 'react';
+import React from "react";
 import "./component_job.css";
 
-const ComponentJob = ({title, logo, company_name, location, salary}) => {
-  const handleSaveJob = () => alert('❤️ Đã lưu tin thành công!');
-  const handleApplyNow = () => alert('✨ Ứng tuyển ngay!');
+const ComponentJob = ({ title, logo, company_name, location, salary, onClick }) => {
+  const handleSaveJob = (event) => {
+    event.stopPropagation();
+    alert("Đã lưu tin thành công!");
+  };
+
+  const handleApplyNow = (event) => {
+    event.stopPropagation();
+    alert("Ứng tuyển ngay!");
+  };
+
+  const handleKeyDown = (event) => {
+    if (!onClick) return;
+
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onClick();
+    }
+  };
 
   return (
-    <div className="component-job-card">
-      {/* Phần Header: Logo + Tiêu đề */}
+    <div
+      className={`component-job-card ${onClick ? "clickable" : ""}`}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onClick={onClick}
+      onKeyDown={handleKeyDown}
+    >
       <div className="component-job-header">
         <div className="component-job-card-logo">
           <img className="component-job-card-logo" src={logo} alt="Logo" />
@@ -18,18 +39,13 @@ const ComponentJob = ({title, logo, company_name, location, salary}) => {
         </div>
       </div>
 
-      {/* Địa điểm */}
       <div className="component-job-location">
         <span className="material-symbols-outlined">location_on</span>
         <span className="component-job-location-text">{location}</span>
       </div>
 
-      {/* Mức lương (Full width) */}
-      <div className="component-job-salary">
-        {salary}
-      </div>
+      <div className="component-job-salary">{salary}</div>
 
-      {/* Nút bấm */}
       <div className="component-job-actions">
         <button className="component-job-btn-save" onClick={handleSaveJob}>
           <span className="component-job-heart-icon">♡</span> Lưu tin

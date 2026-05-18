@@ -12,6 +12,7 @@ export default function Recuiter_Infor() {
       <main className={styles.main}>
         <div className={styles.container}>
           <MenuCard />
+
           <div className={styles.content}>
             <ProfileCard />
           </div>

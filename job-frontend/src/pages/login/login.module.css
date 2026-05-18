@@ -187,7 +187,14 @@ input {
   cursor: pointer;
   transition: 0.2s ease;
 }
-
+.error {
+  width: 100%;
+  color:red;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+}
 .backBtn:hover {
   transform: translateX(-3px);
   text-decoration: underline;
@@ -271,5 +278,9 @@ input {
 
   .googleBtn {
     width: 60%;
+  }
+   .error {
+    font-size: 13px;
+    padding: 10px 12px;
   }
 }
