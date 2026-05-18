@@ -36,12 +36,14 @@ function App() {
         <Route path="/verify-phone" element={<VerifyPhonePage />} />
         <Route path="/home-recruiter" element={<HomepageRecuiter />} />
         <Route path="/recruiter-profile" element={<Recuiter_Infor />} />
+        <Route path="/recruiter-profile/:profileId" element={<Recuiter_Infor />} />
         <Route path="/post-news/conditions" element={<Conditions />} />
         <Route path="/post-news/create-job" element={<CreateJob />} />
         <Route path="/post-news/create-job/:id" element={<CreateJob />} />
         <Route path="/company-profile" element={<Company_Infor />} />
         <Route path="/home-candidate" element={<HomepageCandidate />} />
         <Route path="/candidate-profile" element={<Candidate_Infor />} />
+        <Route path="/candidate-profile/:profileId" element={<Candidate_Infor />} />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/saved-jobs" element={<SavedJob />} />
         <Route path="/candidate-change-password" element={<ChangePassword />} />

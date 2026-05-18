@@ -11,7 +11,7 @@
   font-weight: 500;
   cursor: pointer;
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 900px) {
   .combobox {
     width: 100%;
   }

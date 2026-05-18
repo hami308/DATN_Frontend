@@ -25,19 +25,13 @@ export default function AdminSidebar() {
   const isAccountManagementActive =
     location.pathname === "/admin-account-management" ||
     location.pathname.startsWith("/admin-account-management/");
+    location.pathname.startsWith("/recruiter-profile/{profileId}");
 
   // Xác nhận công ty
   const isCompanyVerificationActive =
     location.pathname === "/admin-company-verification" ||
     location.pathname.startsWith("/admin-company-verification/");
 
-  // Quản lý tuyển dụng
-  const isJobManagementActive =
-    location.pathname === "/admin-job-management" ||
-    location.pathname.startsWith("/admin-job-management/") ||
-    location.pathname.startsWith("/admin-job-details/") ||
-    location.pathname.startsWith("/admin-job-applicants/") ||
-    location.pathname.startsWith("/admin-job-edit/");
 
   return (
     <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
@@ -80,17 +74,6 @@ export default function AdminSidebar() {
       >
         <FileText size={20} />
         {!collapsed && <span>Xác nhận giấy tờ</span>}
-      </div>
-
-      {/* Quản lý tin tuyển dụng */}
-      <div
-        className={`${styles.item} ${
-          isJobManagementActive ? styles.active : ""
-        }`}
-        onClick={() => navigate("/admin-job-management")}
-      >
-        <Briefcase size={20} />
-        {!collapsed && <span>Quản lý tin tuyển dụng</span>}
       </div>
 
       {/* Logout */}
