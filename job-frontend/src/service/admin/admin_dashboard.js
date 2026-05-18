@@ -12,3 +12,15 @@ export const getAdminAccountsApi = async () => {
 
   return response.data;
 };
+
+export const lockAdminAccountApi = async (userId) => {
+  const response = await axiosClient.patch(`/admin/accounts/${userId}/lock`);
+
+  return response.data;
+};
+
+export const unlockAdminAccountApi = async (userId) => {
+  const response = await axiosClient.patch(`/admin/accounts/${userId}/unlock`);
+
+  return response.data;
+};

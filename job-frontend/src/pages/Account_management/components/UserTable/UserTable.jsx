@@ -1,6 +1,10 @@
-import { Eye, Check, UserX } from "lucide-react";
+import { Check, Eye, UserX } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import styles from "./UserTable.module.css";
+
+const ALL_LABEL = "Tất cả";
+const ACTIVE_LABEL = "Đang hoạt động";
+const LOCKED_LABEL = "Đã khóa";
 
 const roleLabels = {
   candidate: "Ứng viên",
@@ -8,12 +12,12 @@ const roleLabels = {
   admin: "Admin",
 };
 
-const getStatusLabel = (status) => {
-  if (status === false || status === 0 || status === "false") {
-    return "Đã khóa";
-  }
+const isLockedStatus = (status) => {
+  return status === false || status === 0 || status === "false";
+};
 
-  return "Đang hoạt động";
+const getStatusLabel = (status) => {
+  return isLockedStatus(status) ? LOCKED_LABEL : ACTIVE_LABEL;
 };
 
 const formatDate = (value) => {
@@ -34,9 +38,11 @@ const getInitial = (name, email) => {
 export default function UserTable({
   users = [],
   loading = false,
-  statusFilter,
-  roleFilter,
-  searchName,
+  actionLoadingId = null,
+  statusFilter = ALL_LABEL,
+  roleFilter = ALL_LABEL,
+  searchName = "",
+  onToggleAccountStatus,
 }) {
   const navigate = useNavigate();
   const normalizedSearch = searchName.trim().toLowerCase();
@@ -55,17 +61,15 @@ export default function UserTable({
         email: user.email || "Chưa cập nhật",
         role,
         rawRole: user.role,
+        rawStatus: user.status,
         status,
         date: formatDate(user.created_at || user.createdAt),
       };
     });
 
   const filteredUsers = normalizedUsers.filter((user) => {
-    const matchStatus =
-      statusFilter === "Tất cả" || user.status === statusFilter;
-
-    const matchRole = roleFilter === "Tất cả" || user.role === roleFilter;
-
+    const matchStatus = statusFilter === ALL_LABEL || user.status === statusFilter;
+    const matchRole = roleFilter === ALL_LABEL || user.role === roleFilter;
     const matchName =
       !normalizedSearch ||
       `${user.name} ${user.email}`.toLowerCase().includes(normalizedSearch);
@@ -114,57 +118,74 @@ export default function UserTable({
               </td>
             </tr>
           ) : (
-            filteredUsers.map((user) => (
-              <tr key={user.id}>
-                <td>
-                  <div className={styles.userInfo}>
-                    <div className={styles.avatarBorder}>
-                      <span>{getInitial(user.name, user.email)}</span>
+            filteredUsers.map((user) => {
+              const isActive = user.status === ACTIVE_LABEL;
+              const isProcessing = actionLoadingId === user.id;
+
+              return (
+                <tr key={user.id}>
+                  <td>
+                    <div className={styles.userInfo}>
+                      <div className={styles.avatarBorder}>
+                        <span>{getInitial(user.name, user.email)}</span>
+                      </div>
+
+                      <div className={styles.userText}>
+                        <span>{user.name}</span>
+                        <small>{user.email}</small>
+                      </div>
                     </div>
+                  </td>
 
-                    <div className={styles.userText}>
-                      <span>{user.name}</span>
-                      <small>{user.email}</small>
+                  <td>{user.role}</td>
+
+                  <td>
+                    <span
+                      className={`${styles.status} ${
+                        isActive ? styles.active : styles.locked
+                      }`}
+                    >
+                      {user.status}
+                    </span>
+                  </td>
+
+                  <td>{user.date}</td>
+
+                  <td>
+                    <div className={styles.actions}>
+                      <button type="button" onClick={() => handleView(user)}>
+                        <Eye size={18} />
+                        Xem
+                      </button>
+
+                      <button
+                        type="button"
+                        className={isActive ? styles.lockAction : styles.unlockAction}
+                        disabled={isProcessing}
+                        onClick={() =>
+                          onToggleAccountStatus?.({
+                            id: user.id,
+                            status: user.rawStatus,
+                          })
+                        }
+                      >
+                        {isActive ? (
+                          <>
+                            <UserX size={18} />
+                            {isProcessing ? "Đang khóa..." : "Khóa"}
+                          </>
+                        ) : (
+                          <>
+                            <Check size={18} />
+                            {isProcessing ? "Đang mở..." : "Mở khóa"}
+                          </>
+                        )}
+                      </button>
                     </div>
-                  </div>
-                </td>
-
-                <td>{user.role}</td>
-
-                <td>
-                  <span
-                    className={`${styles.status} ${
-                      user.status === "Đang hoạt động"
-                        ? styles.active
-                        : styles.locked
-                    }`}
-                  >
-                    {user.status}
-                  </span>
-                </td>
-
-                <td>{user.date}</td>
-
-                <td>
-                  <div className={styles.actions}>
-                    <button type="button" onClick={() => handleView(user)}>
-                      <Eye size={18} />
-                      Xem
-                    </button>
-
-                    <button type="button">
-                      <Check size={18} />
-                      Mở khóa
-                    </button>
-
-                    <button type="button">
-                      <UserX size={18} />
-                      Khóa
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))
+                  </td>
+                </tr>
+              );
+            })
           )}
         </tbody>
       </table>
