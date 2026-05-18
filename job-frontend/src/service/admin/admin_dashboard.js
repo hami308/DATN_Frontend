@@ -6,3 +6,9 @@ export const getAdminDashboardApi = async (year) => {
 
   return response.data;
 };
+
+export const getAdminAccountsApi = async () => {
+  const response = await axiosClient.get("/admin/accounts");
+
+  return response.data;
+};

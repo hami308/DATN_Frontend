@@ -1,6 +1,6 @@
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Sidebar from "../../components/Sidebar_admin/Sidebar";
 import CompanyVerification from "./components/CompanyVerification/CompanyVerification";
 import styles from "./Home_admin.module.css";
 
