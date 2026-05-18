@@ -17,12 +17,34 @@ export default function AdminSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Dashboard
+  const isDashboardActive =
+    location.pathname === "/admin-dashboard";
+
+  // Quản lý tài khoản
+  const isAccountManagementActive =
+    location.pathname === "/admin-account-management" ||
+    location.pathname.startsWith("/admin-account-management/");
+
+  // Xác nhận công ty
+  const isCompanyVerificationActive =
+    location.pathname === "/admin-company-verification" ||
+    location.pathname.startsWith("/admin-company-verification/");
+
+  // Quản lý tuyển dụng
+  const isJobManagementActive =
+    location.pathname === "/admin-job-management" ||
+    location.pathname.startsWith("/admin-job-management/") ||
+    location.pathname.startsWith("/admin-job-details/") ||
+    location.pathname.startsWith("/admin-job-applicants/") ||
+    location.pathname.startsWith("/admin-job-edit/");
+
   return (
     <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
       {/* Collapse button */}
       <button
         className={styles.collapseBtn}
-        onClick={() => setCollapsed(!collapsed)}
+        onClick={() => setCollapsed((prev) => !prev)}
       >
         {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
       </button>
@@ -30,7 +52,7 @@ export default function AdminSidebar() {
       {/* Dashboard */}
       <div
         className={`${styles.item} ${
-          location.pathname === "/admin-dashboard" ? styles.active : ""
+          isDashboardActive ? styles.active : ""
         }`}
         onClick={() => navigate("/admin-dashboard")}
       >
@@ -41,7 +63,7 @@ export default function AdminSidebar() {
       {/* Quản lý tài khoản */}
       <div
         className={`${styles.item} ${
-          location.pathname === "/admin-account-management" ? styles.active : ""
+          isAccountManagementActive ? styles.active : ""
         }`}
         onClick={() => navigate("/admin-account-management")}
       >
@@ -49,12 +71,10 @@ export default function AdminSidebar() {
         {!collapsed && <span>Quản lý tài khoản</span>}
       </div>
 
-      {/* Xác nhận công ty */}
+      {/* Xác nhận giấy tờ */}
       <div
         className={`${styles.item} ${
-          location.pathname === "/admin-company-verification"
-            ? styles.active
-            : ""
+          isCompanyVerificationActive ? styles.active : ""
         }`}
         onClick={() => navigate("/admin-company-verification")}
       >
@@ -65,7 +85,7 @@ export default function AdminSidebar() {
       {/* Quản lý tin tuyển dụng */}
       <div
         className={`${styles.item} ${
-          location.pathname === "/admin-job-management" ? styles.active : ""
+          isJobManagementActive ? styles.active : ""
         }`}
         onClick={() => navigate("/admin-job-management")}
       >
