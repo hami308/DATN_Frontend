@@ -1,123 +1,54 @@
+import { useEffect, useState } from "react";
+
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import styles from "./Homepage.module.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import JobCard from "../../components/JobCard/JobCard";
 import CatFace from "../../components/CatFace/CatFace";
 import AcvancedFilter from "../../components/AdvancedFilter/AdvancedFilter";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import logo from "../../assets/images/logo.png";
-import { useState } from "react";
 import Pagination from "../../components/Pagination/Pagination";
+
+import styles from "./Homepage.module.css";
+import logoDefault from "../../assets/images/logo.png";
+
+import { getJobsApi } from "../../service/job/get_jobs";
+
 export default function Homepage() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [jobs, setJobs] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const [searchParams, setSearchParams] = useState({});
+  const [filterParams, setFilterParams] = useState({});
+
   const jobsPerPage = 5;
 
-  const jobCards = [
-    {
-      logo: logo,
-      title: "Senior UX Designer",
-      type: "Part Time",
-      location: "Đà Nẵng",
-      salary_min: 30000,
-      salary_max: 35000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-    {
-      logo: logo,
-      title: "Software Engineer",
-      type: "Full Time",
-      location: "Thanh Khê",
-      salary_min: 50000,
-      salary_max: 60000,
-      deadline: "Còn 4 ngày",
-    },
-  ];
-  const indexOfLast = currentPage * jobsPerPage;
-  const indexOfFirst = indexOfLast - jobsPerPage;
-  const currentJobs = jobCards.slice(indexOfFirst, indexOfLast);
-  const totalPages = Math.ceil(jobCards.length / jobsPerPage);
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        setLoading(true);
+
+        const response = await getJobsApi({
+          page: currentPage,
+          limit: jobsPerPage,
+          ...searchParams,
+          ...filterParams,
+        });
+        console.log("JOB RESPONSE:", response);
+        setJobs(response.data.jobs);
+        setTotalPages(response.data.pagination.totalPages);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, [currentPage, searchParams, filterParams]);
+
   return (
     <div className={styles.homepage}>
       <Header />
@@ -128,26 +59,50 @@ export default function Homepage() {
         <div className={styles.right}>
           <div className={styles.top}>
             <CatFace />
-            <SearchBar />
+
+            <SearchBar
+              onSearch={(values) => {
+                console.log("SEARCH:", values);
+                setCurrentPage(1);
+                setSearchParams(values);
+              }}
+            />
           </div>
 
           <div className={styles.body}>
             <div className={styles.filter}>
-              <AcvancedFilter />
+              <AcvancedFilter
+                onFilterChange={(values) => {
+                  setCurrentPage(1);
+                  setFilterParams(values);
+                }}
+              />
             </div>
 
             <div className={styles.list}>
-              {currentJobs.map((job, index) => (
-                <JobCard
-                  key={index}
-                  logo={job.logo}
-                  title={job.title}
-                  type={job.type}
-                  location={job.location}
-                  salary={job.salary_min + "VND–" + job.salary_max + "VND"}
-                  deadline={job.deadline}
-                />
-              ))}
+              {loading && <p>Đang tải việc làm...</p>}
+
+              {!loading &&
+                jobs.map((job) => (
+                  <JobCard
+                    key={job.id}
+                    logo={job.company?.logo || logoDefault}
+                    title={job.name}
+                    type={job.job_type?.name || "Chưa cập nhật"}
+                    location={job.location || "Chưa cập nhật"}
+                    salary={`${job.salary_min || 0} VND - ${
+                      job.salary_max || 0
+                    } VND`}
+                    deadline={
+                      job.expire
+                        ? new Date(job.expire).toLocaleDateString("vi-VN")
+                        : "Chưa cập nhật"
+                    }
+                  />
+                ))}
+
+              {!loading && jobs.length === 0 && <p>Không tìm thấy việc làm.</p>}
+
               <div className={styles.paginationWrap}>
                 <Pagination
                   currentPage={currentPage}

@@ -81,7 +81,7 @@ export default function ChangePassword() {
             confirmPassword: validateField(
               "confirmPassword",
               newFormData.confirmPassword,
-              newFormData
+              newFormData,
             ),
           }
         : {}),
@@ -101,15 +101,12 @@ export default function ChangePassword() {
     const newErrors = {
       currentPassword: validateField(
         "currentPassword",
-        formData.currentPassword
+        formData.currentPassword,
       ),
-      newPassword: validateField(
-        "newPassword",
-        formData.newPassword
-      ),
+      newPassword: validateField("newPassword", formData.newPassword),
       confirmPassword: validateField(
         "confirmPassword",
-        formData.confirmPassword
+        formData.confirmPassword,
       ),
     };
 
@@ -152,10 +149,7 @@ export default function ChangePassword() {
         confirmPassword: "",
       });
     } catch (err) {
-      setApiError(
-        err.message ||
-          "Đổi mật khẩu thất bại. Vui lòng thử lại."
-      );
+      setApiError(err.message || "Đổi mật khẩu thất bại. Vui lòng thử lại.");
 
       setMessage("");
     } finally {
@@ -180,9 +174,7 @@ export default function ChangePassword() {
             onBlur={handleBlur}
             type={show.current ? "text" : "password"}
             placeholder="Nhập mật khẩu"
-            className={
-              errors.currentPassword ? styles.inputError : ""
-            }
+            className={errors.currentPassword ? styles.inputError : ""}
           />
 
           <button
@@ -190,19 +182,13 @@ export default function ChangePassword() {
             onClick={() => toggle("current")}
             className={styles.eye}
           >
-            {show.current ? (
-              <EyeOff size={18} />
-            ) : (
-              <Eye size={18} />
-            )}
+            {show.current ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
       </div>
 
       {errors.currentPassword && (
-        <p className={styles.error}>
-          {errors.currentPassword}
-        </p>
+        <p className={styles.error}>{errors.currentPassword}</p>
       )}
 
       <div className={styles.row}>
@@ -224,19 +210,13 @@ export default function ChangePassword() {
             onClick={() => toggle("newPass")}
             className={styles.eye}
           >
-            {show.newPass ? (
-              <EyeOff size={18} />
-            ) : (
-              <Eye size={18} />
-            )}
+            {show.newPass ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
       </div>
 
       {errors.newPassword && (
-        <p className={styles.error}>
-          {errors.newPassword}
-        </p>
+        <p className={styles.error}>{errors.newPassword}</p>
       )}
 
       <div className={styles.row}>
@@ -250,9 +230,7 @@ export default function ChangePassword() {
             onBlur={handleBlur}
             type={show.confirm ? "text" : "password"}
             placeholder="Nhập lại mật khẩu"
-            className={
-              errors.confirmPassword ? styles.inputError : ""
-            }
+            className={errors.confirmPassword ? styles.inputError : ""}
           />
 
           <button
@@ -260,37 +238,21 @@ export default function ChangePassword() {
             onClick={() => toggle("confirm")}
             className={styles.eye}
           >
-            {show.confirm ? (
-              <EyeOff size={18} />
-            ) : (
-              <Eye size={18} />
-            )}
+            {show.confirm ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
       </div>
 
       {errors.confirmPassword && (
-        <p className={styles.error}>
-          {errors.confirmPassword}
-        </p>
+        <p className={styles.error}>{errors.confirmPassword}</p>
       )}
 
-      {message && (
-        <p className={styles.success}>{message}</p>
-      )}
+      {message && <p className={styles.success}>{message}</p>}
 
-      {apiError && (
-        <p className={styles.errorCenter}>{apiError}</p>
-      )}
+      {apiError && <p className={styles.errorCenter}>{apiError}</p>}
 
-      <button
-        type="submit"
-        className={styles.submit}
-        disabled={loading}
-      >
-        {loading
-          ? "Đang cập nhật..."
-          : "Cập nhật mật khẩu"}
+      <button type="submit" className={styles.submit} disabled={loading}>
+        {loading ? "Đang cập nhật..." : "Cập nhật mật khẩu"}
       </button>
     </form>
   );

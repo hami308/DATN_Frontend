@@ -2,7 +2,7 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import styles from "./Candidate_Infor.module.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import ProfileCard from "../../components/ProfileForm/ProfileForm";
+import ProfileCard from "./components/CandidateProfileForm";
 
 export default function Candidate_Infor() {
   return (

@@ -1,15 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import styles from "./searchBar.module.css";
 
-export default function SearchBar({
-  industries = [],
-  industryLoading = false,
-  onSearch,
-}) {
-  const role = "recuiter";
+import { getAllIndustries } from "../../service/industry/industry";
+
+export default function SearchBar({ onSearch }) {
+  const [role, setRole] = useState("");
+
+  const [industries, setIndustries] = useState([]);
+
+  const [industryLoading, setIndustryLoading] = useState(false);
+
   const [industryId, setIndustryId] = useState("");
+
   const [keyword, setKeyword] = useState("");
+
   const [status, setStatus] = useState("");
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (user?.role) {
+      setRole(user.role);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchIndustries = async () => {
+      try {
+        setIndustryLoading(true);
+
+        const response = await getAllIndustries();
+
+        setIndustries(response.data.industries);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIndustryLoading(false);
+      }
+    };
+
+    fetchIndustries();
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -17,7 +49,6 @@ export default function SearchBar({
     onSearch?.({
       name: keyword.trim(),
       industryId,
-      status,
     });
   };
 
@@ -33,6 +64,7 @@ export default function SearchBar({
           <option value="">
             {industryLoading ? "Đang tải danh mục..." : "Danh mục nghề"}
           </option>
+
           {industries.map((industry) => (
             <option key={industry.id} value={industry.id}>
               {industry.name}
@@ -44,29 +76,26 @@ export default function SearchBar({
           <div className={styles.icon}>
             <span className="material-symbols-outlined">search</span>
           </div>
+
           <input
-            placeholder="Vị trí tuyển dụng"
+            placeholder="Vị trí tuyển dụng , địa điểm , tên công ty..."
             value={keyword}
             onChange={(event) => setKeyword(event.target.value)}
           />
         </div>
 
-        {role === "candidate" ? (
-          <select className={styles.select}>
-            <option>Địa điểm</option>
-            <option>Hà Nội</option>
-            <option>Đà Nẵng</option>
-            <option>TP HCM</option>
-          </select>
-        ) : (
+        {role !== "candidate" && (
           <select
             className={styles.select}
             value={status}
             onChange={(event) => setStatus(event.target.value)}
           >
             <option value="">Tất cả trạng thái</option>
+
             <option value="1">Đang mở</option>
+
             <option value="2">Đã hết hạn</option>
+
             <option value="0">Đã đóng</option>
           </select>
         )}

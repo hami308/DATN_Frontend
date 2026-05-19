@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000/api";
+export const BASE_URL = "http://localhost:3000/api";
 
 const request = async (method, url, data, options = {}) => {
   const token = localStorage.getItem("token");
@@ -17,7 +17,12 @@ const request = async (method, url, data, options = {}) => {
     ...options,
     method,
     headers,
-    body: data !== undefined ? (isFormData ? data : JSON.stringify(data)) : undefined,
+    body:
+      data !== undefined
+        ? isFormData
+          ? data
+          : JSON.stringify(data)
+        : undefined,
   });
 
   const contentType = response.headers.get("content-type");
