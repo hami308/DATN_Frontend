@@ -7,6 +7,12 @@ import SideBar from "../../components/Sidebar/Sidebar";
 import Component_job from "../../components/component_job/component_job";
 import { getJobDetailApi } from "../../service/job/job_detail";
 import { getMyCompanyJobsApi } from "../../service/job/my_company_jobs";
+import ApplyJobModal from "../../components/ApplyJobModal/ApplyJobModal";
+import {
+  getMySavedJobsApi,
+  saveMyJobApi,
+  unsaveMyJobApi,
+} from "../../service/candidate/savedJob.service";
 import "./Job_Details.css";
 
 import Logo from "../../assets/images/logo.png";
@@ -81,7 +87,27 @@ function Job_Details() {
   const [relatedLoading, setRelatedLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showApplyModal, setShowApplyModal] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
+  useEffect(() => {
+    const fetchSavedStatus = async () => {
+      try {
+        if (role !== "candidate") return;
 
+        const response = await getMySavedJobsApi();
+        const savedJobs = response?.data?.data?.jobs || [];
+
+        const saved = savedJobs.some((job) => Number(job.id) === Number(id));
+
+        setIsSaved(saved);
+      } catch (error) {
+        console.error("GET SAVED STATUS ERROR:", error);
+      }
+    };
+
+    fetchSavedStatus();
+  }, [id, role]);
   useEffect(() => {
     let isMounted = true;
 
@@ -184,7 +210,7 @@ function Job_Details() {
         (item) =>
           !viewModel.companyId ||
           !item.company_id ||
-          String(item.company_id) === String(viewModel.companyId)
+          String(item.company_id) === String(viewModel.companyId),
       )
       .map((item) => ({
         id: item.id,
@@ -195,7 +221,38 @@ function Job_Details() {
         salary: formatSalary(item.salary_min, item.salary_max),
       }));
   }, [companyJobs, id, viewModel]);
+  const handleToggleSaveJob = async () => {
+    try {
+      if (!user?.id) {
+        alert("Bạn cần đăng nhập để lưu việc làm.");
+        return;
+      }
 
+      if (role !== "candidate") {
+        alert("Chỉ ứng viên mới có thể lưu việc làm.");
+        return;
+      }
+
+      setSaveLoading(true);
+
+      if (isSaved) {
+        await unsaveMyJobApi(id);
+        setIsSaved(false);
+        return;
+      }
+
+      await saveMyJobApi(id);
+      setIsSaved(true);
+    } catch (error) {
+      alert(
+        error?.message ||
+          error?.data?.message ||
+          "Thao tác lưu việc làm thất bại.",
+      );
+    } finally {
+      setSaveLoading(false);
+    }
+  };
   return (
     <>
       <Header />
@@ -207,7 +264,9 @@ function Job_Details() {
           <section className="job-details-posting-container">
             <div className="job-details-card">
               {loading ? (
-                <div className="job-details-state">Đang tải chi tiết tin...</div>
+                <div className="job-details-state">
+                  Đang tải chi tiết tin...
+                </div>
               ) : error ? (
                 <div className="job-details-state error">{error}</div>
               ) : viewModel ? (
@@ -222,25 +281,37 @@ function Job_Details() {
                         />
 
                         <div className="job-details-title-infor">
-                           <h1 className="job-details-title">
+                          <h1 className="job-details-title">
                             {viewModel.title}
                           </h1>
                           <span className="company-name">
                             {viewModel.companyName}
                           </span>
-                         
-                        
                         </div>
                       </div>
 
                       <div className="job-details-button">
-                        <button className="apply-button">Ứng tuyển ngay</button>
+                        <button
+                          className="apply-button"
+                          onClick={() => setShowApplyModal(true)}
+                        >
+                          Ứng tuyển ngay
+                        </button>
 
-                        <button className="save-button">
+                        <button
+                          className={`save-button ${isSaved ? "saved" : ""}`}
+                          onClick={handleToggleSaveJob}
+                          disabled={saveLoading}
+                        >
                           <span className="material-symbols-outlined">
                             favorite
                           </span>
-                          Lưu tin
+
+                          {saveLoading
+                            ? "Đang xử lý..."
+                            : isSaved
+                              ? "Đã lưu"
+                              : "Lưu tin"}
                         </button>
                       </div>
                     </div>
@@ -254,7 +325,9 @@ function Job_Details() {
 
                   <div className="job-details-info-grid">
                     <div className="info-box">
-                      <span className="material-symbols-outlined">payments</span>
+                      <span className="material-symbols-outlined">
+                        payments
+                      </span>
                       <span className="info-label">Mức lương</span>
                       <span className="info-value">{viewModel.salary}</span>
                     </div>
@@ -268,13 +341,17 @@ function Job_Details() {
                     </div>
 
                     <div className="info-box">
-                      <span className="material-symbols-outlined">timeline</span>
+                      <span className="material-symbols-outlined">
+                        timeline
+                      </span>
                       <span className="info-label">Kinh nghiệm</span>
                       <span className="info-value">{viewModel.experience}</span>
                     </div>
 
                     <div className="info-box">
-                      <span className="material-symbols-outlined">workspace_premium</span>
+                      <span className="material-symbols-outlined">
+                        workspace_premium
+                      </span>
                       <span className="info-label">Cấp bậc</span>
                       <span className="info-value">{viewModel.level}</span>
                     </div>
@@ -333,7 +410,9 @@ function Job_Details() {
                           <span className="material-symbols-outlined">
                             work
                           </span>
-                          <p>Lĩnh vực: {viewModel.industries || "Chưa cập nhật"}</p>
+                          <p>
+                            Lĩnh vực: {viewModel.industries || "Chưa cập nhật"}
+                          </p>
                         </div>
                       </div>
 
@@ -394,6 +473,9 @@ function Job_Details() {
       </div>
 
       <Footer />
+      {showApplyModal && (
+        <ApplyJobModal jobId={id} onClose={() => setShowApplyModal(false)} />
+      )}
     </>
   );
 }

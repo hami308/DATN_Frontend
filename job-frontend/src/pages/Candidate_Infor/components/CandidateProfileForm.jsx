@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import styles from "../../../components/ProfileForm/ProfileForm.module.css";
+import styles from "./Profile.module.css";
 
 import {
   getCandidateInfor,

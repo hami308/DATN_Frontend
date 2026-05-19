@@ -16,29 +16,31 @@
   border-radius: 12px;
   padding: 32px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 32px;
-  align-items: flex-start;
-  justify-content: center;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
-.cvPanel.hasPreview {
-  justify-content: flex-start;
-}
-
-/* upload */
+/* ========================= */
+/* upload box */
+/* ========================= */
 .uploadBox {
-  width: 240px;
+  width: 260px;
   height: 160px;
+
   border: 2px dashed #dcdcdc;
   border-radius: 10px;
+
   cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: #fafafa;
+
   transition: all 0.25s ease;
-  flex-shrink: 0;
 }
 
 .uploadBox:hover {
@@ -54,8 +56,9 @@
 
 .uploadContent span {
   display: block;
-  font-size: 12px;
   margin-top: 6px;
+
+  font-size: 12px;
   color: #888;
 }
 
@@ -65,34 +68,126 @@
   color: #1677ff;
 }
 
-/* preview */
+/* ========================= */
+/* CV list */
+/* ========================= */
+.cvList {
+  width: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: center;
+
+  gap: 24px;
+}
+
 .preview {
-  flex: 1;
-  max-width: 500px;
+  width: 260px;
+  flex-shrink: 0;
+
+  border: 1px solid #eee;
+  border-radius: 12px;
+
+  padding: 12px;
+
+  background: #fff;
+
   cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.preview:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
 .cvFrame {
-  height: 420px;
+  width: 100%;
+  height: 340px;
+
   object-fit: contain;
+
   border: 1px solid #eee;
   border-radius: 8px;
+
   background: #fff;
 }
 
 .cvInfo {
   margin-top: 10px;
+
   font-size: 14px;
   color: #555;
 }
 
 .cvName {
-  font-weight: 600;
   margin-bottom: 4px;
+
+  font-weight: 600;
   color: #222;
+
+  word-break: break-word;
 }
 
+/* ========================= */
+/* actions */
+/* ========================= */
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.actions button {
+  border: none;
+  border-radius: 6px;
+
+  padding: 8px 12px;
+
+  cursor: pointer;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  transition: 0.2s;
+}
+
+.actions button:hover {
+  opacity: 0.9;
+}
+
+.actions button:first-child {
+  background: #0f25a0;
+  color: white;
+}
+
+.actions button:last-child {
+  background: #dd6b6b;
+  color: white;
+}
+
+/* ========================= */
+/* message */
+/* ========================= */
+.success {
+  color: #16a34a;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.error {
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ========================= */
 /* job */
+/* ========================= */
 .jobSection {
   margin-top: 36px;
 }
@@ -105,8 +200,10 @@
 
 .list {
   margin-top: 16px;
+
   display: flex;
   flex-direction: column;
+
   gap: 14px;
 }
 
@@ -114,18 +211,65 @@
   display: flex;
   justify-content: center;
 }
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #ddd;
+  border-top-color: #1677ff;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
 
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pageLoading {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #555;
+  font-size: 15px;
+}
+
+.disabledBox {
+  opacity: 0.65;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.previewLoading {
+  width: 100%;
+  height: 340px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  color: #555;
+}
+
+.actions button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
 /* ========================= */
 /* tablet */
 /* ========================= */
 @media (max-width: 992px) {
   .cvPanel {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .cvPanel.hasPreview {
-    align-items: stretch;
+    padding: 24px;
   }
 
   .uploadBox {
@@ -133,13 +277,16 @@
     max-width: 320px;
   }
 
+  .cvList {
+    justify-content: center;
+  }
+
   .preview {
-    max-width: 100%;
-    width: 100%;
+    width: 240px;
   }
 
   .cvFrame {
-    height: 380px;
+    height: 320px;
   }
 }
 
@@ -151,13 +298,22 @@
     padding: 16px;
   }
 
-  .cvPanel {
-    padding: 20px;
-    gap: 20px;
-  }
-
   .title {
     font-size: 20px;
+  }
+
+  .cvPanel {
+    padding: 20px;
+    gap: 24px;
+  }
+
+  .cvList {
+    justify-content: center;
+  }
+
+  .preview {
+    width: 100%;
+    max-width: 320px;
   }
 
   .cvFrame {
@@ -187,5 +343,9 @@
 
   .uploadIcon {
     font-size: 24px;
+  }
+
+  .actions {
+    flex-direction: column;
   }
 }

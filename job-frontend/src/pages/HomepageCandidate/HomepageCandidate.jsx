@@ -14,9 +14,13 @@ import logoDefault from "../../assets/images/logo.png";
 
 import { getJobsApi } from "../../service/job/get_jobs";
 
+import { getMySavedJobsApi } from "../../service/candidate/savedJob.service";
+
 export default function Homepage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [jobs, setJobs] = useState([]);
+  const [savedJobIds, setSavedJobIds] = useState([]);
+
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -24,6 +28,31 @@ export default function Homepage() {
   const [filterParams, setFilterParams] = useState({});
 
   const jobsPerPage = 5;
+
+  const fetchSavedJobs = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (!user || user.role !== "candidate") {
+        setSavedJobIds([]);
+        return;
+      }
+
+      const response = await getMySavedJobsApi();
+
+      const savedJobs = response?.data?.data?.jobs || [];
+
+      const ids = savedJobs.map((job) => Number(job.id));
+
+      setSavedJobIds(ids);
+    } catch (error) {
+      console.error("GET SAVED JOBS ERROR:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSavedJobs();
+  }, []);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -36,7 +65,7 @@ export default function Homepage() {
           ...searchParams,
           ...filterParams,
         });
-        console.log("JOB RESPONSE:", response);
+
         setJobs(response.data.jobs);
         setTotalPages(response.data.pagination.totalPages);
       } catch (error) {
@@ -62,7 +91,6 @@ export default function Homepage() {
 
             <SearchBar
               onSearch={(values) => {
-                console.log("SEARCH:", values);
                 setCurrentPage(1);
                 setSearchParams(values);
               }}
@@ -86,6 +114,7 @@ export default function Homepage() {
                 jobs.map((job) => (
                   <JobCard
                     key={job.id}
+                    id={job.id}
                     logo={job.company?.logo || logoDefault}
                     title={job.name}
                     type={job.job_type?.name || "Chưa cập nhật"}
@@ -98,6 +127,7 @@ export default function Homepage() {
                         ? new Date(job.expire).toLocaleDateString("vi-VN")
                         : "Chưa cập nhật"
                     }
+                    isSaved={savedJobIds.includes(Number(job.id))}
                   />
                 ))}
 

@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #EDEFF5;
+  border: 1px solid #edeff5;
   border-radius: 12px;
   padding: 16px 20px;
   background: #fff;
@@ -53,7 +53,7 @@
 }
 
 .job-card-type.full {
-  background: #E8F1FF;
+  background: #e8f1ff;
   color: var(--color-primary);
 }
 
@@ -83,7 +83,7 @@
 }
 
 .apply-btn {
-  background: #E7F0FA;
+  background: #e7f0fa;
   color: var(--color-primary);
   border: none;
   padding: 10px 16px;
@@ -98,12 +98,27 @@
 }
 
 .bookmark {
-  font-size: 22px;
-  color: #9ca3af;
   cursor: pointer;
+  font-size: 30px;
+  color: #9ca3af;
+
+  transition: 0.2s;
+
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
 }
-.bookmark:hover {
-  color: var(--color-primary);
+
+.bookmark.saved {
+  color: #0b0bc1;
+
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 500,
+    "GRAD" 0,
+    "opsz" 24;
 }
 /* Responsive */
 @media (max-width: 1024px) {

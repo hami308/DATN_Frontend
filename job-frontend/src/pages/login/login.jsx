@@ -6,7 +6,7 @@ import pic3 from "../../assets/image/pic3.png";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { loginApi } from "../../service/auth/login";
-
+import { BASE_URL } from "../../service/api";
 export default function Login() {
   const navigate = useNavigate();
 
@@ -30,11 +30,24 @@ export default function Login() {
         email,
         password,
       });
-      const user = result.data.user;
-      const token = result.data.token;
+      const user = result?.data?.user;
+      const token = result?.data?.token;
+
+      if (!user || !token) {
+        setError("Dữ liệu đăng nhập không hợp lệ");
+        return;
+      }
+
+      const normalizedUser = {
+        ...user,
+        avatar: user.avatar
+          ? `${BASE_URL.replace("/api", "")}${user.avatar}`
+          : null,
+      };
 
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+
+      localStorage.setItem("user", JSON.stringify(normalizedUser));
 
       if (user.role === "candidate") {
         navigate("/home-candidate");
@@ -45,9 +58,7 @@ export default function Login() {
       }
     } catch (error) {
       setError(
-        error.response?.data?.message ||
-          error.message ||
-          "Đăng nhập thất bại"
+        error.response?.data?.message || error.message || "Đăng nhập thất bại",
       );
     } finally {
       setLoading(false);

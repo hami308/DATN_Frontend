@@ -67,7 +67,7 @@ function JobComponent({
       candidateNumber,
       expire,
       expireText,
-    ]
+    ],
   );
 
   useEffect(() => {
@@ -93,7 +93,12 @@ function JobComponent({
 
         <div className="job-component-info">
           <div className="job-component-top">
-            <h3 className="job-component-title">{title}</h3>
+            <h3
+              className="job-component-title clickable-title"
+              onClick={() => navigate(`/job-details/${id}`)}
+            >
+              {title}
+            </h3>
 
             <span
               className={`job-component-type ${
@@ -126,7 +131,7 @@ function JobComponent({
       <div className="job-component-right">
         <button className="job-component-status-btn">{status}</button>
 
-        {role === "recruiter" ? (
+        {role === "recruiter" && (
           <div className="job-component-menu-wrapper" ref={menuRef}>
             <span
               className="material-symbols-outlined job-component-menu"
@@ -197,10 +202,6 @@ function JobComponent({
               </div>
             )}
           </div>
-        ) : (
-          <span className="material-symbols-outlined job-component-bookmark">
-            bookmark
-          </span>
         )}
       </div>
 

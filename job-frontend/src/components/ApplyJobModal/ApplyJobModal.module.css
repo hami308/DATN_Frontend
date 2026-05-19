@@ -1,0 +1,147 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+}
+
+.modal {
+  width: 460px;
+  max-width: calc(100% - 32px);
+
+  background: #fff;
+
+  border-radius: 14px;
+
+  padding: 24px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 600;
+
+  margin-bottom: 20px;
+
+  color: #222;
+}
+
+.options {
+  display: flex;
+  gap: 24px;
+
+  margin-bottom: 18px;
+}
+
+.optionLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  cursor: pointer;
+
+  font-size: 15px;
+}
+
+.cvList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  margin-bottom: 18px;
+}
+
+.cvItem {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  padding: 12px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.cvItem:hover {
+  border-color: #032d67;
+  background: #f8fbff;
+}
+label span {
+  color: #14080a;
+}
+.cvItem label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  cursor: pointer;
+}
+
+.defaultText {
+  color: #d11411;
+  font-weight: 500;
+}
+
+.uploadBox {
+  margin-bottom: 18px;
+}
+
+.uploadInput {
+  width: 100%;
+}
+
+.fileName {
+  margin-top: 10px;
+
+  color: #1677ff;
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancelBtn,
+.submitBtn {
+  border: none;
+  border-radius: 8px;
+
+  padding: 10px 16px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  transition: 0.2s;
+}
+
+.cancelBtn {
+  background: #e5e7eb;
+}
+
+.cancelBtn:hover {
+  background: #d1d5db;
+}
+
+.submitBtn {
+  background: #0a58c6;
+  color: white;
+}
+
+.submitBtn:hover {
+  background: #0958d9;
+}
+
+.submitBtn:disabled,
+.cancelBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

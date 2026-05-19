@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
 import {
   Home,
@@ -21,12 +21,56 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isProfileActive = location.pathname.startsWith("/candidate");
+  const path = location.pathname;
 
-  const isJobActive =
-    location.pathname === "/saved-jobs" ||
-    location.pathname === "/applied-jobs" ||
-    location.pathname === "/candidate-job-recommend";
+  const getActiveKeyFromPath = (pathname) => {
+    if (pathname === "/home-candidate") return "home";
+
+    if (
+      pathname === "/candidate-profile" ||
+      pathname === "/candidate-change-password"
+    ) {
+      return "profile";
+    }
+
+    if (pathname === "/cv-management") return "cv";
+
+    if (
+      pathname === "/saved-jobs" ||
+      pathname === "/applied-jobs" ||
+      pathname === "/candidate-job-recommend"
+    ) {
+      return "jobs";
+    }
+
+    return sessionStorage.getItem("candidateSidebarActive") || "home";
+  };
+
+  const activeKey = getActiveKeyFromPath(path);
+
+  useEffect(() => {
+    if (
+      path === "/home-candidate" ||
+      path === "/candidate-profile" ||
+      path === "/candidate-change-password" ||
+      path === "/cv-management" ||
+      path === "/saved-jobs" ||
+      path === "/applied-jobs" ||
+      path === "/candidate-job-recommend"
+    ) {
+      sessionStorage.setItem("candidateSidebarActive", activeKey);
+    }
+  }, [path, activeKey]);
+
+  const goTo = (url, key) => {
+    sessionStorage.setItem("candidateSidebarActive", key);
+    navigate(url);
+  };
+
+  const isHomeActive = activeKey === "home";
+  const isProfileActive = activeKey === "profile";
+  const isCVActive = activeKey === "cv";
+  const isJobActive = activeKey === "jobs";
 
   return (
     <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
@@ -37,18 +81,14 @@ export default function Sidebar() {
         {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
       </button>
 
-      {/* Trang chủ */}
       <div
-        className={`${styles.item} ${
-          location.pathname === "/home-candidate" ? styles.active : ""
-        }`}
-        onClick={() => navigate("/home-candidate")}
+        className={`${styles.item} ${isHomeActive ? styles.active : ""}`}
+        onClick={() => goTo("/home-candidate", "home")}
       >
         <Home size={20} />
         {!collapsed && <span>Trang chủ</span>}
       </div>
 
-      {/* Trang cá nhân */}
       <div>
         <div
           className={`${styles.item} ${isProfileActive ? styles.active : ""}`}
@@ -72,22 +112,18 @@ export default function Sidebar() {
           <div className={styles.subMenu}>
             <div
               className={`${styles.subItem} ${
-                location.pathname === "/candidate-profile"
-                  ? styles.activeSub
-                  : ""
+                path === "/candidate-profile" ? styles.activeSub : ""
               }`}
-              onClick={() => navigate("/candidate-profile")}
+              onClick={() => goTo("/candidate-profile", "profile")}
             >
               Thông tin cá nhân
             </div>
 
             <div
               className={`${styles.subItem} ${
-                location.pathname === "/candidate-change-password"
-                  ? styles.activeSub
-                  : ""
+                path === "/candidate-change-password" ? styles.activeSub : ""
               }`}
-              onClick={() => navigate("/candidate-change-password")}
+              onClick={() => goTo("/candidate-change-password", "profile")}
             >
               Đổi mật khẩu
             </div>
@@ -95,18 +131,14 @@ export default function Sidebar() {
         )}
       </div>
 
-      {/* Quản lý CV */}
       <div
-        className={`${styles.item} ${
-          location.pathname === "/cv-management" ? styles.active : ""
-        }`}
-        onClick={() => navigate("/cv-management")}
+        className={`${styles.item} ${isCVActive ? styles.active : ""}`}
+        onClick={() => goTo("/cv-management", "cv")}
       >
         <FileText size={20} />
         {!collapsed && <span>Quản lý CV</span>}
       </div>
 
-      {/* Quản lý việc làm */}
       <div>
         <div
           className={`${styles.item} ${isJobActive ? styles.active : ""}`}
@@ -130,18 +162,18 @@ export default function Sidebar() {
           <div className={styles.subMenu}>
             <div
               className={`${styles.subItem} ${
-                location.pathname === "/saved-jobs" ? styles.activeSub : ""
+                path === "/saved-jobs" ? styles.activeSub : ""
               }`}
-              onClick={() => navigate("/saved-jobs")}
+              onClick={() => goTo("/saved-jobs", "jobs")}
             >
               Việc làm đã lưu
             </div>
 
             <div
               className={`${styles.subItem} ${
-                location.pathname === "/applied-jobs" ? styles.activeSub : ""
+                path === "/applied-jobs" ? styles.activeSub : ""
               }`}
-              onClick={() => navigate("/applied-jobs")}
+              onClick={() => goTo("/applied-jobs", "jobs")}
             >
               Việc làm đã ứng tuyển
             </div>
@@ -149,13 +181,11 @@ export default function Sidebar() {
         )}
       </div>
 
-      {/* Thông báo */}
       <div className={styles.item}>
         <Bell size={20} />
         {!collapsed && <span>Thông báo</span>}
       </div>
 
-      {/* Logout */}
       <div
         className={styles.item}
         onClick={() => {

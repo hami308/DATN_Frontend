@@ -90,7 +90,7 @@
   display: flex;
   justify-content: space-between;
   padding: 16px 0;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .verifyPhoneLink {
@@ -148,7 +148,7 @@
   font-size: 13px;
 }
 .dateInput {
-  width: 85%;
+  width: 90%;
   text-align: right;
 }
 .readOnlyInput {
@@ -166,6 +166,7 @@
   display: flex;
   gap: 16px;
   margin-right: 10px;
+  color: black;
 }
 
 .actions {
@@ -214,71 +215,52 @@
     width: 100%;
   }
 }
-@media (max-width: 500px) {
+
+@media (max-width: 768px) {
   .card {
-    padding: 12px;
-    border-radius: 0;
+    padding: 16px;
+    max-width: 100%;
   }
 
-  /* toàn bộ text nhỏ lại */
-  .name {
-    font-size: 14px; /* vẫn giữ nổi bật hơn */
-  }
-
-  .email {
-    font-size: 13px;
-    text-align: left; /* ⭐ căn trái để dễ đọc */
-  }
-  .header {
-    align-items: center;
-    text-align: center;
-    gap: 8px;
-  }
-
-  /* name + email tách rõ */
-  .name {
-    font-size: 14px;
-    line-height: 1.2;
-  }
-
-  .email {
-    font-size: 13px;
-    color: #666;
-    word-break: break-word; /* ⭐ nếu email dài */
-  }
   .row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
-    padding: 10px 0;
-    font-size: 13px; /* ⭐ quan trọng */
+    gap: 6px;
+  }
+
+  .row input {
+    width: 100%;
     text-align: left;
   }
 
-  .row span:first-child {
-    font-size: 13px;
-    color: #888;
-  }
-
-  .row span:last-child {
-    font-size: 13px;
+  .field {
     width: 100%;
   }
 
   .phoneValue {
     width: 100%;
+    justify-content: flex-start;
+  }
+
+  .datePickerWrapper {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .dateInput {
+    width: 100%;
+    text-align: left;
   }
 
   .gender {
-    font-size: 13px;
-  }
-
-  .gender label {
-    font-size: 13px;
+    width: 100%;
+    margin-right: 0;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 16px;
   }
 
   .save {
-    font-size: 13px; /* ⭐ button cũng nhỏ lại */
-    padding: 10px;
+    width: 100%;
   }
 }
