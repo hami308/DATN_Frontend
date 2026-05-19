@@ -7,6 +7,7 @@ import styles from "./ProfileForm.module.css";
 import {
   getRecruiterInfor,
   updateRecruiterInfor,
+  getRecruiterDetailApi,
 } from "../../service/recruiter/recruiter_infor";
 
 const formatDateForDisplay = (value) => {
@@ -88,7 +89,7 @@ const validateForm = (formData) => {
   return newErrors;
 };
 
-export default function ProfileForm() {
+export default function ProfileForm({ profileId }) {
   const fileRef = useRef(null);
 
   const [avatar, setAvatar] = useState(null);
@@ -101,6 +102,11 @@ export default function ProfileForm() {
   const [error, setError] = useState("");
   const [errors, setErrors] = useState({});
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = user?.role === "admin";
+  const isRecruiter = user?.role === "recruiter";
+  const canShowCompany = isAdmin || isRecruiter;
+
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -108,24 +114,15 @@ export default function ProfileForm() {
     location: "",
     gender: "",
     date_of_birth: "",
+    company_name: "",
   });
 
-  const checkRecruiterRole = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-
+  const checkUser = () => {
     if (!user) {
       return {
         valid: false,
         message: "Bạn chưa đăng nhập.",
         user: null,
-      };
-    }
-
-    if (user.role !== "recruiter") {
-      return {
-        valid: false,
-        message: "Tài khoản không phải nhà tuyển dụng.",
-        user,
       };
     }
 
@@ -150,7 +147,7 @@ export default function ProfileForm() {
 
     setFormData({
       full_name: recruiter?.full_name || "",
-      email: user?.email || "",
+      email: recruiter?.email || user?.email || "",
       phone: recruiter?.phone || "",
       location: recruiter?.location || "",
       gender:
@@ -160,13 +157,25 @@ export default function ProfileForm() {
           ? "female"
           : "",
       date_of_birth: formatDateForDisplay(recruiter?.date_of_birth),
+      company_name:
+        recruiter?.company_name ||
+        recruiter?.company?.name ||
+        recruiter?.name_company ||
+        recruiter?.companyName ||
+        "Chưa cập nhật công ty",
     });
   };
 
   const fetchLatestRecruiter = async (user) => {
-    const response = await getRecruiterInfor();
-    const recruiter = getRecruiterFromResponse(response);
+    let response;
 
+    if (profileId) {
+      response = await getRecruiterDetailApi(profileId);
+    } else {
+      response = await getRecruiterInfor();
+    }
+
+    const recruiter = getRecruiterFromResponse(response);
     if (recruiter) {
       fillFormData(recruiter, user);
     }
@@ -181,7 +190,7 @@ export default function ProfileForm() {
         setMessage("");
         setError("");
 
-        const result = checkRecruiterRole();
+        const result = checkUser();
 
         if (!result.valid) {
           setError(result.message);
@@ -202,12 +211,14 @@ export default function ProfileForm() {
     };
 
     fetchRecruiter();
-  }, []);
+  }, [profileId]);
 
   const handleChange = (e) => {
+    if (isAdmin) return;
+
     const { name, value } = e.target;
 
-    if (name === "email") return;
+    if (name === "email" || name === "company_name") return;
 
     setFormData((prev) => ({
       ...prev,
@@ -224,6 +235,8 @@ export default function ProfileForm() {
   };
 
   const handleDateChange = (date) => {
+    if (isAdmin) return;
+
     setFormData((prev) => ({
       ...prev,
       date_of_birth: formatDateFromPicker(date),
@@ -234,6 +247,8 @@ export default function ProfileForm() {
   };
 
   const handleUpload = (e) => {
+    if (isAdmin) return;
+
     const file = e.target.files[0];
 
     if (!file) return;
@@ -245,6 +260,8 @@ export default function ProfileForm() {
   };
 
   const removeAvatar = () => {
+    if (isAdmin) return;
+
     setAvatar(null);
     setAvatarFile(null);
 
@@ -257,7 +274,9 @@ export default function ProfileForm() {
   };
 
   const handleSave = async () => {
-    const result = checkRecruiterRole();
+    if (isAdmin) return;
+
+    const result = checkUser();
 
     if (!result.valid) {
       setMessage("");
@@ -348,31 +367,35 @@ export default function ProfileForm() {
             )}
           </div>
 
-          <button
-            type="button"
-            className={styles.uploadBtn}
-            onClick={() => fileRef.current?.click()}
-          >
-            <span className="material-symbols-outlined">upload</span>
-          </button>
+          {!isAdmin && (
+            <>
+              <button
+                type="button"
+                className={styles.uploadBtn}
+                onClick={() => fileRef.current?.click()}
+              >
+                <span className="material-symbols-outlined">upload</span>
+              </button>
 
-          {avatar && (
-            <button
-              type="button"
-              className={styles.removeBtn}
-              onClick={removeAvatar}
-            >
-              ✕
-            </button>
+              {avatar && (
+                <button
+                  type="button"
+                  className={styles.removeBtn}
+                  onClick={removeAvatar}
+                >
+                  ✕
+                </button>
+              )}
+
+              <input
+                type="file"
+                ref={fileRef}
+                hidden
+                accept="image/*"
+                onChange={handleUpload}
+              />
+            </>
           )}
-
-          <input
-            type="file"
-            ref={fileRef}
-            hidden
-            accept="image/*"
-            onChange={handleUpload}
-          />
         </div>
 
         <div>
@@ -396,14 +419,13 @@ export default function ProfileForm() {
             name="full_name"
             value={formData.full_name}
             onChange={handleChange}
+            readOnly={isAdmin}
             placeholder="Nhập họ và tên"
             className={errors.full_name ? styles.inputError : ""}
           />
 
           {errors.full_name && (
-            <p className={styles.fieldError}>
-              {errors.full_name}
-            </p>
+            <p className={styles.fieldError}>{errors.full_name}</p>
           )}
         </div>
       </div>
@@ -424,6 +446,26 @@ export default function ProfileForm() {
         </div>
       </div>
 
+      {canShowCompany && (
+        <>
+          <div className={styles.divider}></div>
+
+          <div className={styles.row}>
+            <span>Công ty</span>
+
+            <div className={styles.field}>
+              <input
+                name="company_name"
+                value={formData.company_name}
+                readOnly
+                className={styles.readOnlyInput}
+                placeholder="Công ty"
+              />
+            </div>
+          </div>
+        </>
+      )}
+
       <div className={styles.divider}></div>
 
       <div className={styles.row}>
@@ -435,18 +477,21 @@ export default function ProfileForm() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
+              readOnly={isAdmin}
               placeholder="Nhập số điện thoại"
               className={errors.phone ? styles.inputError : ""}
             />
 
-            <Link
-              to="/verify-phone"
-              className={styles.verifyPhoneLink}
-              title="Xác thực số điện thoại"
-              aria-label="Xác thực số điện thoại"
-            >
-              <span className="material-symbols-outlined">check_circle</span>
-            </Link>
+            {!isAdmin && (
+              <Link
+                to="/verify-phone"
+                className={styles.verifyPhoneLink}
+                title="Xác thực số điện thoại"
+                aria-label="Xác thực số điện thoại"
+              >
+                <span className="material-symbols-outlined">check_circle</span>
+              </Link>
+            )}
           </div>
 
           {errors.phone && (
@@ -465,6 +510,7 @@ export default function ProfileForm() {
             name="location"
             value={formData.location}
             onChange={handleChange}
+            readOnly={isAdmin}
             placeholder="Nhập địa chỉ"
           />
         </div>
@@ -483,6 +529,7 @@ export default function ProfileForm() {
               value="male"
               checked={formData.gender === "male"}
               onChange={handleChange}
+              disabled={isAdmin}
             />
             Nam
           </label>
@@ -494,6 +541,7 @@ export default function ProfileForm() {
               value="female"
               checked={formData.gender === "female"}
               onChange={handleChange}
+              disabled={isAdmin}
             />
             Nữ
           </label>
@@ -508,6 +556,7 @@ export default function ProfileForm() {
         <DatePicker
           selected={parseDisplayDate(formData.date_of_birth)}
           onChange={handleDateChange}
+          disabled={isAdmin}
           dateFormat="dd/MM/yyyy"
           placeholderText="dd/mm/yyyy"
           className={styles.dateInput}
@@ -523,16 +572,18 @@ export default function ProfileForm() {
 
       {error && <p className={styles.error}>{error}</p>}
 
-      <div className={styles.actions}>
-        <button
-          type="button"
-          className={styles.save}
-          onClick={handleSave}
-          disabled={loading}
-        >
-          {loading ? "Đang lưu..." : "Lưu"}
-        </button>
-      </div>
+      {!isAdmin && (
+        <div className={styles.actions}>
+          <button
+            type="button"
+            className={styles.save}
+            onClick={handleSave}
+            disabled={loading}
+          >
+            {loading ? "Đang lưu..." : "Lưu"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

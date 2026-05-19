@@ -78,7 +78,7 @@ function JobCard({
         </span>
 
         <button className="apply-btn">
-          Ứng Tuyển Ngay
+          Ứng tuyển ngay
         </button>
       </div>
     </div>

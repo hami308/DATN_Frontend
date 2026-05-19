@@ -1,96 +1,213 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft, BriefcaseBusiness, Loader2 } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import CompanyDetail from "../../components/Company/CompanyDetail";
 import JobCard from "../../components/JobCard/JobCard";
 import Pagination from "../../components/Pagination/Pagination";
+import { getCompanyDetailById } from "../../service/comapny/company_infor";
+import Sidebar_Admin from "../../components/Sidebar_admin/Sidebar";
 import styles from "./Company_page.module.css";
-import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+
+const JOBS_PER_PAGE = 4;
+
+const getCompanyFromResponse = (response) => {
+  if (response?.data?.company) return response.data.company;
+  if (response?.company) return response.company;
+  if (response?.data && !Array.isArray(response.data)) return response.data;
+
+  return null;
+};
+
+const getJobs = (company) => {
+  const jobs =
+    company?.jobs ||
+    company?.open_jobs ||
+    company?.company_jobs ||
+    company?.job_list ||
+    [];
+
+  return Array.isArray(jobs) ? jobs : [];
+};
+
+const formatSalary = (min, max) => {
+  const hasMin = min !== undefined && min !== null && min !== "";
+  const hasMax = max !== undefined && max !== null && max !== "";
+
+  if (!hasMin && !hasMax) return "Thỏa thuận";
+
+  const formatter = new Intl.NumberFormat("vi-VN");
+  const minText = hasMin ? formatter.format(Number(min)) : "";
+  const maxText = hasMax ? formatter.format(Number(max)) : "";
+
+  if (hasMin && hasMax) return `${minText} - ${maxText}`;
+  if (hasMin) return `Từ ${minText}`;
+  return `Đến ${maxText}`;
+};
+
+const formatDeadline = (expire) => {
+  if (!expire) return "Chưa cập nhật hạn";
+
+  const expireDate = new Date(expire);
+  if (Number.isNaN(expireDate.getTime())) return "Chưa cập nhật hạn";
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  expireDate.setHours(0, 0, 0, 0);
+
+  const diffDays = Math.ceil(
+    (expireDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+  );
+
+  if (diffDays < 0) return "Đã hết hạn";
+  if (diffDays === 0) return "Hết hạn hôm nay";
+
+  return `Còn ${diffDays} ngày`;
+};
+
 export default function Company_page() {
-  const role = "candidate";
+  const user= JSON.parse(localStorage.getItem("user"));
+  const role = user?.role;
   const navigate = useNavigate();
-  const jobs = [
-    {
-      logo: "https://upload.wikimedia.org/wikipedia/commons/1/11/FPT_logo_2010.svg",
-      title: "Frontend React Developer",
-      type: "Full Time",
-      location: "Đà Nẵng",
-      salary: "20tr - 30tr",
-      deadline: "Còn 5 ngày",
-    },
-    {
-      logo: "https://upload.wikimedia.org/wikipedia/commons/1/11/FPT_logo_2010.svg",
-      title: "Backend NodeJS",
-      type: "Full Time",
-      location: "Hà Nội",
-      salary: "25tr - 35tr",
-      deadline: "Còn 3 ngày",
-    },
-    {
-      logo: "https://upload.wikimedia.org/wikipedia/commons/1/11/FPT_logo_2010.svg",
-      title: "Fullstack Developer",
-      type: "Full Time",
-      location: "HCM",
-      salary: "30tr - 40tr",
-      deadline: "Còn 7 ngày",
-    },
-  ];
-
-  /* pagination */
+  const { companyId } = useParams();
+  const [company, setCompany] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 2;
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const indexOfLast = currentPage * jobsPerPage;
-  const indexOfFirst = indexOfLast - jobsPerPage;
-  const currentJobs = jobs.slice(indexOfFirst, indexOfLast);
-  const totalPages = Math.ceil(jobs.length / jobsPerPage);
+  useEffect(() => {
+    let ignore = false;
+
+    const fetchCompany = async () => {
+      if (!companyId) {
+        setError("Không tìm thấy mã công ty.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError("");
+        const response = await getCompanyDetailById(companyId);
+        const companyData = getCompanyFromResponse(response);
+
+        if (!ignore) {
+          setCompany(companyData);
+          setCurrentPage(1);
+        }
+      } catch (err) {
+        if (!ignore) {
+          setError(
+            err?.response?.data?.message ||
+              "Không thể tải thông tin công ty. Vui lòng thử lại sau."
+          );
+        }
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchCompany();
+
+    return () => {
+      ignore = true;
+    };
+  }, [companyId]);
+
+  const jobs = useMemo(() => getJobs(company), [company]);
+  const totalPages = Math.ceil(jobs.length / JOBS_PER_PAGE);
+  const currentJobs = jobs.slice(
+    (currentPage - 1) * JOBS_PER_PAGE,
+    currentPage * JOBS_PER_PAGE
+  );
+
+  const handleViewRecruiter = (recruiterId) => {
+    navigate(`/recruiter-profile/${recruiterId}`);
+  };
+
+  const logo = company?.logo || company?.logo_url || company?.avatar;
 
   return (
     <div className={styles.companyPage}>
       <Header />
 
-      <div className={styles.mainContent}>
+      <main className={styles.mainContent}>
         {role === "candidate" && <Sidebar />}
+        {role === "admin" && <Sidebar_Admin />}
 
         <div className={styles.content}>
-          <div className={styles.backBtn} onClick={() => navigate(-1)}>
-            <span className="material-symbols-outlined">arrow_back</span>
-            <span>Quay lại</span>
-          </div>
-          <CompanyDetail />
+          <button className={styles.backBtn} type="button" onClick={() => navigate(-1)}>
+            <ArrowLeft size={18} />
+            Quay lại
+          </button>
 
-          {/* job section */}
-          <div className={styles.jobSection}>
-            <div className={styles.sectionHeader}>
-              <span>Danh sách tuyển dụng của công ty</span>
+          {loading ? (
+            <div className={styles.pageState}>
+              <Loader2 className={styles.spin} size={30} />
+              Đang tải thông tin công ty...
             </div>
-
-            <div className={styles.list}>
-              {currentJobs.map((job, index) => (
-                <JobCard
-                  key={index}
-                  logo={job.logo}
-                  title={job.title}
-                  type={job.type}
-                  location={job.location}
-                  salary={job.salary}
-                  deadline={job.deadline}
-                />
-              ))}
-            </div>
-
-            <div className={styles.paginationWrap}>
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
+          ) : error ? (
+            <div className={styles.pageState}>{error}</div>
+          ) : (
+            <>
+              <CompanyDetail
+                company={company}
+                onViewRecruiter={handleViewRecruiter}
               />
-            </div>
-          </div>
+
+              <section className={styles.jobSection}>
+                <div className={styles.sectionHeader}>
+                  <div>
+                    <h2>Danh sách tuyển dụng đang mở</h2>
+                  </div>
+                  <strong>{jobs.length}</strong>
+                </div>
+
+                {currentJobs.length > 0 ? (
+                  <>
+                    <div className={styles.list}>
+                      {currentJobs.map((job) => (
+                        <JobCard
+                          key={job.id}
+                          id={job.id}
+                          logo={logo}
+                          title={job.name || job.title || "Tin tuyển dụng"}
+                          type={job.job_type_name || job.job_type?.name || "Chưa cập nhật"}
+                          location={job.location || company?.location || "Chưa cập nhật"}
+                          salary={formatSalary(job.salary_min, job.salary_max)}
+                          deadline={formatDeadline(job.expire)}
+                        />
+                      ))}
+                    </div>
+
+                    {totalPages > 1 ? (
+                      <div className={styles.paginationWrap}>
+                        <Pagination
+                          currentPage={currentPage}
+                          totalPages={totalPages}
+                          onPageChange={setCurrentPage}
+                        />
+                      </div>
+                    ) : null}
+                  </>
+                ) : (
+                  <div className={styles.emptyJobs}>
+                    <BriefcaseBusiness size={30} />
+                    <div>
+                      <h3>Chưa có tin tuyển dụng đang mở</h3>
+                      <p>Công ty hiện chưa có job phù hợp để hiển thị.</p>
+                    </div>
+                  </div>
+                )}
+              </section>
+            </>
+          )}
         </div>
-      </div>
+      </main>
 
       <Footer />
     </div>
