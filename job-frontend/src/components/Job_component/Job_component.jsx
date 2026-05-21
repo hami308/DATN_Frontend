@@ -157,11 +157,18 @@ function JobComponent({
       </div>
 
       <div className="job-component-right">
-        <button
-          className={`job-component-status-btn ${getStatusClass(statusCode)}`}
-        >
-          {status}
-        </button>
+        {role === "recruiter" && (
+          <button
+            className={`job-component-status-btn ${getStatusClass(statusCode)}`}
+          >
+            {status}
+          </button>
+        )}
+        {role === "candidate" && (
+          <button className={`job-component-status-btn ${statusCode} `}>
+            {status}
+          </button>
+        )}
 
         {role === "recruiter" && (
           <div className="job-component-menu-wrapper" ref={menuRef}>
