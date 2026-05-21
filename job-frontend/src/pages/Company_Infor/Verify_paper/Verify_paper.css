@@ -48,7 +48,7 @@
 .verifyStatusPending,
 .verifyStatusCancel,
 .verifyStatusAccept {
-  padding: 8px 14px;
+  padding: 5px 10px;
   border-radius: 10px;
   font-size: 13px;
   font-weight: 600;
@@ -65,8 +65,8 @@
 }
 
 .verifyStatusAccept {
-  background: #e2f8e8;
-  color: #17853a;
+  background: #eaf1ff;
+  color: #0a2fb6;
 }
 
 /* Actions */

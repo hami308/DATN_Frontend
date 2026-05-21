@@ -39,11 +39,52 @@
 /* Card */
 .companyCard {
   width: 100%;
-  max-width: 640px;
+  max-width: 760px;
   background: #fff;
   border-radius: 16px;
   padding: 28px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.companyCard :global(.verifyPaperContainer) {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.companyLoading {
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.companyLoading p {
+  margin: 0;
+}
+
+.companySpinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: companySpin 0.8s linear infinite;
+}
+
+@keyframes companySpin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Header */
@@ -164,6 +205,58 @@
   color: #999;
 }
 
+.descriptionFormGroup {
+  align-items: flex-start;
+}
+
+.descriptionField {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.descriptionField textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: #555;
+  text-align: right;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.descriptionField textarea::placeholder {
+  color: #999;
+}
+
+.descriptionTextareaCollapsed {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  cursor: pointer;
+}
+
+.descriptionTextareaExpanded {
+  min-height: 110px;
+}
+
+.descriptionToggleBtn {
+  border: none;
+  background: transparent;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
 .multiSelect {
   position: relative;
   flex: 1;
@@ -230,11 +323,9 @@
 
 .tagRemoveBtn {
   width: 18px;
-  height: 18px;
   padding: 0;
   font-size: 20px;
   font-weight: 700;
-  color: red;
 }
 
 .companyFormGroup .fieldSearch {
@@ -256,7 +347,83 @@
   outline: none;
   background: #fff;
 }
+.companyTabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
 
+.companyTabBtn {
+  border: none;
+  background: transparent;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+}
+
+.companyTabActive {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+
+.companyHeaderAction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.companyTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.companyTitleRow h2 {
+  margin: 0;
+}
+
+.companyEditRequestBtn {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.companyButtonRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.companyNextBtn {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.companyNextBtn:hover {
+  background: #1d4ed8;
+}
+
+.readonlyBox {
+  background: #f3f4f6;
+  cursor: default;
+}
 .otherCompanyInput {
   margin-top: 12px;
 }
@@ -269,7 +436,6 @@
   flex-shrink: 0;
   font-size: 22px;
   font-weight: 700;
-  color: red;
 }
 
 .arrow {
@@ -312,20 +478,72 @@
 }
 /* Save button */
 .companySaveBtn {
-  margin-top: 28px;
-  width: 160px;
-  height: 40px;
+  min-width: 190px;
+  height: 44px;
+  padding: 0 18px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #2f66d0;
   color: #fff;
   font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
   transition: 0.3s;
 }
 
 .companySaveBtn:hover {
   background: #1f55bd;
+}
+
+.companySaveBtn:disabled,
+.companyNextBtn:disabled,
+.companyBackBtn:disabled,
+.companyVerifyActions :global(.verifyPaperSaveBtn:disabled) {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.companyVerifyActions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.companyBackBtn {
+  min-width: 110px;
+  height: 44px;
+  padding: 0 18px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.companyBackBtn:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.companyVerifyActions :global(.verifyPaperSaveBtn) {
+  width: auto;
+  min-width: 170px;
+  height: 44px;
+  margin-top: 0;
+  padding: 0 18px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.companyCertificateSaveBtn {
+  flex-shrink: 0;
 }
 
 /* Responsive */
@@ -351,9 +569,43 @@
     text-align: left;
   }
 
+  .descriptionField {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .descriptionField textarea {
+    text-align: left;
+  }
+
   .multiSelect {
     width: 100%;
     max-width: none;
+  }
+
+  .companyTabs {
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .companyTabBtn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 12px 10px;
+    font-size: 14px;
+  }
+
+  .companyVerifyActions,
+  .companyButtonRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .companyBackBtn,
+  .companySaveBtn,
+  .companyNextBtn,
+  .companyVerifyActions :global(.verifyPaperSaveBtn) {
+    width: 100%;
   }
 }
 @media (max-width: 480px) {
@@ -370,6 +622,11 @@
   .companyFormGroup input[type="text"],
   .companyFormGroup input[type="email"],
   .companyFormGroup input[type="url"] {
+    text-align: left;
+    padding: 0;
+  }
+
+  .descriptionField textarea {
     text-align: left;
     padding: 0;
   }
