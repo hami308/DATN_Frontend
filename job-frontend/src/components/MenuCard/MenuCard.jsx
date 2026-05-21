@@ -132,17 +132,6 @@ export default function Sidebar() {
             >
               Thông tin công ty
             </div>
-
-            <div
-              className={`${styles.subItem} ${
-                location.pathname === "/business-paper"
-                  ? styles.activeSub
-                  : ""
-              }`}
-              onClick={() => navigate("/business-paper")}
-            >
-              Giấy đăng ký doanh nghiệp
-            </div>
           </div>
         )}
       </div>

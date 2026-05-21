@@ -43,6 +43,15 @@ export const approvePendingCompany = async (pendingCompanyId) => {
   return response.data;
 };
 
+export const rejectPendingCompany = async (pendingCompanyId, data) => {
+  const response = await axiosClient.patch(
+    `/companies/pending/${pendingCompanyId}/reject`,
+    data
+  );
+
+  return response.data;
+};
+
 export const updatePendingCompanyCertificate = async (data) => {
   const res = await axiosClient.patch("/companies/pending/certificate", data);
   return res.data;
