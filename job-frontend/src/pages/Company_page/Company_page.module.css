@@ -1,7 +1,7 @@
 .companyPage {
   min-height: 100vh;
   margin-top: 90px;
-  background: #f4f7fb;
+  background: #f4f6f8;
 }
 
 .mainContent {
@@ -19,7 +19,7 @@
   width: min(100%, 1240px);
   min-width: 0;
   margin: 0 auto;
-  padding: 24px;
+  padding: 28px 28px 32px;
   text-align: left;
 }
 
@@ -30,10 +30,10 @@
   height: 38px;
   margin-bottom: 16px;
   padding: 0 14px;
-  border: 1px solid #fecaca;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
-  background: #fff1f2;
-  color: #b91c1c;
+  background: #ffffff;
+  color: #374151;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -41,8 +41,8 @@
 }
 
 .backBtn:hover {
-  border-color: #fca5a5;
-  background: #ffe4e6;
+  border-color: #9ca3af;
+  background: #f9fafb;
   transform: translateX(-2px);
 }
 
@@ -53,21 +53,21 @@
   gap: 10px;
   min-height: 460px;
   margin-top: 18px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e8edf3;
   border-radius: 8px;
   background: #ffffff;
-  color: #64748b;
-  font-size: 15px;
+  color: #6b7280;
+  font-size: 16px;
   text-align: center;
 }
 
 .jobSection {
   margin-top: 18px;
   padding: 22px 24px 24px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e8edf3;
   border-radius: 8px;
   background: #ffffff;
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
 }
 
 .sectionHeader {
@@ -83,15 +83,16 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #2563eb;
+  color: var(--color-primary);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .sectionHeader h2 {
   margin: 4px 0 0;
-  color: #0f172a;
-  font-size: 22px;
+  color: #111827;
+  font-size: 20px;
+  font-weight: 600;
   line-height: 1.25;
 }
 
@@ -102,8 +103,9 @@
   min-width: 42px;
   height: 34px;
   border-radius: 8px;
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: #eef5ff;
+  color: var(--color-primary);
+  font-size: 16px;
 }
 
 .list {
@@ -115,6 +117,8 @@
 .list :global(.job-card) {
   width: 95%;
   margin: 0;
+  border-color: #e8edf3;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
 }
 
 .list :global(.job-card-left) {
@@ -126,9 +130,9 @@
   flex: 0 0 54px;
   width: 54px;
   height: 54px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
-  background: #f8fafc;
+  background: #f3f4f6;
   object-fit: contain;
   color: transparent;
   font-size: 0;
@@ -184,26 +188,26 @@
   gap: 12px;
   min-height: 150px;
   padding: 22px;
-  border: 1px dashed #cbd5e1;
+  border: 1px dashed #d1d5db;
   border-radius: 8px;
-  background: #f8fafc;
-  color: #64748b;
+  background: #fbfcff;
+  color: #6b7280;
 }
 
 .emptyJobs svg {
-  color: #2563eb;
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 
 .emptyJobs h3 {
   margin: 0 0 4px;
-  color: #0f172a;
+  color: #111827;
   font-size: 16px;
 }
 
 .emptyJobs p {
   margin: 0;
-  color: #64748b;
+  color: #4b5563;
   font-size: 14px;
 }
 

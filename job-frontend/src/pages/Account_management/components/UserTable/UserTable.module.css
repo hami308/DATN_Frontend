@@ -51,12 +51,12 @@
   height: 44px;
   padding: 3px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #7b2cff, #4f8cff);
+  background: rgb(234, 237, 241);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #0a2fb5;
   font-weight: 700;
 }
 
@@ -97,8 +97,8 @@
 }
 
 .active {
-  background: #b9ddc6;
-  color: #24523a;
+  background: #eaf1ff;
+  color: #0a2fb6;
 }
 
 .locked {

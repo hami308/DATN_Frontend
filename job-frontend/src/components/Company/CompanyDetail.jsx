@@ -9,9 +9,45 @@ import {
   UserRound,
   UsersRound,
 } from "lucide-react";
+import logoDefault from "../../assets/images/logo.png";
+import { BASE_URL } from "../../service/api";
 import styles from "./CompanyDetail.module.css";
 
+const fileBaseUrl = BASE_URL.replace("/api", "");
+
 const getCompanyId = (company) => company?.company_id || company?.id;
+
+const getImageUrl = (image) => {
+  if (!image) return "";
+
+  const imagePath = String(image).trim();
+
+  if (!imagePath) return "";
+  if (
+    imagePath.startsWith("http") ||
+    imagePath.startsWith("data:") ||
+    imagePath.startsWith("blob:")
+  ) {
+    return imagePath;
+  }
+
+  if (imagePath.startsWith("/uploads")) {
+    return `${fileBaseUrl}${imagePath}`;
+  }
+
+  if (imagePath.startsWith("uploads")) {
+    return `${fileBaseUrl}/${imagePath}`;
+  }
+
+  return imagePath;
+};
+
+const handleImageError = (event) => {
+  if (event.currentTarget.dataset.fallbackApplied) return;
+
+  event.currentTarget.dataset.fallbackApplied = "true";
+  event.currentTarget.src = logoDefault;
+};
 
 const getIndustries = (company) => {
   const industries = company?.industries || company?.industry || [];
@@ -85,14 +121,18 @@ export default function CompanyDetail({ company }) {
   const industries = getIndustries(company);
   const recruiters = getRecruiters(company);
   const contactRows = getContactRows(company).filter((row) => row.value);
-  const logo = company.logo || company.logo_url || company.avatar;
+  const logo = getImageUrl(company.logo || company.logo_url || company.avatar);
 
   return (
     <div className={styles.companyDetail}>
       <section className={styles.hero}>
         <div className={styles.logoWrap}>
           {logo ? (
-            <img src={logo} alt={company.name || "Company logo"} />
+            <img
+              src={logo}
+              alt={company.name || "Company logo"}
+              onError={handleImageError}
+            />
           ) : (
             <Building2 size={34} />
           )}
@@ -185,7 +225,7 @@ export default function CompanyDetail({ company }) {
           <div className={styles.recruiterGrid}>
             {recruiters.map((recruiter, index) => {
               const recruiterId = recruiter.id || recruiter.recruiter_id;
-              const avatar = recruiter.avatar || recruiter.avatar_url;
+              const avatar = getImageUrl(recruiter.avatar || recruiter.avatar_url);
 
               return (
                 <article
@@ -194,7 +234,11 @@ export default function CompanyDetail({ company }) {
                 >
                   <div className={styles.avatar}>
                     {avatar ? (
-                      <img src={avatar} alt={recruiter.full_name || "Recruiter"} />
+                      <img
+                        src={avatar}
+                        alt={recruiter.full_name || "Recruiter"}
+                        onError={handleImageError}
+                      />
                     ) : (
                       <UserRound size={24} />
                     )}

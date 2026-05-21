@@ -9,6 +9,28 @@ function Header() {
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const isAdmin = user?.role === "admin";
+  const displayName =
+    user?.full_name ||
+    user?.fullName ||
+    user?.name ||
+    (isAdmin ? "Admin" : "Người dùng");
+  const roleLabel =
+    user?.role === "candidate"
+      ? "Ứng viên"
+      : user?.role === "recruiter"
+        ? "Nhà tuyển dụng"
+        : "";
+
+  const handleUserClick = () => {
+    if (user.role === "candidate") {
+      navigate("/candidate-profile");
+    } else if (user.role === "recruiter") {
+      navigate("/recruiter-profile");
+    } else if (user.role === "admin") {
+      navigate("/home-admin");
+    }
+  };
 
   return (
     <header className="homepage-header">
@@ -34,36 +56,23 @@ function Header() {
 
       {/* LOGGED IN */}
       {user?.email && (
-        <div
-          className="homepage-user"
-          onClick={() => {
-            if (user.role === "candidate") {
-              navigate("/candidate-profile");
-            } else {
-              navigate("/recruiter-profile");
-            }
-          }}
-        >
+        <div className="homepage-user" onClick={handleUserClick}>
           <div className="homepage-avatar">
-            {user?.avatar ? (
+            {isAdmin ? (
+              <span className="material-symbols-outlined">person</span>
+            ) : user?.avatar ? (
               <img src={user.avatar} alt="avatar" />
             ) : (
               <span>
-                {(user?.full_name || user?.email || "U")
-                  .charAt(0)
-                  .toUpperCase()}
+                {(displayName || user?.email || "U").charAt(0).toUpperCase()}
               </span>
             )}
           </div>
 
           <div className="homepage-user-info">
-            <div className="homepage-user-name">
-              {user?.full_name || "Người dùng"}
-            </div>
+            <div className="homepage-user-name">{displayName}</div>
 
-            <div className="homepage-user-role">
-              {user?.role === "candidate" ? "Ứng viên" : "Nhà tuyển dụng"}
-            </div>
+            <div className="homepage-user-role">{roleLabel}</div>
           </div>
         </div>
       )}

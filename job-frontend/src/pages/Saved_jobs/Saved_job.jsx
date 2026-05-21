@@ -71,14 +71,9 @@ export default function SavedJobPage() {
                     title={job.name}
                     type={job.job_type?.name || "Chưa cập nhật"}
                     location={job.location || "Chưa cập nhật"}
-                    salary={`${job.salary_min || 0} VND - ${
-                      job.salary_max || 0
-                    } VND`}
-                    deadline={
-                      job.expire
-                        ? new Date(job.expire).toLocaleDateString("vi-VN")
-                        : "Chưa cập nhật"
-                    }
+                    salaryMin={job.salary_min}
+                    salaryMax={job.salary_max}
+                    deadline={job.expire}
                     isSaved={true}
                   />
                 ))}

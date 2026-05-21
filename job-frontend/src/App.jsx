@@ -25,6 +25,7 @@ import Job_Details from "./pages/Job_Details/Job_Details";
 import CV_list from "./pages/Manage_Recuitment/CV_list/CV_list";
 import Account_page from "./pages/Account_management/Account_page";
 import Company_management from "./pages/Company_management/company_page";
+import PublicJob from "./pages/Homepage/PublicJobs";
 function App() {
   return (
     <BrowserRouter>
@@ -37,14 +38,20 @@ function App() {
         <Route path="/verify-phone" element={<VerifyPhonePage />} />
         <Route path="/home-recruiter" element={<HomepageRecuiter />} />
         <Route path="/recruiter-profile" element={<Recuiter_Infor />} />
-        <Route path="/recruiter-profile/:profileId" element={<Recuiter_Infor />} />
+        <Route
+          path="/recruiter-profile/:profileId"
+          element={<Recuiter_Infor />}
+        />
         <Route path="/post-news/conditions" element={<Conditions />} />
         <Route path="/post-news/create-job" element={<CreateJob />} />
         <Route path="/post-news/create-job/:id" element={<CreateJob />} />
         <Route path="/company-profile" element={<Company_Infor />} />
         <Route path="/home-candidate" element={<HomepageCandidate />} />
         <Route path="/candidate-profile" element={<Candidate_Infor />} />
-        <Route path="/candidate-profile/:profileId" element={<Candidate_Infor />} />
+        <Route
+          path="/candidate-profile/:profileId"
+          element={<Candidate_Infor />}
+        />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/saved-jobs" element={<SavedJob />} />
         <Route path="/candidate-change-password" element={<ChangePassword />} />
@@ -64,7 +71,11 @@ function App() {
         <Route path="/job-details/:id" element={<Job_Details />} />
         <Route path="/job-applicants/:jobId" element={<CV_list />} />
         <Route path="/admin-account-management" element={<Account_page />} />
-        <Route path="/admin-company-management" element={<Company_management />} />
+        <Route
+          path="/admin-company-management"
+          element={<Company_management />}
+        />
+        <Route path="/public-jobs" element={<PublicJob />} />
       </Routes>
     </BrowserRouter>
   );

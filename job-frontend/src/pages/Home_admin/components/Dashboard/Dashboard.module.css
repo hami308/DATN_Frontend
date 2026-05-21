@@ -15,9 +15,23 @@
   text-align: left;
 }
 
+.greeting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  color: #111827;
+}
+
+.greeting svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
 .header h2 {
   margin-top: 6px;
-  font-size: 22px;
+  font-size: 24px;
+  font-weight: 500;
   text-align: left;
 }
 
@@ -115,6 +129,6 @@
   }
 
   .header h2 {
-    font-size: 18px;
+    font-size: 24px;
   }
 }

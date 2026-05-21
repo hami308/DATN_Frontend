@@ -4,6 +4,12 @@ export const getCandidateInfor = async () => {
   return await axiosClient.get("/candidate/me");
 };
 
+export const getCandidateDetailApi = async (candidateId) => {
+  const response = await axiosClient.get(`/candidate/${candidateId}`);
+
+  return response.data;
+};
+
 export const updateCandidateInfor = async (data) => {
   return await axiosClient.put("/candidate/me", data);
 };

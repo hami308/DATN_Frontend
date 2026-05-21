@@ -126,10 +126,7 @@ export default function RegisterAccount({ role }) {
           <span onClick={() => navigate("/login")}> Đăng nhập</span>
         </div>
 
-        <button
-          className={styles.backBtn}
-          onClick={() => navigate("/registerChoice")}
-        >
+        <button className={styles.backBtn} onClick={() => navigate(-1)}>
           ← Quay lại
         </button>
       </div>

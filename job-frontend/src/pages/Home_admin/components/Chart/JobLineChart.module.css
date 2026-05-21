@@ -33,10 +33,10 @@
 
 /* SELECT */
 .select {
-  background: #f1e8ff;
+  background: #eaf1ff;
   border: none;
   padding: 6px 12px;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
   outline: none;
   font-weight: 500;

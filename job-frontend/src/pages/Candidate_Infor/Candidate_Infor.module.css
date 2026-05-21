@@ -28,6 +28,38 @@
   margin-bottom: 50px;
 }
 
+.adminBackButton {
+  width: fit-content;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.adminBackButton:hover {
+  border-color: #9ca3af;
+  background: #f9fafb;
+  transform: translateX(-2px);
+}
+
+.adminBackButton:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.2);
+  outline-offset: 2px;
+}
+
 /* =================== tablet =================== */
 
 @media (max-width: 1024px) {

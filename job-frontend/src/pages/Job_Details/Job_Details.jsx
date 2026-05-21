@@ -181,7 +181,7 @@ function Job_Details() {
     return {
       title: getText(job.name, "Tin tuyển dụng"),
       logo: company.logo || Logo,
-      companyId: company.company_id || job.company_id,
+      companyId: company.company_id || company.id || job.company_id,
       companyName: getText(company.name, "Chưa cập nhật công ty"),
       companyDescription: getText(company.description, ""),
       salary: formatSalary(job.salary_min, job.salary_max),
@@ -258,7 +258,9 @@ function Job_Details() {
       <Header />
 
       <div className="job-details-container">
-        {role === "candidate" ? <SideBar /> : <MenuCard />}
+        {role === "candidate" && <SideBar />}
+
+        {role === "recruiter" && <MenuCard />}
 
         <main className="job-details">
           <section className="job-details-posting-container">
@@ -284,9 +286,21 @@ function Job_Details() {
                           <h1 className="job-details-title">
                             {viewModel.title}
                           </h1>
-                          <span className="company-name">
-                            {viewModel.companyName}
-                          </span>
+                          {viewModel.companyId ? (
+                            <button
+                              type="button"
+                              className="company-name company-name-link"
+                              onClick={() =>
+                                navigate(`/company-detail/${viewModel.companyId}`)
+                              }
+                            >
+                              {viewModel.companyName}
+                            </button>
+                          ) : (
+                            <span className="company-name">
+                              {viewModel.companyName}
+                            </span>
+                          )}
                         </div>
                       </div>
 

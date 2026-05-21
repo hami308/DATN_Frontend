@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import styles from "./Profile.module.css";
 
 import {
+  getCandidateDetailApi,
   getCandidateInfor,
   updateCandidateInfor,
   getCandidateFileUrl,
@@ -81,7 +82,7 @@ const validateForm = (formData) => {
   return newErrors;
 };
 
-export default function CandidateProfileForm() {
+export default function CandidateProfileForm({ profileId }) {
   const fileRef = useRef(null);
 
   const [avatar, setAvatar] = useState(null);
@@ -94,6 +95,9 @@ export default function CandidateProfileForm() {
   const [error, setError] = useState("");
   const [errors, setErrors] = useState({});
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = user?.role === "admin";
+
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -103,9 +107,7 @@ export default function CandidateProfileForm() {
     date_of_birth: "",
   });
 
-  const checkCandidateRole = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-
+  const checkUser = () => {
     if (!user) {
       return {
         valid: false,
@@ -114,7 +116,15 @@ export default function CandidateProfileForm() {
       };
     }
 
-    if (user.role !== "candidate") {
+    if (profileId && !isAdmin) {
+      return {
+        valid: false,
+        message: "TÃ i khoáº£n khÃ´ng cÃ³ quyá»n xem há»“ sÆ¡ nÃ y.",
+        user,
+      };
+    }
+
+    if (!profileId && user.role !== "candidate") {
       return {
         valid: false,
         message: "Tài khoản không phải ứng viên.",
@@ -133,32 +143,46 @@ export default function CandidateProfileForm() {
     return (
       response?.data?.data ||
       response?.data?.candidate ||
+      response?.data?.user ||
       response?.candidate ||
+      response?.user ||
       response?.data ||
       response
     );
   };
 
   const fillFormData = (candidate, user) => {
-    setAvatar(getCandidateFileUrl(candidate?.avatar));
+    const candidateUser = candidate?.user || {};
+
+    setAvatar(getCandidateFileUrl(candidate?.avatar || candidateUser?.avatar));
 
     setFormData({
-      full_name: candidate?.full_name || "",
-      email: user?.email || "",
+      full_name:
+        candidate?.full_name ||
+        candidate?.fullName ||
+        candidate?.name ||
+        candidateUser?.full_name ||
+        candidateUser?.fullName ||
+        "",
+      email: candidate?.email || candidateUser?.email || user?.email || "",
       phone: candidate?.phone || "",
       location: candidate?.location || "",
       gender:
-        candidate?.gender === true
+        candidate?.gender === true || candidate?.gender === "male"
           ? "male"
-          : candidate?.gender === false
+          : candidate?.gender === false || candidate?.gender === "female"
             ? "female"
             : "",
-      date_of_birth: formatDateForDisplay(candidate?.date_of_birth),
+      date_of_birth: formatDateForDisplay(
+        candidate?.date_of_birth || candidate?.dateOfBirth,
+      ),
     });
   };
 
   const fetchLatestCandidate = async (user) => {
-    const response = await getCandidateInfor();
+    const response = profileId
+      ? await getCandidateDetailApi(profileId)
+      : await getCandidateInfor();
     const candidate = getCandidateFromResponse(response);
 
     if (candidate) {
@@ -175,7 +199,7 @@ export default function CandidateProfileForm() {
         setMessage("");
         setError("");
 
-        const result = checkCandidateRole();
+        const result = checkUser();
 
         if (!result.valid) {
           setError(result.message);
@@ -196,9 +220,11 @@ export default function CandidateProfileForm() {
     };
 
     fetchCandidate();
-  }, []);
+  }, [profileId]);
 
   const handleChange = (e) => {
+    if (isAdmin) return;
+
     const { name, value } = e.target;
 
     if (name === "email") return;
@@ -218,6 +244,8 @@ export default function CandidateProfileForm() {
   };
 
   const handleDateChange = (date) => {
+    if (isAdmin) return;
+
     setFormData((prev) => ({
       ...prev,
       date_of_birth: formatDateFromPicker(date),
@@ -228,6 +256,8 @@ export default function CandidateProfileForm() {
   };
 
   const handleUpload = (e) => {
+    if (isAdmin) return;
+
     const file = e.target.files[0];
 
     if (!file) return;
@@ -239,6 +269,8 @@ export default function CandidateProfileForm() {
   };
 
   const removeAvatar = () => {
+    if (isAdmin) return;
+
     setAvatar(null);
     setAvatarFile(null);
 
@@ -251,7 +283,9 @@ export default function CandidateProfileForm() {
   };
 
   const handleSave = async () => {
-    const result = checkCandidateRole();
+    if (isAdmin) return;
+
+    const result = checkUser();
 
     if (!result.valid) {
       setMessage("");
@@ -341,6 +375,8 @@ export default function CandidateProfileForm() {
             )}
           </div>
 
+          {!isAdmin && (
+            <>
           <button
             type="button"
             className={styles.uploadBtn}
@@ -366,6 +402,8 @@ export default function CandidateProfileForm() {
             accept="image/*"
             onChange={handleUpload}
           />
+            </>
+          )}
         </div>
 
         <div>
@@ -389,6 +427,7 @@ export default function CandidateProfileForm() {
             name="full_name"
             value={formData.full_name}
             onChange={handleChange}
+            readOnly={isAdmin}
             placeholder="Nhập họ và tên"
             className={errors.full_name ? styles.inputError : ""}
           />
@@ -425,6 +464,7 @@ export default function CandidateProfileForm() {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
+            readOnly={isAdmin}
             placeholder="Nhập số điện thoại"
             className={errors.phone ? styles.inputError : ""}
           />
@@ -443,6 +483,7 @@ export default function CandidateProfileForm() {
             name="location"
             value={formData.location}
             onChange={handleChange}
+            readOnly={isAdmin}
             placeholder="Nhập địa chỉ"
           />
         </div>
@@ -461,6 +502,7 @@ export default function CandidateProfileForm() {
               value="male"
               checked={formData.gender === "male"}
               onChange={handleChange}
+              disabled={isAdmin}
             />
             Nam
           </label>
@@ -472,6 +514,7 @@ export default function CandidateProfileForm() {
               value="female"
               checked={formData.gender === "female"}
               onChange={handleChange}
+              disabled={isAdmin}
             />
             Nữ
           </label>
@@ -486,6 +529,7 @@ export default function CandidateProfileForm() {
         <DatePicker
           selected={parseDisplayDate(formData.date_of_birth)}
           onChange={handleDateChange}
+          disabled={isAdmin}
           dateFormat="dd/MM/yyyy"
           placeholderText="dd/mm/yyyy"
           className={styles.dateInput}
@@ -501,6 +545,7 @@ export default function CandidateProfileForm() {
 
       {error && <p className={styles.error}>{error}</p>}
 
+      {!isAdmin && (
       <div className={styles.actions}>
         <button
           type="button"
@@ -511,6 +556,7 @@ export default function CandidateProfileForm() {
           {loading ? "Đang lưu..." : "Lưu"}
         </button>
       </div>
+      )}
     </div>
   );
 }

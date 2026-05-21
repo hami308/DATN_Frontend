@@ -1,8 +1,8 @@
 .homepage {
-    width : 100%;
-    position: relative;
-    top: 90px;
-    margin-bottom: 50px;
+  width: 100%;
+  position: relative;
+  top: 90px;
+  margin-bottom: 50px;
 }
 
 /* Hero section */
@@ -10,11 +10,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 60px 100px;
   background: #fff;
 }
-.homepage-hero-container{
-  width:75%;
+.homepage-hero-container {
+  width: 75%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -51,7 +50,7 @@
   background: var(--color-main);
   flex-wrap: wrap;
 }
-.homepage-stats-container{
+.homepage-stats-container {
   width: 75%;
   display: flex;
   justify-content: space-evenly;
@@ -66,7 +65,7 @@
   padding: 20px;
   margin: 10px 10px;
   flex: 1;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   max-width: 300px;
   min-width: 150px;
   justify-content: center;
@@ -79,8 +78,6 @@
 }
 
 .homepage-stat-box h3 {
-  font-size: 24px;
-  font-weight: bold;
   color: #333;
   margin: 0;
 }
@@ -91,10 +88,9 @@
   margin: 5px 0 0;
 }
 
-
 /* Jobs section */
 .homepage-jobs {
-  padding: 50px 40px;
+  padding: 30px 20px;
   background: #fafafa;
 }
 .homepage-jobs-title {
@@ -113,11 +109,10 @@
   margin: 0 auto;
 }
 
-
 .mycvflow-container {
   text-align: center;
   padding: 40px 20px;
-  background-color: #F1F2F4;
+  background-color: #f1f2f4;
 }
 
 .mycvflow-title {
@@ -135,7 +130,7 @@
   flex-wrap: wrap;
 }
 
-.homepage-job-cards{
+.homepage-job-cards {
   background: #fff;
   padding: 20px;
   margin: 0 auto;
@@ -186,13 +181,12 @@
   display: flex;
   justify-content: center;
   gap: 20px;
-  background-color: #F1F2F4;
+  background-color: #f1f2f4;
   padding: 40px 20px;
   margin-bottom: 50px;
 }
 
 .register-panel {
-
   border-radius: 12px;
   padding: 24px;
   color: #fff;
@@ -204,7 +198,7 @@
 }
 
 .register-panel.red {
-  background-color: var(--color-accent); 
+  background-color: var(--color-accent);
 }
 
 .register-panel.blue {
@@ -245,10 +239,10 @@
   .homepage-hero {
     padding: 40px 5%;
   }
-  .homepage-hero-container{
+  .homepage-hero-container {
     width: 100%;
   }
-  .homepage-stats-container{
+  .homepage-stats-container {
     padding: 30px 10px;
   }
 
@@ -262,7 +256,7 @@
     top: 60px;
   }
   /* Hero Section */
-.homepage-hero-container{
+  .homepage-hero-container {
     flex-direction: column;
     text-align: center;
     padding: 40px 20px;
@@ -309,9 +303,9 @@
     width: 90%;
     max-width: 100%;
   }
-  
+
   .homepage-job-list {
-    gap:0px;
+    gap: 0px;
   }
 
   .homepage-jobs {
@@ -319,7 +313,7 @@
     margin-bottom: 0;
   }
   .homepage-job-list {
-    grid-template-columns:  repeat(auto-fill, minmax(40%, 2fr));;
+    grid-template-columns: repeat(auto-fill, minmax(40%, 2fr));
   }
 }
 
@@ -327,10 +321,10 @@
   .homepage-hero-title {
     font-size: 24px;
   }
-  .job-cards-header{
+  .job-cards-header {
     flex-direction: column;
   }
-   .job-cards-btn {
+  .job-cards-btn {
     padding: 8px 14px;
     font-size: 14px;
   }
@@ -346,7 +340,7 @@
     max-width: 250px;
     margin: 0;
   }
-  .mycvflow-title, 
+  .mycvflow-title,
   .job-cards-title {
     font-size: 22px;
   }

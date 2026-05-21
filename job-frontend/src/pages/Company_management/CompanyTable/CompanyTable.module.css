@@ -1,43 +1,42 @@
 .wrapper {
   width: 100%;
+  background: #fff;
   overflow-x: auto;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
 }
 
 .table {
   width: 100%;
-  min-width: 760px;
+  min-width: 850px;
   border-collapse: collapse;
 }
 
 .table th,
 .table td {
   text-align: left;
-  border-bottom: 1px solid #e5eaf2;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .table th {
-  padding: 15px 18px;
-  color: #64748b;
-  background: #f8fafc;
-  font-size: 13px;
-  font-weight: 800;
+  padding: 16px 24px;
+  color: #555;
+  background: #f9fafb;
+  font-size: 14px;
+  font-weight: 600;
   white-space: nowrap;
 }
 
 .table td {
-  padding: 15px 18px;
-  color: #334155;
+  padding: 16px 24px;
+  color: #333;
   font-size: 14px;
   vertical-align: middle;
 }
 
 .table tbody tr {
   transition: background 0.2s ease;
-}
-
-.table tbody tr:hover,
-.activeRow {
-  background: #f3f7ff;
 }
 
 .companyInfo {
@@ -48,15 +47,15 @@
 }
 
 .logoBox {
-  width: 42px;
-  height: 42px;
+  width: 50px;
+  height: 50px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #dbe3ef;
-  border-radius: 8px;
-  background: #fff;
-  color: #0a2fb6;
+  border-radius: 50%;
+  background: rgb(234, 237, 241);
+  color: #0a2fb5;
+  font-weight: 700;
   overflow: hidden;
   flex: 0 0 auto;
 }
@@ -83,12 +82,12 @@
 }
 
 .companyText span {
-  color: #111827;
-  font-weight: 800;
+  color: #222;
+  font-weight: 600;
 }
 
 .companyText small {
-  color: #64748b;
+  color: #777;
   font-size: 12px;
 }
 
@@ -100,9 +99,9 @@
   background: transparent;
   color: #27106d;
   font-size: 14px;
-  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
+  padding: 0;
 }
 
 .viewBtn:hover {
@@ -110,7 +109,7 @@
 }
 
 .empty {
-  padding: 32px 18px;
-  color: #64748b;
+  padding: 30px;
+  color: #777;
   text-align: center;
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
+import { ChevronDown } from "lucide-react";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Create_news.css";
 import Header from "../../../components/Header/Header";
@@ -518,7 +519,11 @@ export default function CreateJob() {
                           )}
                         </div>
 
-                        <span className="industry-arrow">⌄</span>
+                        <ChevronDown
+                          className="industry-arrow"
+                          size={20}
+                          strokeWidth={2}
+                        />
                       </div>
 
                       {showIndustryDropdown && (

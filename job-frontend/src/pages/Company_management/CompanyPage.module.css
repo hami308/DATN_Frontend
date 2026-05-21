@@ -2,12 +2,13 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f5f7fb;
+  background: #f5f6fa;
 }
 
 .body {
   flex: 1;
   display: flex;
+  align-items: stretch;
   width: 100%;
   margin-top: 90px;
 }
@@ -15,46 +16,47 @@
 .content {
   flex: 1;
   min-width: 0;
-  padding: 26px 30px 34px;
+  padding: 28px 32px;
+  background: #fff;
 }
 
-.header {
+.title {
+  text-align: left;
+  font-size: 24px;
+  font-weight: 500;
+  color: #27106d;
+}
+
+.filterRow {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 18px;
-}
-
-.header h1 {
-  margin: 0;
-  color: #111827;
-  font-size: 28px;
-  font-weight: 800;
-  text-align: left;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
 }
 
 .searchBox {
-  width: min(420px, 100%);
-  height: 44px;
+  width: 360px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 0 14px;
-  border: 1px solid #dbe3ef;
+  border: 1px solid #ddd;
   border-radius: 8px;
   background: #fff;
-  color: #64748b;
 }
 
 .searchBox input {
   width: 100%;
-  min-width: 0;
   border: none;
   outline: none;
-  background: transparent;
-  color: #111827;
   font-size: 14px;
+  color: #333;
+  background: transparent;
+}
+
+.searchBox input::placeholder {
+  color: #999;
 }
 
 .error {
@@ -75,26 +77,15 @@
 .tablePanel {
   width: 100%;
   min-width: 0;
-  overflow: hidden;
-  border: 1px solid #e5eaf2;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
 }
 
-@media (max-width: 768px) {
-  .body {
-    flex-direction: column;
-    margin-top: 60px;
-  }
-
+@media (max-width: 900px) {
   .content {
-    padding: 18px 14px 28px;
+    padding: 20px;
   }
 
-  .header {
+  .filterRow {
     align-items: stretch;
-    flex-direction: column;
   }
 
   .searchBox {

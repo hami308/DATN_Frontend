@@ -56,7 +56,7 @@
 
   overflow: hidden;
 
-  background: #2563eb;
+  background: #000a1f;
   color: white;
 
   display: flex;
@@ -73,6 +73,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.homepage-avatar .material-symbols-outlined {
+  font-size: 26px;
 }
 
 .homepage-user-info {

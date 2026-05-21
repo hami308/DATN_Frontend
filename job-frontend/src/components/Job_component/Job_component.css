@@ -107,6 +107,37 @@
   cursor: default;
 }
 
+.job-component-status-btn.open {
+  background: #e8f1ff;
+  color: var(--color-primary);
+}
+
+.job-component-status-btn.closed {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.job-component-status-btn.expired {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.job-component-status-btn.pending {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+/* approved */
+.job-component-status-btn.approved {
+  background: #e0f1ff;
+  color: #153dc0;
+}
+
+/* rejected */
+.job-component-status-btn.rejected {
+  background: #fef2f2;
+  color: #dc2626;
+}
 .job-component-apply-btn {
   background: #e7f0fa;
   color: var(--color-primary);

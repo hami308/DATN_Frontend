@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Hand } from "lucide-react";
 import { JobLineChart } from "../Chart/LineChart";
 import { TopIndustryChart } from "../Chart/BarChart";
 import { TopLocationCard } from "../Card/TopLocationCard";
@@ -64,7 +65,10 @@ export default function Dashboard() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h3>Hi Admin</h3>
+        <h3 className={styles.greeting}>
+          Hi Admin
+          <Hand size={20} />
+        </h3>
         <h2>
           Có {total} công việc trong năm {year}
         </h2>

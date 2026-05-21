@@ -8,6 +8,16 @@ import logo_img from "../../assets/images/logo.png";
 import Close_Job from "../Popup/Close_Job/Close_Job";
 import Extend_Job from "../Popup/Extend_Job/Extend_Job";
 
+const getStatusClass = (statusCode) => {
+  const normalizedStatus = Number(statusCode);
+
+  if (normalizedStatus === 1) return "open";
+  if (normalizedStatus === 0) return "closed";
+  if (normalizedStatus === 2) return "expired";
+
+  return "pending";
+};
+
 function JobComponent({
   id,
   logo,
@@ -81,7 +91,25 @@ function JobComponent({
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+  const getDeadlineText = (deadline) => {
+    if (!deadline) return "Chưa cập nhật";
 
+    const today = new Date();
+    const expireDate = new Date(deadline);
+
+    if (Number.isNaN(expireDate.getTime())) return deadline;
+
+    today.setHours(0, 0, 0, 0);
+    expireDate.setHours(0, 0, 0, 0);
+
+    const diffTime = expireDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) return "Đã hết hạn";
+    if (diffDays === 0) return "Hết hạn hôm nay";
+
+    return `Còn ${diffDays} ngày`;
+  };
   return (
     <div className="job-component">
       <div className="job-component-left">
@@ -122,14 +150,18 @@ function JobComponent({
 
             <div className="job-component-info-item">
               <span className="material-symbols-outlined">schedule</span>
-              <span>{deadline}</span>
+              <span>{getDeadlineText(deadline)}</span>
             </div>
           </div>
         </div>
       </div>
 
       <div className="job-component-right">
-        <button className="job-component-status-btn">{status}</button>
+        <button
+          className={`job-component-status-btn ${getStatusClass(statusCode)}`}
+        >
+          {status}
+        </button>
 
         {role === "recruiter" && (
           <div className="job-component-menu-wrapper" ref={menuRef}>

@@ -29,8 +29,8 @@
 
 .verifyPaperContainer h2 {
   margin: 0;
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 500;
   color: #1f2937;
   line-height: 1.3;
   text-align: left;
@@ -274,14 +274,14 @@
 @media (max-width: 768px) {
   .verifyPaperPage {
     margin-top: 60px;
-    gap:10px;
+    gap: 10px;
   }
 
   .verifyPaperContainer {
     max-width: 100%;
     padding: 18px;
     border-radius: 14px;
-    margin-right:10px;
+    margin-right: 10px;
   }
 
   .verifyPaperTop {
@@ -315,35 +315,35 @@
     font-size: 15px;
   }
 }
-.verifyPaperApprovedBox {  
+.verifyPaperApprovedBox {
   margin-top: 20px;
 }
-.verifyPaperUploadedFile.big { 
-  width: 100%;  
-  padding: 14px 16px;  
-  border: 1px solid #dbeafe;  
-  background: #f8fafc;  
-  border-radius: 12px;  
-  display: flex;  
-  align-items: center;  
-  gap: 10px;  
-  font-size: 16px;  
-  font-weight: 600;  
-  color: #1f2937;  
+.verifyPaperUploadedFile.big {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #dbeafe;
+  background: #f8fafc;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
   word-break: break-word;
 }
-.verifyPaperUploadedFile.big .material-symbols-outlined {  
-  font-size: 24px;  
+.verifyPaperUploadedFile.big .material-symbols-outlined {
+  font-size: 24px;
   color: #2563eb;
 }
 /* Mobile */
-@media (max-width: 768px) {  
-  .verifyStatusAccept {    
-    font-size: 12px;    
-    padding: 7px 12px;  
-  }  
-  .verifyPaperUploadedFile.big {    
-    font-size: 14px;    
-    padding: 12px;  
-  }  
+@media (max-width: 768px) {
+  .verifyStatusAccept {
+    font-size: 12px;
+    padding: 7px 12px;
+  }
+  .verifyPaperUploadedFile.big {
+    font-size: 14px;
+    padding: 12px;
+  }
 }

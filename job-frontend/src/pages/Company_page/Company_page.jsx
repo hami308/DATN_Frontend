@@ -7,6 +7,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import CompanyDetail from "../../components/Company/CompanyDetail";
 import JobCard from "../../components/JobCard/JobCard";
 import Pagination from "../../components/Pagination/Pagination";
+import { getMySavedJobsApi } from "../../service/candidate/savedJob.service";
 import { getCompanyDetailById } from "../../service/comapny/company_infor";
 import Sidebar_Admin from "../../components/Sidebar_admin/Sidebar";
 import styles from "./Company_page.module.css";
@@ -32,43 +33,8 @@ const getJobs = (company) => {
   return Array.isArray(jobs) ? jobs : [];
 };
 
-const formatSalary = (min, max) => {
-  const hasMin = min !== undefined && min !== null && min !== "";
-  const hasMax = max !== undefined && max !== null && max !== "";
-
-  if (!hasMin && !hasMax) return "Thỏa thuận";
-
-  const formatter = new Intl.NumberFormat("vi-VN");
-  const minText = hasMin ? formatter.format(Number(min)) : "";
-  const maxText = hasMax ? formatter.format(Number(max)) : "";
-
-  if (hasMin && hasMax) return `${minText} - ${maxText}`;
-  if (hasMin) return `Từ ${minText}`;
-  return `Đến ${maxText}`;
-};
-
-const formatDeadline = (expire) => {
-  if (!expire) return "Chưa cập nhật hạn";
-
-  const expireDate = new Date(expire);
-  if (Number.isNaN(expireDate.getTime())) return "Chưa cập nhật hạn";
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  expireDate.setHours(0, 0, 0, 0);
-
-  const diffDays = Math.ceil(
-    (expireDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
-  );
-
-  if (diffDays < 0) return "Đã hết hạn";
-  if (diffDays === 0) return "Hết hạn hôm nay";
-
-  return `Còn ${diffDays} ngày`;
-};
-
 export default function Company_page() {
-  const user= JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user"));
   const role = user?.role;
   const navigate = useNavigate();
   const { companyId } = useParams();
@@ -76,6 +42,7 @@ export default function Company_page() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [savedJobIds, setSavedJobIds] = useState([]);
 
   useEffect(() => {
     let ignore = false;
@@ -101,7 +68,7 @@ export default function Company_page() {
         if (!ignore) {
           setError(
             err?.response?.data?.message ||
-              "Không thể tải thông tin công ty. Vui lòng thử lại sau."
+              "Không thể tải thông tin công ty. Vui lòng thử lại sau.",
           );
         }
       } finally {
@@ -118,15 +85,58 @@ export default function Company_page() {
     };
   }, [companyId]);
 
+  useEffect(() => {
+    let ignore = false;
+
+    const fetchSavedJobs = async () => {
+      if (role !== "candidate") {
+        setSavedJobIds([]);
+        return;
+      }
+
+      try {
+        const response = await getMySavedJobsApi();
+        const savedJobs = response?.data?.data?.jobs || [];
+        const ids = savedJobs.map((job) => Number(job.id));
+
+        if (!ignore) {
+          setSavedJobIds(ids);
+        }
+      } catch (error) {
+        console.error("GET SAVED JOBS ERROR:", error);
+      }
+    };
+
+    fetchSavedJobs();
+
+    return () => {
+      ignore = true;
+    };
+  }, [role]);
+
   const jobs = useMemo(() => getJobs(company), [company]);
   const totalPages = Math.ceil(jobs.length / JOBS_PER_PAGE);
   const currentJobs = jobs.slice(
     (currentPage - 1) * JOBS_PER_PAGE,
-    currentPage * JOBS_PER_PAGE
+    currentPage * JOBS_PER_PAGE,
   );
 
   const handleViewRecruiter = (recruiterId) => {
     navigate(`/recruiter-profile/${recruiterId}`);
+  };
+
+  const handleSavedChange = (jobId, nextSaved) => {
+    setSavedJobIds((currentIds) => {
+      const currentJobId = Number(jobId);
+
+      if (nextSaved) {
+        return currentIds.includes(currentJobId)
+          ? currentIds
+          : [...currentIds, currentJobId];
+      }
+
+      return currentIds.filter((id) => id !== currentJobId);
+    });
   };
 
   const logo = company?.logo || company?.logo_url || company?.avatar;
@@ -140,7 +150,11 @@ export default function Company_page() {
         {role === "admin" && <Sidebar_Admin />}
 
         <div className={styles.content}>
-          <button className={styles.backBtn} type="button" onClick={() => navigate(-1)}>
+          <button
+            className={styles.backBtn}
+            type="button"
+            onClick={() => navigate(-1)}
+          >
             <ArrowLeft size={18} />
             Quay lại
           </button>
@@ -176,10 +190,19 @@ export default function Company_page() {
                           id={job.id}
                           logo={logo}
                           title={job.name || job.title || "Tin tuyển dụng"}
-                          type={job.job_type_name || job.job_type?.name || "Chưa cập nhật"}
-                          location={job.location || company?.location || "Chưa cập nhật"}
-                          salary={formatSalary(job.salary_min, job.salary_max)}
-                          deadline={formatDeadline(job.expire)}
+                          type={
+                            job.job_type_name ||
+                            job.job_type?.name ||
+                            "Chưa cập nhật"
+                          }
+                          location={
+                            job.location || company?.location || "Chưa cập nhật"
+                          }
+                          salaryMin={job.salary_min}
+                          salaryMax={job.salary_max}
+                          deadline={job.expire}
+                          isSaved={savedJobIds.includes(Number(job.id))}
+                          onSavedChange={handleSavedChange}
                         />
                       ))}
                     </div>

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Search } from "lucide-react";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import AdminSidebar from "../../components/Sidebar_admin/Sidebar";
@@ -111,11 +110,10 @@ export default function Company_page() {
         <AdminSidebar />
 
         <main className={styles.content}>
-          <div className={styles.header}>
-            <h1>Quản lý công ty</h1>
+          <h2 className={styles.title}>Quản lý công ty</h2>
 
+          <div className={styles.filterRow}>
             <div className={styles.searchBox}>
-              <Search size={18} />
               <input
                 value={searchName}
                 onChange={(event) => setSearchName(event.target.value)}

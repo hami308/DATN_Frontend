@@ -21,7 +21,9 @@ export default function ChangePasswordPage() {
 
       <div className={styles.container}>
         {/* CHECK ROLE */}
-        {role === "candidate" ? <Sidebar /> : <MenuCard />}
+        {role === "candidate" && <Sidebar />}
+
+        {role === "recruiter" && <MenuCard />}
 
         <div className={styles.content}>
           <ChangePassword />

@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -8,8 +9,9 @@ import ProfileCard from "../../components/ProfileForm/ProfileForm";
 import Silebar_Admin from "../../components/Sidebar_admin/Sidebar";
 
 export default function Recuiter_Infor() {
-  const user= JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user"));
   const { profileId } = useParams();
+  const navigate = useNavigate();
 
   return (
     <div className={styles.recuiterInfor}>
@@ -17,10 +19,21 @@ export default function Recuiter_Infor() {
 
       <main className={styles.main}>
         <div className={styles.container}>
-          {user?.role === "recruiter" ? <MenuCard/> :     <Silebar_Admin />}
-
+          {user?.role === "recruiter" && <MenuCard />}
+          {user?.role === "admin" && <Silebar_Admin />}
 
           <div className={styles.content}>
+            {user?.role === "admin" && (
+              <button
+                type="button"
+                className={styles.adminBackButton}
+                onClick={() => navigate(-1)}
+              >
+                <ArrowLeft size={18} />
+                Quay lại
+              </button>
+            )}
+
             <ProfileCard profileId={profileId} />
           </div>
         </div>

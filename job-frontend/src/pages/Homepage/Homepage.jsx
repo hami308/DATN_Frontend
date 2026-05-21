@@ -7,7 +7,10 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import JobItem from "./components/JobIntem/JobItem";
 import MyCVFlow from "./components/MyCVFlow/MyCVFlow";
-
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getJobsApi } from "../../service/job/get_jobs";
+import { getHomepageStatsApi } from "../../service/homepage/homepage";
 const steps = [
   {
     icon: <span className="material-symbols-outlined">person_add</span>,
@@ -26,37 +29,75 @@ const steps = [
     title: "Đăng ký ứng tuyển",
   },
 ];
-const jobs = [
-  { title: "Bác sĩ gây mê", count: "45,904" },
-  { title: "Nhân viên văn phòng", count: "50,364" },
-  { title: "Giáo viên tiểu học", count: "4,339" },
-  { title: "Nhân viên IT", count: "74,875" },
-  { title: "Kỹ sư xây dựng", count: "18,599" },
-  { title: "Marketing", count: "61,391" },
-  { title: "Saler", count: "93,046" },
-  { title: "IT Manager", count: "50,963" },
-];
-const jobCards = [
-  {
-    logo: logo,
-    title: "Senior UX Designer",
-    type: "Part Time",
-    location: "Đà Nẵng",
-    salary_min: 30000,
-    salary_max: 35000,
-    deadline: "Còn 4 ngày",
-  },
-  {
-    logo: logo,
-    title: "Software Engineer",
-    type: "Full Time",
-    location: "Thanh Khê",
-    salary_min: 50000,
-    salary_max: 60000,
-    deadline: "Còn 4 ngày",
-  },
-];
+const defaultHomepageStats = {
+  totalJobs: 0,
+  totalCompanies: 0,
+  totalRecruiters: 0,
+  totalCandidates: 0,
+  topIndustries: [],
+};
+
+const formatNumber = (value) => {
+  const numberValue = Number(value);
+
+  if (!Number.isFinite(numberValue)) return "0";
+
+  return new Intl.NumberFormat("vi-VN").format(numberValue);
+};
+
 function Homepage() {
+  const navigate = useNavigate();
+  const [jobCards, setJobCards] = useState([]);
+  const [homepageStats, setHomepageStats] = useState(defaultHomepageStats);
+  const [loadingJobs, setLoadingJobs] = useState(false);
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        setLoadingJobs(true);
+
+        const response = await getJobsApi({
+          page: 1,
+          limit: 5,
+        });
+
+        setJobCards(response?.data?.jobs || []);
+      } catch (error) {
+        console.error("GET HOMEPAGE JOBS ERROR:", error);
+      } finally {
+        setLoadingJobs(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
+  useEffect(() => {
+    const fetchHomepageStats = async () => {
+      try {
+        const response = await getHomepageStatsApi();
+        const stats = response?.data || {};
+
+        setHomepageStats({
+          ...defaultHomepageStats,
+          ...stats,
+          topIndustries: Array.isArray(stats.topIndustries)
+            ? stats.topIndustries
+            : [],
+        });
+      } catch (error) {
+        console.error("GET HOMEPAGE STATS ERROR:", error);
+      }
+    };
+
+    fetchHomepageStats();
+  }, []);
+
+  const topIndustries = homepageStats.topIndustries.map((industry) => ({
+    id: industry.id,
+    title: industry.name,
+    count: formatNumber(industry.jobs),
+  }));
+
   return (
     <>
       <Header />
@@ -84,8 +125,8 @@ function Homepage() {
                 work
               </span>
               <div>
-                <h3>175,324</h3>
-                <p>Live Job</p>
+                <h3>{formatNumber(homepageStats.totalJobs)}</h3>
+                <p>Tin tuyển dụng</p>
               </div>
             </div>
             <div className="homepage-stat-box">
@@ -93,8 +134,8 @@ function Homepage() {
                 apartment
               </span>
               <div>
-                <h3>97,354</h3>
-                <p>Companies</p>
+                <h3>{formatNumber(homepageStats.totalCompanies)}</h3>
+                <p>Công ty</p>
               </div>
             </div>
             <div className="homepage-stat-box">
@@ -102,8 +143,8 @@ function Homepage() {
                 group
               </span>
               <div>
-                <h3>3,847,154</h3>
-                <p>Candidates</p>
+                <h3>{formatNumber(homepageStats.totalCandidates)}</h3>
+                <p>Ứng viên</p>
               </div>
             </div>
             <div className="homepage-stat-box">
@@ -111,8 +152,8 @@ function Homepage() {
                 work
               </span>
               <div>
-                <h3>7,532</h3>
-                <p>New Jobs</p>
+                <h3>{formatNumber(homepageStats.totalRecruiters)}</h3>
+                <p>Nhà tuyển dụng</p>
               </div>
             </div>
           </div>
@@ -123,8 +164,8 @@ function Homepage() {
             Các vị trí tuyển dụng phổ biến
           </h3>
           <div className="homepage-job-list">
-            {jobs.map((job, index) => (
-              <JobItem key={index} title={job.title} count={job.count} />
+            {topIndustries.map((job, index) => (
+              <JobItem key={job.id || index} title={job.title} count={job.count} />
             ))}
           </div>
         </section>
@@ -147,21 +188,31 @@ function Homepage() {
 
         <section className="homepage-job-cards">
           <div className="job-cards-header">
-            <h3 className="job-cards-title">Công việc nổi bật</h3>
-            <button className="job-cards-btn">Xem tất cả →</button>
+            <h3 className="job-cards-title">Danh sách công việc</h3>
+            <button
+              className="job-cards-btn"
+              onClick={() => navigate("/public-jobs")}
+            >
+              Xem tất cả →
+            </button>
           </div>
 
-          {jobCards.map((job, index) => (
-            <JobCard
-              key={index}
-              logo={job.logo}
-              title={job.title}
-              type={job.type}
-              location={job.location}
-              salary={job.salary_min + "VND–" + job.salary_max + "VND"}
-              deadline={job.deadline}
-            />
-          ))}
+          {loadingJobs && <p>Đang tải việc làm...</p>}
+
+          {!loadingJobs &&
+            jobCards.map((job) => (
+              <JobCard
+                key={job.id}
+                id={job.id}
+                logo={job.company?.logo || logo}
+                title={job.name}
+                type={job.job_type?.name || "Chưa cập nhật"}
+                location={job.location || "Chưa cập nhật"}
+                salaryMin={job.salary_min}
+                salaryMax={job.salary_max}
+                deadline={job.expire}
+              />
+            ))}
         </section>
 
         <section>
@@ -172,7 +223,10 @@ function Homepage() {
                 Chúng tôi mang đến quy trình tối ưu, giúp bạn tiếp cận cơ hội
                 việc làm một cách hiệu quả và nhanh chóng.
               </p>
-              <button className="register-btn">
+              <button
+                className="register-btn"
+                onClick={() => navigate("/register/candidate")}
+              >
                 Đăng Ký Ngay{" "}
                 <span className="material-symbols-outlined">arrow_forward</span>
               </button>
@@ -185,7 +239,10 @@ function Homepage() {
                 tối ưu quy trình tuyển dụng và nâng cao hiệu quả tìm kiếm nhân
                 tài.
               </p>
-              <button className="register-btn">
+              <button
+                className="register-btn"
+                onClick={() => navigate("/register/recruiter")}
+              >
                 Đăng Ký Ngay{" "}
                 <span className="material-symbols-outlined">arrow_forward</span>
               </button>
