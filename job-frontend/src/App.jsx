@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Homepage from "./pages/Homepage/Homepage";
 import Login from "./pages/login/login";
 import RegisterChoicePage from "./pages/register/registerChoicePage";
@@ -25,19 +25,101 @@ import Job_Details from "./pages/Job_Details/Job_Details";
 import CV_list from "./pages/Manage_Recuitment/CV_list/CV_list";
 import Account_page from "./pages/Account_management/Account_page";
 import Company_management from "./pages/Company_management/company_page";
+
+/* =========================
+   Lấy user từ localStorage
+========================= */
+const getUserFromStorage = () => {
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
+    return user || null;
+  } catch (error) {
+    console.error("Lỗi đọc user từ localStorage:", error);
+    return null;
+  }
+};
+
+/* =========================
+   Lấy trang home theo role
+========================= */
+const getHomePathByRole = (role) => {
+  switch (role) {
+    case "recruiter":
+      return "/home-recruiter";
+
+    case "candidate":
+      return "/home-candidate";
+
+    case "admin":
+      return "/admin-dashboard";
+
+    default:
+      return "/";
+  }
+};
+
+/* =========================
+   Route trang chủ
+   Nếu đã đăng nhập thì chuyển theo role
+========================= */
+const HomeRedirect = () => {
+  const user = getUserFromStorage();
+
+  if (!user) {
+    return <Homepage />;
+  }
+
+  const homePath = getHomePathByRole(user.role);
+
+  if (homePath === "/") {
+    return <Homepage />;
+  }
+
+  return <Navigate to={homePath} replace />;
+};
+
+/* =========================
+   Route login
+   Nếu đã đăng nhập ở tab khác thì không cho vào login
+========================= */
+const LoginRedirect = () => {
+  const user = getUserFromStorage();
+
+  if (!user) {
+    return <Login />;
+  }
+
+  const homePath = getHomePathByRole(user.role);
+
+  if (homePath === "/") {
+    return <Login />;
+  }
+
+  return <Navigate to={homePath} replace />;
+};
+
 import PublicJob from "./pages/Homepage/PublicJobs";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/login" element={<Login />} />
+        {/* Home */}
+        <Route path="/" element={<HomeRedirect />} />
+
+        {/* Auth */}
+        <Route path="/login" element={<LoginRedirect />} />
         <Route path="/registerChoice" element={<RegisterChoicePage />} />
         <Route path="/register/:role" element={<RegisterPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/verify-phone" element={<VerifyPhonePage />} />
+
+        {/* Recruiter */}
         <Route path="/home-recruiter" element={<HomepageRecuiter />} />
         <Route path="/recruiter-profile" element={<Recuiter_Infor />} />
+        <Route
+          path="/recruiter-profile/:profileId"
+          element={<Recuiter_Infor />}
+        />
         <Route
           path="/recruiter-profile/:profileId"
           element={<Recuiter_Infor />}
@@ -46,6 +128,11 @@ function App() {
         <Route path="/post-news/create-job" element={<CreateJob />} />
         <Route path="/post-news/create-job/:id" element={<CreateJob />} />
         <Route path="/company-profile" element={<Company_Infor />} />
+        <Route path="/business-paper" element={<Verify_paper />} />
+        <Route path="/manage-recruitment" element={<ManageRecuitment />} />
+        <Route path="/job-applicants/:jobId" element={<CV_list />} />
+
+        {/* Candidate */}
         <Route path="/home-candidate" element={<HomepageCandidate />} />
         <Route path="/candidate-profile" element={<Candidate_Infor />} />
         <Route
@@ -58,16 +145,35 @@ function App() {
         <Route path="/saved-jobs" element={<SavedJob />} />
         <Route path="/business-paper" element={<Verify_paper />} />
         <Route path="/manage-recruitment" element={<ManageRecuitment />} />
+        <Route
+          path="/candidate-profile/:profileId"
+          element={<Candidate_Infor />}
+        />
         <Route path="/saved-jobs" element={<SavedJob />} />
         <Route path="/applied-jobs" element={<Applied_jobs />} />
         <Route path="/cv-management" element={<CV_management />} />
+
+        {/* Common */}
+        <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/candidate-change-password" element={<ChangePassword />} />
         <Route path="/company-detail/:companyId" element={<Company_page />} />
+        <Route path="/job-details/:id" element={<Job_Details />} />
+
+        {/* Admin */}
         <Route path="/home-admin" element={<Home_admin />} />
         <Route path="/admin-dashboard" element={<Home_admin />} />
         <Route
           path="/admin-company-verification"
           element={<AdminCompanyVerification />}
         />
+        <Route path="/admin-account-management" element={<Account_page />} />
+        <Route
+          path="/admin-company-management"
+          element={<Company_management />}
+        />
+
+        {/* Không tìm thấy route */}
+        <Route path="*" element={<HomeRedirect />} />
         <Route path="/job-details/:id" element={<Job_Details />} />
         <Route path="/job-applicants/:jobId" element={<CV_list />} />
         <Route path="/admin-account-management" element={<Account_page />} />
@@ -80,4 +186,5 @@ function App() {
     </BrowserRouter>
   );
 }
+
 export default App;
