@@ -28,6 +28,7 @@ import Job_Details from "./pages/Job_Details/Job_Details";
 import CV_list from "./pages/Manage_Recuitment/CV_list/CV_list";
 import Account_page from "./pages/Account_management/Account_page";
 import Company_management from "./pages/Company_management/company_page";
+import Notifications from "./pages/Notifications/Notifications";
 
 /* =========================
    Lấy user từ localStorage
@@ -140,6 +141,10 @@ function App() {
         <Route path="/business-paper" element={<Verify_paper />} />
         <Route path="/manage-recruitment" element={<ManageRecuitment />} />
         <Route path="/job-applicants/:jobId" element={<CV_list />} />
+        <Route
+          path="/recruiter-notifications"
+          element={<Notifications />}
+        />
 
         {/* Candidate */}
         <Route path="/home-candidate" element={<HomepageCandidate />} />
@@ -161,6 +166,10 @@ function App() {
         <Route path="/saved-jobs" element={<SavedJob />} />
         <Route path="/applied-jobs" element={<Applied_jobs />} />
         <Route path="/cv-management" element={<CV_management />} />
+        <Route
+          path="/candidate-notifications"
+          element={<Notifications />}
+        />
 
         {/* Common */}
         <Route path="/change-password" element={<ChangePassword />} />

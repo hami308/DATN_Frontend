@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../Sidebar/Sidebar.module.css";
 import {
   User,
@@ -12,11 +12,17 @@ import {
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getRecruiterConditions } from "../../service/recruiter/check_condition";
+import {
+  getNotificationsApi,
+  getTodayNewNotificationsCount,
+  normalizeNotifications,
+} from "../../service/notification/notification";
 
 export default function Sidebar() {
   const [openProfile, setOpenProfile] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [checkingPostConditions, setCheckingPostConditions] = useState(false);
+  const [newNotificationsCount, setNewNotificationsCount] = useState(0);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,6 +42,39 @@ export default function Sidebar() {
   const isPostNewsActive =
     location.pathname === "/post-news/create-job" ||
     location.pathname === "/post-news/conditions";
+
+  const isNotificationActive = location.pathname === "/recruiter-notifications";
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchNewNotificationsCount = async () => {
+      try {
+        const response = await getNotificationsApi();
+        const notifications = normalizeNotifications(response);
+        const count = getTodayNewNotificationsCount(notifications);
+
+        if (isMounted) {
+          setNewNotificationsCount(count);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setNewNotificationsCount(0);
+        }
+      }
+    };
+
+    fetchNewNotificationsCount();
+    window.addEventListener("notifications-updated", fetchNewNotificationsCount);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener(
+        "notifications-updated",
+        fetchNewNotificationsCount
+      );
+    };
+  }, [location.pathname]);
 
   const handlePostNewsClick = async () => {
     if (checkingPostConditions) return;
@@ -158,9 +197,23 @@ export default function Sidebar() {
         )}
       </div>
 
-      <div className={styles.item}>
+      <div
+        className={`${styles.item} ${
+          isNotificationActive ? styles.active : ""
+        }`}
+        onClick={() => navigate("/recruiter-notifications")}
+      >
         <Bell size={20} />
-        {!collapsed && <span>Thông báo</span>}
+        {!collapsed && (
+          <span className={styles.itemLabel}>
+            <span>Thông báo</span>
+            {newNotificationsCount > 0 && (
+              <span className={styles.notificationBadge}>
+                {newNotificationsCount > 99 ? "99+" : newNotificationsCount}
+              </span>
+            )}
+          </span>
+        )}
       </div>
 
       <div

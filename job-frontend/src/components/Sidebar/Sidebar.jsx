@@ -12,11 +12,17 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import {
+  getNotificationsApi,
+  getTodayNewNotificationsCount,
+  normalizeNotifications,
+} from "../../service/notification/notification";
 
 export default function Sidebar() {
   const [openProfile, setOpenProfile] = useState(false);
   const [openJob, setOpenJob] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const [newNotificationsCount, setNewNotificationsCount] = useState(0);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,6 +49,8 @@ export default function Sidebar() {
       return "jobs";
     }
 
+    if (pathname === "/candidate-notifications") return "notifications";
+
     return sessionStorage.getItem("candidateSidebarActive") || "home";
   };
 
@@ -56,7 +64,8 @@ export default function Sidebar() {
       path === "/cv-management" ||
       path === "/saved-jobs" ||
       path === "/applied-jobs" ||
-      path === "/candidate-job-recommend"
+      path === "/candidate-job-recommend" ||
+      path === "/candidate-notifications"
     ) {
       sessionStorage.setItem("candidateSidebarActive", activeKey);
     }
@@ -71,6 +80,38 @@ export default function Sidebar() {
   const isProfileActive = activeKey === "profile";
   const isCVActive = activeKey === "cv";
   const isJobActive = activeKey === "jobs";
+  const isNotificationActive = activeKey === "notifications";
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchNewNotificationsCount = async () => {
+      try {
+        const response = await getNotificationsApi();
+        const notifications = normalizeNotifications(response);
+        const count = getTodayNewNotificationsCount(notifications);
+
+        if (isMounted) {
+          setNewNotificationsCount(count);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setNewNotificationsCount(0);
+        }
+      }
+    };
+
+    fetchNewNotificationsCount();
+    window.addEventListener("notifications-updated", fetchNewNotificationsCount);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener(
+        "notifications-updated",
+        fetchNewNotificationsCount
+      );
+    };
+  }, [path]);
 
   return (
     <div className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
@@ -181,9 +222,23 @@ export default function Sidebar() {
         )}
       </div>
 
-      <div className={styles.item}>
+      <div
+        className={`${styles.item} ${
+          isNotificationActive ? styles.active : ""
+        }`}
+        onClick={() => goTo("/candidate-notifications", "notifications")}
+      >
         <Bell size={20} />
-        {!collapsed && <span>Thông báo</span>}
+        {!collapsed && (
+          <span className={styles.itemLabel}>
+            <span>Thông báo</span>
+            {newNotificationsCount > 0 && (
+              <span className={styles.notificationBadge}>
+                {newNotificationsCount > 99 ? "99+" : newNotificationsCount}
+              </span>
+            )}
+          </span>
+        )}
       </div>
 
       <div
