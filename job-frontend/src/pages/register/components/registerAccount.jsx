@@ -28,7 +28,14 @@ export default function RegisterAccount({ role }) {
         setError("Họ và tên phải có ít nhất 3 ký tự");
         return;
       }
+      // EMAIL
+      const emailRegex =
+        /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
+      if (!emailRegex.test(email.trim())) {
+        setError("Email không hợp lệ");
+        return;
+      }
       // PASSWORD
       if (password.length < 8) {
         setError("Mật khẩu phải có ít nhất 8 ký tự");

@@ -688,7 +688,7 @@ export default function CreateJob() {
                 ></textarea>
 
                 <h3 className="createjob-section-title">
-                  2. Hình thức làm việc
+                  2. Hình thức làm việc *
                 </h3>
 
                 <div className="createjob-jobtype-wrapper" ref={jobTypeRef}>
@@ -750,7 +750,9 @@ export default function CreateJob() {
                   )}
                 </div>
 
-                <h3 className="createjob-section-title">3. Hạn nộp hồ sơ</h3>
+                <h3 className="createjob-section-title">
+                  3. Hạn nộp hồ sơ *
+                </h3>
 
                 <DatePicker
                   selected={parseDisplayDate(formData.deadline)}
