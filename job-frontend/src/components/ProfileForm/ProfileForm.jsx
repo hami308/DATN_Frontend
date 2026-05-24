@@ -56,6 +56,28 @@ const convertDateToISO = (value) => {
   return `${year}-${month}-${day}`;
 };
 
+const isAtLeast18YearsOld = (value) => {
+  if (!value) return false;
+
+  const birthDate = parseDisplayDate(value);
+  if (!birthDate) return false;
+
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age >= 18;
+};
+
 const validateField = (name, value) => {
   const text = value?.trim() || "";
 
@@ -72,13 +94,25 @@ const validateField = (name, value) => {
     }
   }
 
+  if (name === "date_of_birth") {
+    if (!text) return "Vui lòng chọn ngày sinh";
+
+    if (!parseDisplayDate(text)) {
+      return "Ngày sinh không hợp lệ";
+    }
+
+    if (!isAtLeast18YearsOld(text)) {
+      return "Bạn phải đủ 18 tuổi";
+    }
+  }
+
   return "";
 };
 
 const validateForm = (formData) => {
   const newErrors = {};
 
-  ["full_name", "phone"].forEach((field) => {
+  ["full_name", "phone", "date_of_birth"].forEach((field) => {
     const error = validateField(field, formData[field]);
 
     if (error) {
@@ -176,6 +210,7 @@ export default function ProfileForm({ profileId }) {
     }
 
     const recruiter = getRecruiterFromResponse(response);
+
     if (recruiter) {
       fillFormData(recruiter, user);
     }
@@ -237,9 +272,16 @@ export default function ProfileForm({ profileId }) {
   const handleDateChange = (date) => {
     if (isAdmin) return;
 
+    const formattedDate = formatDateFromPicker(date);
+
     setFormData((prev) => ({
       ...prev,
-      date_of_birth: formatDateFromPicker(date),
+      date_of_birth: formattedDate,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      date_of_birth: validateField("date_of_birth", formattedDate),
     }));
 
     setMessage("");
@@ -327,6 +369,7 @@ export default function ProfileForm({ profileId }) {
       }
 
       const updateResponse = await updateRecruiterInfor(dataUpdate);
+
       await fetchLatestRecruiter(result.user);
 
       setAvatarFile(null);
@@ -553,19 +596,28 @@ export default function ProfileForm({ profileId }) {
       <div className={styles.row}>
         <span>Ngày sinh</span>
 
-        <DatePicker
-          selected={parseDisplayDate(formData.date_of_birth)}
-          onChange={handleDateChange}
-          disabled={isAdmin}
-          dateFormat="dd/MM/yyyy"
-          placeholderText="dd/mm/yyyy"
-          className={styles.dateInput}
-          wrapperClassName={styles.datePickerWrapper}
-          popperPlacement="bottom-end"
-          showMonthDropdown
-          showYearDropdown
-          dropdownMode="select"
-        />
+        <div className={styles.field}>
+          <DatePicker
+            selected={parseDisplayDate(formData.date_of_birth)}
+            onChange={handleDateChange}
+            disabled={isAdmin}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="dd/mm/yyyy"
+            className={`${styles.dateInput} ${
+              errors.date_of_birth ? styles.inputError : ""
+            }`}
+            wrapperClassName={styles.datePickerWrapper}
+            popperPlacement="bottom-end"
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="select"
+            maxDate={new Date()}
+          />
+
+          {errors.date_of_birth && (
+            <p className={styles.fieldError}>{errors.date_of_birth}</p>
+          )}
+        </div>
       </div>
 
       {message && <p className={styles.success}>{message}</p>}

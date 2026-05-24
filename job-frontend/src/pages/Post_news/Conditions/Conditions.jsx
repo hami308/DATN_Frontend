@@ -33,9 +33,8 @@ export default function Conditions() {
           href: "/company-profile",
         },
         {
-          title: "Cập nhật giấy đăng ký doanh nghiệp",
+          title: "Quản trị viên xác nhận thông tin công ty",
           done: Boolean(response.data?.isCertificateApproved),
-          href: "/business-paper",
         },
         {
           title: "Đăng tin tuyển dụng đầu tiên",

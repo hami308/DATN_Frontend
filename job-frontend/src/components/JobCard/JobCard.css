@@ -6,7 +6,7 @@
   border-radius: 12px;
   padding: 16px 20px;
   background: #fff;
-  width: 75%;
+  width: 80%;
   margin: 16px auto;
 }
 .job-card:hover {
@@ -119,6 +119,11 @@
     "wght" 500,
     "GRAD" 0,
     "opsz" 24;
+}
+@media (max-width: 1400px) {
+  .job-card-meta {
+    gap: 7px;
+  }
 }
 /* Responsive */
 @media (max-width: 1024px) {

@@ -116,22 +116,29 @@ function JobCard({
 
       if (Number.isNaN(numberValue)) return "";
 
-      return `${numberValue.toLocaleString("vi-VN")} VND`;
+      // Chuyển VND -> triệu
+      const million = numberValue / 1000000;
+
+      // Nếu số tròn -> 12
+      // Nếu lẻ -> 12.5
+      return million % 1 === 0
+        ? million.toFixed(0)
+        : million.toFixed(1);
     };
 
     const minSalary = hasMin ? formatMoney(min) : "";
     const maxSalary = hasMax ? formatMoney(max) : "";
 
     if (minSalary && maxSalary) {
-      return `${minSalary} - ${maxSalary}`;
+      return `${minSalary}-${maxSalary} triệu VND`;
     }
 
     if (minSalary) {
-      return `Từ ${minSalary}`;
+      return `Từ ${minSalary} triệu VND`;
     }
 
     if (maxSalary) {
-      return `Lên đến ${maxSalary}`;
+      return `Đến ${maxSalary} triệu VND`;
     }
 
     return "Thỏa thuận";
