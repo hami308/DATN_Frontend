@@ -121,10 +121,20 @@ input {
 }
 
 .forgot {
+  width: fit-content;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: white;
   font-size: 12px;
   margin-top: 6px;
   opacity: 0.8;
   text-align: left;
+  cursor: pointer;
+}
+
+.forgot:hover {
+  text-decoration: underline;
 }
 
 .loginBtn {

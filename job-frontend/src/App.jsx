@@ -5,6 +5,9 @@ import RegisterChoicePage from "./pages/register/registerChoicePage";
 import RegisterPage from "./pages/register/registerPage";
 import VerifyEmailPage from "./pages/verifyAccount/verifyEmailPage";
 import VerifyPhonePage from "./pages/verifyAccount/verifyPhonePage";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ForgotPasswordOtp from "./pages/ForgotPassword/ForgotPasswordOtp";
+import ResetPassword from "./pages/ForgotPassword/ResetPassword";
 import HomepageRecuiter from "./pages/Homepage_Recuiter/Homepage_Recuiter";
 import Recuiter_Infor from "./pages/Recuiter_Infor/Recuiter_Infor";
 import Conditions from "./pages/Post_news/Conditions/Conditions";
@@ -112,6 +115,12 @@ function App() {
         <Route path="/register/:role" element={<RegisterPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/verify-phone" element={<VerifyPhonePage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgot-password/otp" element={<ForgotPasswordOtp />} />
+        <Route
+          path="/forgot-password/reset-password"
+          element={<ResetPassword />}
+        />
 
         {/* Recruiter */}
         <Route path="/home-recruiter" element={<HomepageRecuiter />} />
