@@ -127,14 +127,6 @@ function JobComponent({
             >
               {title}
             </h3>
-
-            <span
-              className={`job-component-type ${
-                type === "Full Time" ? "full" : "part"
-              }`}
-            >
-              {type}
-            </span>
           </div>
 
           <div className="job-component-meta">

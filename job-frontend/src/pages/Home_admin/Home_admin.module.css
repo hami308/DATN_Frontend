@@ -4,7 +4,6 @@
   flex-direction: column;
   min-height: 100vh;
   background: #f5f7fb;
-  overflow: hidden;
 }
 
 /* ===== CONTAINER ===== */
@@ -12,25 +11,24 @@
   flex: 1;
   display: flex;
   gap: 24px;
-
   box-sizing: border-box;
   min-width: 0;
-
-  margin-top: 90px; /* chiều cao header */
+  margin-top: 90px;
 }
 
 /* ===== SIDEBAR ===== */
 .container > :first-child {
-  flex-shrink: 0; /* sidebar không bị co */
+  flex-shrink: 0;
 }
 
 /* ===== CONTENT ===== */
 .content {
   flex: 1;
   min-width: 0;
-
   display: flex;
   flex-direction: column;
+  overflow: visible;
+  padding-bottom: 32px;
 }
 
 /* ===== CARD CHUNG ===== */
@@ -56,17 +54,14 @@
   margin-top: 20px;
 }
 
-/* ===== SCROLL CONTENT ===== */
-.content {
-  overflow-y: auto;
-}
-
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
-  .content {
-    justify-content: stretch;
-  }
   .container {
-    margin-top: 60px; /* chiều cao header */
+    margin-top: 60px;
+    gap: 12px;
+  }
+
+  .content {
+    padding-bottom: 24px;
   }
 }

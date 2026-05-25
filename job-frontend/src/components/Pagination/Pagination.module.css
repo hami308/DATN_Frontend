@@ -24,6 +24,17 @@
   transition: all 0.2s ease;
 }
 
+.ellipsis {
+  min-width: 28px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 /* hover */
 .pagination button:hover:not(:disabled) {
   background: #f3f4f6;

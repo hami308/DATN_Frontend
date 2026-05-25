@@ -53,11 +53,8 @@ export default function RegisterAccount({ role }) {
         password,
         role,
       });
-
-      localStorage.setItem("token", result.data.token);
-      localStorage.setItem("user", JSON.stringify(result.data.user));
-
-      alert("Bạn đã đăng ký thành công tài khoản. Vui lòng đăng nhập");
+      role = result.data.role === "candidate" ? "ứng viên" : "nhà tuyển dụng";
+      alert("Bạn đã đăng ký thành công tài khoản " + role + ". Vui lòng đăng nhập");
 
       navigate("/login");
     } catch (error) {

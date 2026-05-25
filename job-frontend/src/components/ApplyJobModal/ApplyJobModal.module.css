@@ -71,7 +71,8 @@
   border-color: #032d67;
   background: #f8fbff;
 }
-label span {
+.cvItem label,
+.cvItem span {
   color: #14080a;
 }
 .cvItem label {

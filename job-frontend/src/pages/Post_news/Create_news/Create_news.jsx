@@ -148,11 +148,7 @@ export default function CreateJob() {
         setSubmitError("");
         setSubmitSuccess("");
 
-        const requests = [
-          getJobTypesApi(),
-          getAllIndustries(),
-          getLevelsApi(),
-        ];
+        const requests = [getJobTypesApi(), getAllIndustries(), getLevelsApi()];
 
         if (isEditMode) {
           requests.push(getJobDetailApi(id));
@@ -169,9 +165,7 @@ export default function CreateJob() {
         setLevels(levelResponse?.data?.levels || []);
 
         setIndustries(
-          industryResponse?.data?.industries ||
-            industryResponse?.data ||
-            []
+          industryResponse?.data?.industries || industryResponse?.data || []
         );
 
         if (isEditMode) {
@@ -218,17 +212,11 @@ export default function CreateJob() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        industryRef.current &&
-        !industryRef.current.contains(event.target)
-      ) {
+      if (industryRef.current && !industryRef.current.contains(event.target)) {
         setShowIndustryDropdown(false);
       }
 
-      if (
-        jobTypeRef.current &&
-        !jobTypeRef.current.contains(event.target)
-      ) {
+      if (jobTypeRef.current && !jobTypeRef.current.contains(event.target)) {
         setShowJobTypeDropdown(false);
       }
     };
@@ -285,6 +273,11 @@ export default function CreateJob() {
   );
 
   const validateStepOne = () => {
+    const minExp = Number(formData.minExperience);
+    const maxExp = Number(formData.maxExperience);
+    const minSalary = Number(formData.minSalary);
+    const maxSalary = Number(formData.maxSalary);
+
     if (!formData.title.trim()) {
       setSubmitError("Vui lòng nhập vị trí tuyển dụng.");
       return false;
@@ -302,6 +295,30 @@ export default function CreateJob() {
 
     if (formData.industryIds.length === 0) {
       setSubmitError("Vui lòng chọn lĩnh vực.");
+      return false;
+    }
+
+    if (minExp < 0 || maxExp < 0) {
+      setSubmitError("Kinh nghiệm không được âm.");
+      return false;
+    }
+
+    if (minExp > maxExp) {
+      setSubmitError(
+        "Kinh nghiệm tối thiểu phải nhỏ hơn hoặc bằng kinh nghiệm tối đa."
+      );
+      return false;
+    }
+
+    if (minSalary < 0 || maxSalary < 0) {
+      setSubmitError("Mức lương không được âm.");
+      return false;
+    }
+
+    if (minSalary > maxSalary) {
+      setSubmitError(
+        "Mức lương tối thiểu phải nhỏ hơn hoặc bằng mức lương tối đa."
+      );
       return false;
     }
 
@@ -419,9 +436,7 @@ export default function CreateJob() {
               ></div>
 
               <div
-                className={`createjob-step-item ${
-                  step === 2 ? "active" : ""
-                }`}
+                className={`createjob-step-item ${step === 2 ? "active" : ""}`}
               >
                 <span className="createjob-step-number">Ⅱ</span>
                 <span>
@@ -476,6 +491,7 @@ export default function CreateJob() {
                     <label>Số lượng *</label>
                     <input
                       type="number"
+                      min="1"
                       name="quantity"
                       value={formData.quantity}
                       onChange={handleChange}
@@ -597,6 +613,7 @@ export default function CreateJob() {
                     <div className="salary-flex">
                       <input
                         type="number"
+                        min="0"
                         name="minSalary"
                         value={formData.minSalary}
                         onChange={handleChange}
@@ -608,6 +625,7 @@ export default function CreateJob() {
 
                       <input
                         type="number"
+                        min="0"
                         name="maxSalary"
                         value={formData.maxSalary}
                         onChange={handleChange}
@@ -697,15 +715,15 @@ export default function CreateJob() {
                     className={`createjob-jobtype-select ${
                       showJobTypeDropdown ? "active" : ""
                     } ${!selectedJobType ? "placeholder" : ""}`}
-                    onClick={() =>
-                      setShowJobTypeDropdown((prev) => !prev)
-                    }
+                    onClick={() => setShowJobTypeDropdown((prev) => !prev)}
                     disabled={loadingData}
                   >
                     <span>
                       {selectedJobType?.name || "Chọn hình thức làm việc"}
                     </span>
-                    <span className="createjob-jobtype-arrow">⌄</span>
+                    <span className="createjob-jobtype-arrow">
+                      <span class="material-symbols-outlined">stat_minus_1</span>
+                    </span>
                   </button>
 
                   {showJobTypeDropdown && (

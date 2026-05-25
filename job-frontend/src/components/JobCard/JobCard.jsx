@@ -41,7 +41,6 @@ function JobCard({
   id,
   logo,
   title,
-  type,
   location,
   salary,
   salaryMin,
@@ -177,17 +176,11 @@ function JobCard({
             <h3
               className="job-card-title clickable-title"
               onClick={() => navigate(`/job-details/${id}`)}
+              title={title}
             >
               {title}
             </h3>
 
-            <span
-              className={`job-card-type ${
-                type === "Full Time" ? "full" : "part"
-              }`}
-            >
-              {type}
-            </span>
           </div>
 
           <div className="job-card-meta">

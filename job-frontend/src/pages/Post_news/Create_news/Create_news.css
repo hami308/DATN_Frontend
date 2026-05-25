@@ -406,6 +406,7 @@
   cursor: pointer;
   font-size: 16px;
   color: #1f2937;
+  text-align: left;
 }
 
 .industry-option:hover,

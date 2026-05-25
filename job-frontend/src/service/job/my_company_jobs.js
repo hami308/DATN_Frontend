@@ -26,7 +26,7 @@ const buildQueryString = (params = {}) => {
 
 export const getMyCompanyJobsApi = async (filters = {}) => {
   const response = await axiosClient.get(
-    `/jobs/company/me${buildQueryString(filters)}`
+    `/jobs/me${buildQueryString(filters)}`
   );
 
   return response.data;

@@ -63,7 +63,6 @@ const isAtLeast18YearsOld = (value) => {
   if (!birthDate) return false;
 
   const today = new Date();
-
   let age = today.getFullYear() - birthDate.getFullYear();
 
   const monthDiff = today.getMonth() - birthDate.getMonth();
@@ -149,6 +148,7 @@ export default function ProfileForm({ profileId }) {
     gender: "",
     date_of_birth: "",
     company_name: "",
+    is_verify_phone: false,
   });
 
   const checkUser = () => {
@@ -197,6 +197,7 @@ export default function ProfileForm({ profileId }) {
         recruiter?.name_company ||
         recruiter?.companyName ||
         "Chưa cập nhật công ty",
+      is_verify_phone: Boolean(recruiter?.is_verify_phone),
     });
   };
 
@@ -210,6 +211,7 @@ export default function ProfileForm({ profileId }) {
     }
 
     const recruiter = getRecruiterFromResponse(response);
+    console.log("Fetched recruiter:", recruiter);
 
     if (recruiter) {
       fillFormData(recruiter, user);
@@ -362,6 +364,8 @@ export default function ProfileForm({ profileId }) {
           : ""
       );
 
+      dataUpdate.append("is_verify_phone", String(formData.is_verify_phone));
+
       if (avatarFile) {
         dataUpdate.append("avatar", avatarFile);
       } else if (avatar === null) {
@@ -464,7 +468,7 @@ export default function ProfileForm({ profileId }) {
             onChange={handleChange}
             readOnly={isAdmin}
             placeholder="Nhập họ và tên"
-            className={errors.full_name ? styles.inputError : ""}
+            className={errors.full_name ? styles.inputError : styles.nameInput}
           />
 
           {errors.full_name && (
@@ -483,7 +487,7 @@ export default function ProfileForm({ profileId }) {
             name="email"
             value={formData.email}
             readOnly
-            className={styles.readOnlyInput}
+            className={`${styles.readOnlyInput} ${styles.nameInput}`}
             placeholder="Email"
           />
         </div>
@@ -501,7 +505,7 @@ export default function ProfileForm({ profileId }) {
                 name="company_name"
                 value={formData.company_name}
                 readOnly
-                className={styles.readOnlyInput}
+                className={`${styles.readOnlyInput} ${styles.nameInput}`}
                 placeholder="Công ty"
               />
             </div>
@@ -527,19 +531,34 @@ export default function ProfileForm({ profileId }) {
 
             {!isAdmin && (
               <Link
-                to="/verify-phone"
-                className={styles.verifyPhoneLink}
-                title="Xác thực số điện thoại"
-                aria-label="Xác thực số điện thoại"
+                to={formData.is_verify_phone ? "#" : "/verify-phone"}
+                onClick={(e) => {
+                  if (formData.is_verify_phone) {
+                    e.preventDefault();
+                  }
+                }}
+                className={
+                  formData.is_verify_phone
+                    ? styles.verifyPhoneLinkDisabled
+                    : styles.verifyPhoneLink
+                }
+                title={
+                  formData.is_verify_phone
+                    ? "Số điện thoại đã được xác thực"
+                    : "Xác thực số điện thoại"
+                }
+                aria-label={
+                  formData.is_verify_phone
+                    ? "Số điện thoại đã được xác thực"
+                    : "Xác thực số điện thoại"
+                }
               >
                 <span className="material-symbols-outlined">check_circle</span>
               </Link>
             )}
           </div>
 
-          {errors.phone && (
-            <p className={styles.fieldError}>{errors.phone}</p>
-          )}
+          {errors.phone && <p className={styles.fieldError}>{errors.phone}</p>}
         </div>
       </div>
 
@@ -554,6 +573,7 @@ export default function ProfileForm({ profileId }) {
             value={formData.location}
             onChange={handleChange}
             readOnly={isAdmin}
+            className={styles.nameInput}
             placeholder="Nhập địa chỉ"
           />
         </div>

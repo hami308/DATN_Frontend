@@ -1,28 +1,52 @@
 import styles from "./Pagination.module.css";
 
+const MAX_VISIBLE_PAGES = 10;
+
 export default function Pagination({ currentPage, totalPages, onPageChange }) {
+  const safeTotalPages = Math.max(Number(totalPages) || 0, 0);
+  const safeCurrentPage = Math.min(
+    Math.max(Number(currentPage) || 1, 1),
+    safeTotalPages || 1
+  );
+
+  if (safeTotalPages <= 0) return null;
+
+  const startPage =
+    Math.floor((safeCurrentPage - 1) / MAX_VISIBLE_PAGES) *
+      MAX_VISIBLE_PAGES +
+    1;
+  const endPage = Math.min(startPage + MAX_VISIBLE_PAGES - 1, safeTotalPages);
+  const visiblePages = Array.from(
+    { length: endPage - startPage + 1 },
+    (_, index) => startPage + index
+  );
+
   return (
     <div className={styles.pagination}>
       <button
-        disabled={currentPage === 1}
-        onClick={() => onPageChange(currentPage - 1)}
+        disabled={safeCurrentPage === 1}
+        onClick={() => onPageChange(safeCurrentPage - 1)}
       >
         Trước
       </button>
 
-      {[...Array(totalPages)].map((_, i) => (
+      {visiblePages.map((page) => (
         <button
-          key={i}
-          className={currentPage === i + 1 ? styles.active : ""}
-          onClick={() => onPageChange(i + 1)}
+          key={page}
+          className={safeCurrentPage === page ? styles.active : ""}
+          onClick={() => onPageChange(page)}
         >
-          {i + 1}
+          {page}
         </button>
       ))}
 
+      {endPage < safeTotalPages && (
+        <span className={styles.ellipsis}>...</span>
+      )}
+
       <button
-        disabled={currentPage === totalPages}
-        onClick={() => onPageChange(currentPage + 1)}
+        disabled={safeCurrentPage === safeTotalPages}
+        onClick={() => onPageChange(safeCurrentPage + 1)}
       >
         Tiếp
       </button>

@@ -18,6 +18,8 @@
   display: flex;
   align-items: center;
   gap: 14px;
+  min-width: 0;
+  flex: 1;
 }
 
 .job-card-logo {
@@ -30,6 +32,8 @@
 .job-card-info {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  flex: 1;
 }
 
 /* title + tag */
@@ -37,12 +41,17 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 
 .job-card-title {
   font-size: 18px;
   font-weight: 600;
   margin: 0;
+  max-width: 520px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* tag */

@@ -97,12 +97,12 @@ export default function Dashboard() {
       <div className={`${styles.row} ${styles.mt20} ${loading ? styles.isLoading : ""}`}>
         <div className={styles.card}>
           <h4>Địa điểm có tỉ lệ tuyển dụng cao nhất</h4>
-          <TopLocationCard data={dashboard?.topLocations || []} />
+          <TopLocationCard data={(dashboard?.topLocations || []).slice(0, 3)} />
         </div>
 
         <div className={styles.card}>
           <h4>Công ty có tỉ lệ tuyển dụng cao nhất</h4>
-          <TopCompanyCard data={dashboard?.topCompanies || []} />
+          <TopCompanyCard data={(dashboard?.topCompanies || []).slice(0, 3)} />
         </div>
       </div>
     </div>

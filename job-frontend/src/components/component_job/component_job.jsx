@@ -2,6 +2,8 @@ import React from "react";
 import "./component_job.css";
 
 const ComponentJob = ({ title, logo, company_name, location, salary, onClick }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = user?.role;
   const handleSaveJob = (event) => {
     event.stopPropagation();
     alert("Đã lưu tin thành công!");
@@ -45,15 +47,19 @@ const ComponentJob = ({ title, logo, company_name, location, salary, onClick }) 
       </div>
 
       <div className="component-job-salary">{salary}</div>
-
-      <div className="component-job-actions">
-        <button className="component-job-btn-save" onClick={handleSaveJob}>
-          <span className="component-job-heart-icon">♡</span> Lưu tin
-        </button>
-        <button className="component-job-btn-apply" onClick={handleApplyNow}>
-          Ứng tuyển ngay
-        </button>
-      </div>
+    {
+        role === "candidate" && (
+          <div className="component-job-actions">
+            <button className="component-job-btn-save" onClick={handleSaveJob}>
+              <span className="component-job-heart-icon">♡</span> Lưu tin
+            </button>
+            <button className="component-job-btn-apply" onClick={handleApplyNow}>
+              Ứng tuyển ngay
+            </button>
+          </div>
+      )
+    }
+      
     </div>
   );
 };

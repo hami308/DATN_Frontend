@@ -128,13 +128,15 @@ export default function Homepage() {
 
               {!loading && jobs.length === 0 && <p>Không tìm thấy việc làm.</p>}
 
-              <div className={styles.paginationWrap}>
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                />
-              </div>
+              {!loading && jobs.length > 0 && totalPages > 1 && (
+                <div className={styles.paginationWrap}>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>

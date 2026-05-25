@@ -22,6 +22,12 @@ export default function ChangePassword() {
     confirmPassword: "",
   });
 
+  const [touched, setTouched] = useState({
+    currentPassword: false,
+    newPassword: false,
+    confirmPassword: false,
+  });
+
   const [apiError, setApiError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -70,30 +76,45 @@ export default function ChangePassword() {
     };
 
     setFormData(newFormData);
+
     setApiError("");
     setMessage("");
 
-    setErrors((prev) => ({
-      ...prev,
-      [name]: "",
-      ...(name === "newPassword" && prev.confirmPassword
-        ? {
-            confirmPassword: validateField(
-              "confirmPassword",
-              newFormData.confirmPassword,
-              newFormData,
-            ),
-          }
-        : {}),
-    }));
+    // chỉ validate khi field đã blur
+    if (touched[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: validateField(name, value, newFormData),
+      }));
+    }
+
+    // update confirm password khi đổi new password
+    if (
+      name === "newPassword" &&
+      touched.confirmPassword
+    ) {
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: validateField(
+          "confirmPassword",
+          newFormData.confirmPassword,
+          newFormData
+        ),
+      }));
+    }
   };
 
   const handleBlur = (e) => {
     const { name, value } = e.target;
 
+    setTouched((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
+
     setErrors((prev) => ({
       ...prev,
-      [name]: validateField(name, value),
+      [name]: validateField(name, value, formData),
     }));
   };
 
@@ -102,15 +123,27 @@ export default function ChangePassword() {
       currentPassword: validateField(
         "currentPassword",
         formData.currentPassword,
+        formData
       ),
-      newPassword: validateField("newPassword", formData.newPassword),
+      newPassword: validateField(
+        "newPassword",
+        formData.newPassword,
+        formData
+      ),
       confirmPassword: validateField(
         "confirmPassword",
         formData.confirmPassword,
+        formData
       ),
     };
 
     setErrors(newErrors);
+
+    setTouched({
+      currentPassword: true,
+      newPassword: true,
+      confirmPassword: true,
+    });
 
     return (
       !newErrors.currentPassword &&
@@ -118,6 +151,26 @@ export default function ChangePassword() {
       !newErrors.confirmPassword
     );
   };
+
+  const isFormValid =
+    formData.currentPassword.trim() &&
+    formData.newPassword.trim() &&
+    formData.confirmPassword.trim() &&
+    !validateField(
+      "currentPassword",
+      formData.currentPassword,
+      formData
+    ) &&
+    !validateField(
+      "newPassword",
+      formData.newPassword,
+      formData
+    ) &&
+    !validateField(
+      "confirmPassword",
+      formData.confirmPassword,
+      formData
+    );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,8 +201,16 @@ export default function ChangePassword() {
         newPassword: "",
         confirmPassword: "",
       });
+
+      setTouched({
+        currentPassword: false,
+        newPassword: false,
+        confirmPassword: false,
+      });
     } catch (err) {
-      setApiError(err.message || "Đổi mật khẩu thất bại. Vui lòng thử lại.");
+      setApiError(
+        err.message || "Đổi mật khẩu thất bại. Vui lòng thử lại."
+      );
 
       setMessage("");
     } finally {
@@ -163,6 +224,7 @@ export default function ChangePassword() {
 
       <div className={styles.divider} />
 
+      {/* CURRENT PASSWORD */}
       <div className={styles.row}>
         <label>Mật khẩu hiện tại</label>
 
@@ -174,7 +236,9 @@ export default function ChangePassword() {
             onBlur={handleBlur}
             type={show.current ? "text" : "password"}
             placeholder="Nhập mật khẩu"
-            className={errors.currentPassword ? styles.inputError : ""}
+            className={
+              errors.currentPassword ? styles.inputError : ""
+            }
           />
 
           <button
@@ -182,15 +246,22 @@ export default function ChangePassword() {
             onClick={() => toggle("current")}
             className={styles.eye}
           >
-            {show.current ? <EyeOff size={18} /> : <Eye size={18} />}
+            {show.current ? (
+              <EyeOff size={18} />
+            ) : (
+              <Eye size={18} />
+            )}
           </button>
         </div>
       </div>
 
       {errors.currentPassword && (
-        <p className={styles.error}>{errors.currentPassword}</p>
+        <p className={styles.error}>
+          {errors.currentPassword}
+        </p>
       )}
 
+      {/* NEW PASSWORD */}
       <div className={styles.row}>
         <label>Mật khẩu mới</label>
 
@@ -202,7 +273,9 @@ export default function ChangePassword() {
             onBlur={handleBlur}
             type={show.newPass ? "text" : "password"}
             placeholder="Nhập mật khẩu mới"
-            className={errors.newPassword ? styles.inputError : ""}
+            className={
+              errors.newPassword ? styles.inputError : ""
+            }
           />
 
           <button
@@ -210,15 +283,22 @@ export default function ChangePassword() {
             onClick={() => toggle("newPass")}
             className={styles.eye}
           >
-            {show.newPass ? <EyeOff size={18} /> : <Eye size={18} />}
+            {show.newPass ? (
+              <EyeOff size={18} />
+            ) : (
+              <Eye size={18} />
+            )}
           </button>
         </div>
       </div>
 
       {errors.newPassword && (
-        <p className={styles.error}>{errors.newPassword}</p>
+        <p className={styles.error}>
+          {errors.newPassword}
+        </p>
       )}
 
+      {/* CONFIRM PASSWORD */}
       <div className={styles.row}>
         <label>Nhập lại mật khẩu mới</label>
 
@@ -230,7 +310,11 @@ export default function ChangePassword() {
             onBlur={handleBlur}
             type={show.confirm ? "text" : "password"}
             placeholder="Nhập lại mật khẩu"
-            className={errors.confirmPassword ? styles.inputError : ""}
+            className={
+              errors.confirmPassword
+                ? styles.inputError
+                : ""
+            }
           />
 
           <button
@@ -238,21 +322,39 @@ export default function ChangePassword() {
             onClick={() => toggle("confirm")}
             className={styles.eye}
           >
-            {show.confirm ? <EyeOff size={18} /> : <Eye size={18} />}
+            {show.confirm ? (
+              <EyeOff size={18} />
+            ) : (
+              <Eye size={18} />
+            )}
           </button>
         </div>
       </div>
 
       {errors.confirmPassword && (
-        <p className={styles.error}>{errors.confirmPassword}</p>
+        <p className={styles.error}>
+          {errors.confirmPassword}
+        </p>
       )}
 
-      {message && <p className={styles.success}>{message}</p>}
+      {message && (
+        <p className={styles.success}>{message}</p>
+      )}
 
-      {apiError && <p className={styles.errorCenter}>{apiError}</p>}
+      {apiError && (
+        <p className={styles.errorCenter}>
+          {apiError}
+        </p>
+      )}
 
-      <button type="submit" className={styles.submit} disabled={loading}>
-        {loading ? "Đang cập nhật..." : "Cập nhật mật khẩu"}
+      <button
+        type="submit"
+        className={styles.submit}
+        disabled={loading || !isFormValid}
+      >
+        {loading
+          ? "Đang cập nhật..."
+          : "Cập nhật mật khẩu"}
       </button>
     </form>
   );

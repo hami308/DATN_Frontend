@@ -51,6 +51,8 @@
   font-size: 18px;
   font-weight: 600;
   color: #111827;
+  text-align: left;
+  max-width: 650px;
 }
 
 /* TAG */
