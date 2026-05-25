@@ -4,6 +4,7 @@ import {
   User,
   Briefcase,
   Bell,
+  LayoutDashboard,
   LogOut,
   PlusCircle,
   ChevronLeft,
@@ -44,6 +45,7 @@ export default function Sidebar() {
     location.pathname === "/post-news/conditions";
 
   const isNotificationActive = location.pathname === "/recruiter-notifications";
+  const isDashboardActive = location.pathname === "/recruiter-dashboard";
 
   useEffect(() => {
     let isMounted = true;
@@ -57,7 +59,7 @@ export default function Sidebar() {
         if (isMounted) {
           setNewNotificationsCount(count);
         }
-      } catch (error) {
+      } catch {
         if (isMounted) {
           setNewNotificationsCount(0);
         }
@@ -173,6 +175,14 @@ export default function Sidebar() {
             </div>
           </div>
         )}
+      </div>
+
+      <div
+        className={`${styles.item} ${isDashboardActive ? styles.active : ""}`}
+        onClick={() => navigate("/recruiter-dashboard")}
+      >
+        <LayoutDashboard size={20} />
+        {!collapsed && <span>Dashboard</span>}
       </div>
 
       <div

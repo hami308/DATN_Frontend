@@ -29,6 +29,7 @@ import CV_list from "./pages/Manage_Recuitment/CV_list/CV_list";
 import Account_page from "./pages/Account_management/Account_page";
 import Company_management from "./pages/Company_management/company_page";
 import Notifications from "./pages/Notifications/Notifications";
+import RecruiterDashboard from "./pages/Recruiter_Dashboard/Recruiter_Dashboard";
 
 /* =========================
    Lấy user từ localStorage
@@ -124,6 +125,7 @@ function App() {
         />
 
         {/* Recruiter */}
+        <Route path="/recruiter-dashboard" element={<RecruiterDashboard />} />
         <Route path="/home-recruiter" element={<HomepageRecuiter />} />
         <Route path="/recruiter-profile" element={<Recuiter_Infor />} />
         <Route
