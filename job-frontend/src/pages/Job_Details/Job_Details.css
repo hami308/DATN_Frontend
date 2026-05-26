@@ -355,6 +355,11 @@
   text-align: center;
   font-size: 14px;
 }
+
+.related-jobs-state.error {
+  color: #b42318;
+  background: #fff5f5;
+}
 .save-button.saved {
   color: #0b0da1;
   border-color: #0d2b6c;

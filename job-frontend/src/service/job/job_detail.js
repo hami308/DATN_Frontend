@@ -5,3 +5,9 @@ export const getJobDetailApi = async (jobId) => {
 
   return response.data;
 };
+
+export const getCompanyJobsApi = async (companyId) => {
+  const response = await axiosClient.get(`/jobs/company/${companyId}`);
+
+  return response.data;
+};
