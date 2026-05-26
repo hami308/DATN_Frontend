@@ -82,14 +82,29 @@ const getFileUrl = (fileUrl) => {
   if (!fileUrl) return "";
 
   const cleanUrl = String(fileUrl).trim();
-
   if (!cleanUrl) return "";
 
+  const buildCvApiUrl = (pathname) => {
+    const prefix = "/uploads/cvs/";
+
+    if (!pathname.startsWith(prefix)) return null;
+
+    const filename = pathname.slice(prefix.length);
+    return `${BACKEND_URL}/api/cvs/files/${encodeURIComponent(filename)}`;
+  };
+
   if (/^https?:\/\//i.test(cleanUrl)) {
-    return cleanUrl;
+    try {
+      const url = new URL(cleanUrl);
+      return buildCvApiUrl(url.pathname) || cleanUrl;
+    } catch {
+      return cleanUrl;
+    }
   }
 
-  return `${BACKEND_URL}${cleanUrl.startsWith("/") ? "" : "/"}${cleanUrl}`;
+  const pathname = cleanUrl.startsWith("/") ? cleanUrl : `/${cleanUrl}`;
+
+  return buildCvApiUrl(pathname) || `${BACKEND_URL}${pathname}`;
 };
 
 const CV_list = () => {
@@ -126,7 +141,6 @@ const CV_list = () => {
           getJobApplicationsApi(jobId),
           getJobDetailApi(jobId),
         ]);
-
         if (isMounted) {
           const applicationData = applicationsResponse?.data?.applications || [];
 
