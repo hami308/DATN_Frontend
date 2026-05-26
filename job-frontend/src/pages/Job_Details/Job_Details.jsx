@@ -301,7 +301,6 @@ function Job_Details() {
   const viewModel = useMemo(() => {
     const company = job?.company || {};
     const recruiter = job?.recruiter || {};
-
     return {
       title: job?.name || job?.title || "Tin tuyển dụng",
       logo: getLogoUrl(company.logo || job?.logo || job?.company_logo),
