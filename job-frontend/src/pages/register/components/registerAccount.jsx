@@ -53,8 +53,7 @@ export default function RegisterAccount({ role }) {
         password,
         role,
       });
-      role = result.data.role === "candidate" ? "ứng viên" : "nhà tuyển dụng";
-      alert("Bạn đã đăng ký thành công tài khoản " + role + ". Vui lòng đăng nhập");
+      alert("Bạn đã đăng ký thành công tài khoản. Vui lòng đăng nhập");
 
       navigate("/login");
     } catch (error) {

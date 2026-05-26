@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:3000/api";
+export const BASE_URL = "https://recomendation-job-be.onrender.com/api";
 
 const request = async (method, url, data, options = {}) => {
   const token = localStorage.getItem("token");

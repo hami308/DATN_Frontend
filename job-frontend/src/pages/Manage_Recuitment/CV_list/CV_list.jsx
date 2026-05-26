@@ -11,7 +11,7 @@ import {
 import { getJobDetailApi } from "../../../service/job/job_detail";
 import "./CV_list.css";
 
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = "https://recomendation-job-be.onrender.com";
 
 const getErrorMessage = (error) => {
   if (typeof error === "string") return error;
