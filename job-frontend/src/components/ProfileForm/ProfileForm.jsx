@@ -9,6 +9,7 @@ import {
   updateRecruiterInfor,
   getRecruiterDetailApi,
 } from "../../service/recruiter/recruiter_infor";
+import { getPublicFileUrl } from "../../service/storage/public_file_upload";
 
 const formatDateForDisplay = (value) => {
   if (!value) return "";
@@ -177,7 +178,7 @@ export default function ProfileForm({ profileId }) {
   };
 
   const fillFormData = (recruiter, user) => {
-    setAvatar(recruiter?.avatar || null);
+    setAvatar(getPublicFileUrl(recruiter?.avatar));
 
     setFormData({
       full_name: recruiter?.full_name || "",

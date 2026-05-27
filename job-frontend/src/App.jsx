@@ -50,7 +50,7 @@ const getUserFromStorage = () => {
 const getHomePathByRole = (role) => {
   switch (role) {
     case "recruiter":
-      return "/home-recruiter";
+      return "/recruiter-dashboard";
 
     case "candidate":
       return "/home-candidate";
@@ -126,7 +126,6 @@ function App() {
 
         {/* Recruiter */}
         <Route path="/recruiter-dashboard" element={<RecruiterDashboard />} />
-        <Route path="/home-recruiter" element={<HomepageRecuiter />} />
         <Route path="/recruiter-profile" element={<Recuiter_Infor />} />
         <Route
           path="/recruiter-profile/:profileId"

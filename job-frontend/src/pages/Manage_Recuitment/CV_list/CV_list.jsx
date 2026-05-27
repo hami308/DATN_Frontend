@@ -9,9 +9,8 @@ import {
   rejectJobApplicationApi,
 } from "../../../service/job/job_applications";
 import { getJobDetailApi } from "../../../service/job/job_detail";
+import { getCVFileUrl } from "../../../service/cv/cv_service";
 import "./CV_list.css";
-
-const BACKEND_URL = "https://recomendation-job-be.onrender.com";
 
 const getErrorMessage = (error) => {
   if (typeof error === "string") return error;
@@ -76,35 +75,6 @@ const getCandidateEmail = (application) => {
 
 const getCandidatePhone = (application) => {
   return application?.candidate?.phone || "Chưa cập nhật";
-};
-
-const getFileUrl = (fileUrl) => {
-  if (!fileUrl) return "";
-
-  const cleanUrl = String(fileUrl).trim();
-  if (!cleanUrl) return "";
-
-  const buildCvApiUrl = (pathname) => {
-    const prefix = "/uploads/cvs/";
-
-    if (!pathname.startsWith(prefix)) return null;
-
-    const filename = pathname.slice(prefix.length);
-    return `${BACKEND_URL}/api/cvs/files/${encodeURIComponent(filename)}`;
-  };
-
-  if (/^https?:\/\//i.test(cleanUrl)) {
-    try {
-      const url = new URL(cleanUrl);
-      return buildCvApiUrl(url.pathname) || cleanUrl;
-    } catch {
-      return cleanUrl;
-    }
-  }
-
-  const pathname = cleanUrl.startsWith("/") ? cleanUrl : `/${cleanUrl}`;
-
-  return buildCvApiUrl(pathname) || `${BACKEND_URL}${pathname}`;
 };
 
 const CV_list = () => {
@@ -180,7 +150,7 @@ const CV_list = () => {
         submissionDate: formatDate(application.created_at),
         status: normalizeStatus(application.status),
         rejectReason: application.reason_reject || "",
-        cvUrl: getFileUrl(application.cv?.file_url),
+        cvUrl: getCVFileUrl(application.cv?.file_url),
         raw: application,
       })),
     [applications]

@@ -6,7 +6,7 @@ import pic3 from "../../assets/image/pic3.png";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { loginApi } from "../../service/auth/login";
-import { BASE_URL } from "../../service/api";
+import { getPublicFileUrl } from "../../service/storage/public_file_upload";
 export default function Login() {
   const navigate = useNavigate();
 
@@ -40,9 +40,7 @@ export default function Login() {
 
       const normalizedUser = {
         ...user,
-        avatar: user.avatar
-          ? `${BASE_URL.replace("/api", "")}${user.avatar}`
-          : null,
+        avatar: getPublicFileUrl(user.avatar),
       };
 
       localStorage.setItem("token", token);

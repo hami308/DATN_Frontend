@@ -241,7 +241,7 @@ export default function CVManagement() {
                 )}
               </div>
 
-              <span>Chỉ chấp nhận định dạng file PDF. Tối đa 5 CV.</span>
+              <span>Chỉ chấp nhận định dạng file PDF.</span>
             </div>
           </label>
         )}

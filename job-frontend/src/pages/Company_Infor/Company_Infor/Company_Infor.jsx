@@ -24,7 +24,9 @@ import {
   getMyPendingCompanies,
 } from "../../../service/comapny/pending_company";
 
-import { BASE_URL } from "../../../service/api";
+import {
+  getPublicFileUrl,
+} from "../../../service/storage/public_file_upload";
 
 export default function Company_Infor() {
   const fileRef = useRef(null);
@@ -78,15 +80,7 @@ export default function Company_Infor() {
   const getPublicAssetUrl = (value) => {
     if (!value || typeof value !== "string" || isBlobUrl(value)) return "";
 
-    if (value.startsWith("http://") || value.startsWith("https://")) {
-      return value;
-    }
-
-    if (value.startsWith("/uploads/")) {
-      return `${BASE_URL.replace("/api", "")}${value}`;
-    }
-
-    return value;
+    return getPublicFileUrl(value) || "";
   };
 
   const selectedPdfUrl = useMemo(() => {
@@ -518,7 +512,7 @@ export default function Company_Infor() {
     );
   };
 
-  const buildFullCompanyFormData = (industryIds) => {
+  const buildFullCompanyFormData = async (industryIds) => {
     const formData = new FormData();
 
     if (companyId && companyId !== "other") {
@@ -574,7 +568,7 @@ export default function Company_Infor() {
       const normalChanged = isNormalCompanyInfoChanged();
       const sensitiveChanged = isSensitiveCompanyInfoChanged(industryIds);
 
-      const fullCompanyFormData = buildFullCompanyFormData(industryIds);
+      const fullCompanyFormData = await buildFullCompanyFormData(industryIds);
 
       if (!hasCompany || sensitiveChanged) {
         await createPendingCompany(fullCompanyFormData);

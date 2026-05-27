@@ -1,4 +1,5 @@
-import axiosClient, { BASE_URL } from "../api";
+import axiosClient from "../api";
+import { getPublicFileUrl } from "../storage/public_file_upload";
 
 export const getMyCVsApi = async () => {
   return await axiosClient.get("/cvs/me");
@@ -21,13 +22,5 @@ export const setDefaultCVApi = async (cvId) => {
 };
 
 export const getCVFileUrl = (filePath) => {
-  if (!filePath) return null;
-
-  if (filePath.startsWith("http")) {
-    return filePath;
-  }
-
-  const fileBaseUrl = BASE_URL.replace("/api", "");
-
-  return `${fileBaseUrl}${filePath}`;
+  return getPublicFileUrl(filePath);
 };
