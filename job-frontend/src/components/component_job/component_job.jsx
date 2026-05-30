@@ -6,6 +6,7 @@ import {
   unsaveMyJobApi,
 } from "../../service/candidate/savedJob.service";
 import "./component_job.css";
+import logoDefault from "../../assets/images/logo.png";
 
 const getErrorMessage = (error, fallback) => {
   return error?.message || error?.data?.message || error?.error || fallback;
@@ -23,6 +24,8 @@ const ComponentJob = ({
   id,
   title,
   logo,
+  company,
+  companyName,
   company_name,
   location,
   salary,
@@ -37,6 +40,22 @@ const ComponentJob = ({
   const [saved, setSaved] = useState(isSaved);
   const [saving, setSaving] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const displayCompanyName =
+    company_name ||
+    companyName ||
+    company?.name ||
+    company?.company_name ||
+    company?.companyName ||
+    "Chưa cập nhật";
+  const displayLogo =
+    logo || company?.logo || company?.logo_url || company?.avatar || logoDefault;
+
+  const handleLogoError = (event) => {
+    if (event.currentTarget.dataset.fallbackApplied) return;
+
+    event.currentTarget.dataset.fallbackApplied = "true";
+    event.currentTarget.src = logoDefault;
+  };
 
   useEffect(() => {
     setSaved(isSaved);
@@ -122,12 +141,17 @@ const ComponentJob = ({
       >
         <div className="component-job-header">
           <div className="component-job-card-logo">
-            <img className="component-job-card-logo" src={logo} alt="Logo" />
+            <img
+              className="component-job-card-logo"
+              src={displayLogo}
+              alt="Logo"
+              onError={handleLogoError}
+            />
           </div>
 
           <div className="component-job-header-info">
             <h2 className="component-job-title">{title}</h2>
-            <p className="component-job-company">{company_name}</p>
+            <p className="component-job-company">{displayCompanyName}</p>
           </div>
         </div>
 

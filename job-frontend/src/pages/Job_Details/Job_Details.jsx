@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -144,15 +144,25 @@ const renderText = (value) => {
     .map((line, index) => <p key={`${line}-${index}`}>{line}</p>);
 };
 
-const mapJobCard = (job) => ({
+const getCompanyName = (job, fallback = "Chưa cập nhật") =>
+  job?.company?.name ||
+  job?.company?.company_name ||
+  job?.company?.companyName ||
+  job?.companyName ||
+  job?.company_name ||
+  job?.name_company ||
+  job?.recruiter?.company?.name ||
+  job?.recruiter?.company?.company_name ||
+  job?.recruiter?.company_name ||
+  fallback;
+
+const mapJobCard = (job, fallbackCompanyName, fallbackCompanyLogo) => ({
   id: job.id,
   title: job.name || job.title || "Tin tuyển dụng",
-  logo: getLogoUrl(job.company?.logo || job.logo || job.company_logo),
-  company_name:
-    job.company?.name ||
-    job.company?.company_name ||
-    job.company_name ||
-    "Chưa cập nhật",
+  logo: getLogoUrl(
+    job.company?.logo || job.logo || job.company_logo || fallbackCompanyLogo
+  ),
+  company_name: getCompanyName(job, fallbackCompanyName),
   location: job.location || job.company?.location || "Chưa cập nhật",
   salary: formatSalary(job.salary_min, job.salary_max),
   isSaved: Boolean(job.is_saved || job.isSaved),
@@ -174,6 +184,8 @@ function Job_Details() {
   const [saved, setSaved] = useState(false);
   const [savedJobIds, setSavedJobIds] = useState([]);
   const [saving, setSaving] = useState(false);
+  const jobDetailsCardRef = useRef(null);
+  const [relatedPanelHeight, setRelatedPanelHeight] = useState(null);
 
   const roleSidebar =
     role === "candidate" ? (
@@ -298,14 +310,47 @@ function Job_Details() {
     };
   }, [id, role]);
 
+  useEffect(() => {
+    const updateRelatedPanelHeight = () => {
+      const cardElement = jobDetailsCardRef.current;
+
+      if (!cardElement || window.matchMedia("(max-width: 1200px)").matches) {
+        setRelatedPanelHeight(null);
+        return;
+      }
+
+      const nextHeight = Math.round(cardElement.getBoundingClientRect().height);
+      setRelatedPanelHeight((currentHeight) =>
+        currentHeight === nextHeight ? currentHeight : nextHeight
+      );
+    };
+
+    updateRelatedPanelHeight();
+
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(updateRelatedPanelHeight)
+        : null;
+
+    if (resizeObserver && jobDetailsCardRef.current) {
+      resizeObserver.observe(jobDetailsCardRef.current);
+    }
+
+    window.addEventListener("resize", updateRelatedPanelHeight);
+
+    return () => {
+      resizeObserver?.disconnect();
+      window.removeEventListener("resize", updateRelatedPanelHeight);
+    };
+  }, [job, loading, error, companyJobs.length]);
+
   const viewModel = useMemo(() => {
     const company = job?.company || {};
     const recruiter = job?.recruiter || {};
     return {
       title: job?.name || job?.title || "Tin tuyển dụng",
       logo: getLogoUrl(company.logo || job?.logo || job?.company_logo),
-      companyName:
-        company.name || company.company_name || job?.company_name || "Chưa cập nhật",
+      companyName: getCompanyName(job),
       location: job?.location || company.location || "Chưa cập nhật",
       salary: formatSalary(job?.salary_min, job?.salary_max),
       experience: formatExperience(job?.exp_min, job?.exp_max),
@@ -332,7 +377,11 @@ function Job_Details() {
     return companyJobs
       .filter((item) => String(item.id) !== String(id))
       .map((item) => {
-        const mappedJob = mapJobCard(item);
+        const mappedJob = mapJobCard(
+          item,
+          viewModel.companyName,
+          viewModel.logo
+        );
 
         return {
           ...mappedJob,
@@ -340,7 +389,7 @@ function Job_Details() {
             savedJobIds.includes(String(mappedJob.id)) || mappedJob.isSaved,
         };
       });
-  }, [companyJobs, id, savedJobIds]);
+  }, [companyJobs, id, savedJobIds, viewModel.companyName, viewModel.logo]);
 
   const handleRelatedSavedChange = (jobId, nextSaved) => {
     setSavedJobIds((prevIds) => {
@@ -414,7 +463,7 @@ function Job_Details() {
         {roleSidebar}
         <div className="job-details">
           <div className="job-details-posting-container">
-            <div className="job-details-card">
+            <div className="job-details-card" ref={jobDetailsCardRef}>
               {loading ? (
                 <div className="job-details-state">Đang tải thông tin việc làm...</div>
               ) : error ? (
@@ -555,7 +604,14 @@ function Job_Details() {
             </div>
           </div>
 
-          <div className="list-jobs">
+          <div
+            className="list-jobs"
+            style={
+              relatedPanelHeight
+                ? { height: `${relatedPanelHeight}px` }
+                : undefined
+            }
+          >
             <h2 className="list-jobs-title">Công việc cùng công ty</h2>
 
             <div className="related-jobs-list">
