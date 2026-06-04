@@ -82,6 +82,14 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  min-width: 0;
+}
+
+.job-component-location-text {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* RIGHT */

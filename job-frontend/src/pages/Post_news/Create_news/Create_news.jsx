@@ -14,12 +14,21 @@ import { getJobTypesApi } from "../../../service/job/job_type";
 import { getLevelsApi } from "../../../service/level/level";
 import { getAllIndustries } from "../../../service/industry/industry";
 
+const isEmptyValue = (value) =>
+  value === "" || value === null || value === undefined;
+
 const toNumberOrNull = (value) => {
-  if (value === "" || value === null || value === undefined) return null;
+  if (isEmptyValue(value)) return null;
 
   const numberValue = Number(value);
   return Number.isNaN(numberValue) ? null : numberValue;
 };
+
+const normalizeSearchText = (value) =>
+  String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
 
 const formatDeadlineInput = (value) => {
   const digits = value.replace(/\D/g, "").slice(0, 8);
@@ -113,6 +122,7 @@ export default function CreateJob() {
 
   const [showIndustryDropdown, setShowIndustryDropdown] = useState(false);
   const [showJobTypeDropdown, setShowJobTypeDropdown] = useState(false);
+  const [industrySearch, setIndustrySearch] = useState("");
   const [loadingData, setLoadingData] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
@@ -214,6 +224,7 @@ export default function CreateJob() {
     const handleClickOutside = (event) => {
       if (industryRef.current && !industryRef.current.contains(event.target)) {
         setShowIndustryDropdown(false);
+        setIndustrySearch("");
       }
 
       if (jobTypeRef.current && !jobTypeRef.current.contains(event.target)) {
@@ -268,15 +279,21 @@ export default function CreateJob() {
     selectedIndustryIds.includes(Number(industry.id))
   );
 
+  const filteredIndustries = industries.filter((industry) =>
+    normalizeSearchText(industry.name).includes(
+      normalizeSearchText(industrySearch)
+    )
+  );
+
   const selectedJobType = jobTypes.find(
     (item) => String(item.id) === String(formData.workingType)
   );
 
   const validateStepOne = () => {
-    const minExp = Number(formData.minExperience);
-    const maxExp = Number(formData.maxExperience);
-    const minSalary = Number(formData.minSalary);
-    const maxSalary = Number(formData.maxSalary);
+    const minExp = toNumberOrNull(formData.minExperience);
+    const maxExp = toNumberOrNull(formData.maxExperience);
+    const minSalary = toNumberOrNull(formData.minSalary);
+    const maxSalary = toNumberOrNull(formData.maxSalary);
 
     if (!formData.title.trim()) {
       setSubmitError("Vui lòng nhập vị trí tuyển dụng.");
@@ -298,24 +315,30 @@ export default function CreateJob() {
       return false;
     }
 
-    if (minExp < 0 || maxExp < 0) {
+    if (
+      (minExp !== null && minExp < 0) ||
+      (maxExp !== null && maxExp < 0)
+    ) {
       setSubmitError("Kinh nghiệm không được âm.");
       return false;
     }
 
-    if (minExp > maxExp) {
+    if (minExp !== null && maxExp !== null && minExp > maxExp) {
       setSubmitError(
         "Kinh nghiệm tối thiểu phải nhỏ hơn hoặc bằng kinh nghiệm tối đa."
       );
       return false;
     }
 
-    if (minSalary < 0 || maxSalary < 0) {
+    if (
+      (minSalary !== null && minSalary < 0) ||
+      (maxSalary !== null && maxSalary < 0)
+    ) {
       setSubmitError("Mức lương không được âm.");
       return false;
     }
 
-    if (minSalary > maxSalary) {
+    if (minSalary !== null && maxSalary !== null && minSalary > maxSalary) {
       setSubmitError(
         "Mức lương tối thiểu phải nhỏ hơn hoặc bằng mức lương tối đa."
       );
@@ -508,9 +531,17 @@ export default function CreateJob() {
                         className={`industry-select ${
                           showIndustryDropdown ? "active" : ""
                         }`}
-                        onClick={() =>
-                          setShowIndustryDropdown((prev) => !prev)
-                        }
+                        onClick={() => {
+                          setShowIndustryDropdown((prev) => {
+                            const nextValue = !prev;
+
+                            if (!nextValue) {
+                              setIndustrySearch("");
+                            }
+
+                            return nextValue;
+                          });
+                        }}
                       >
                         <div className="industry-selected-list">
                           {selectedIndustries.length === 0 ? (
@@ -544,12 +575,29 @@ export default function CreateJob() {
 
                       {showIndustryDropdown && (
                         <div className="industry-dropdown">
+                          <div className="industry-search-box">
+                            <input
+                              type="text"
+                              value={industrySearch}
+                              onChange={(event) =>
+                                setIndustrySearch(event.target.value)
+                              }
+                              onClick={(event) => event.stopPropagation()}
+                              className="industry-search-input"
+                              placeholder="Tìm ngành..."
+                            />
+                          </div>
+
                           {industries.length === 0 ? (
                             <div className="industry-option">
                               Không có lĩnh vực
                             </div>
+                          ) : filteredIndustries.length === 0 ? (
+                            <div className="industry-option">
+                              Không tìm thấy lĩnh vực
+                            </div>
                           ) : (
-                            industries.map((industry) => {
+                            filteredIndustries.map((industry) => {
                               const isChecked = selectedIndustryIds.includes(
                                 Number(industry.id)
                               );
@@ -722,7 +770,9 @@ export default function CreateJob() {
                       {selectedJobType?.name || "Chọn hình thức làm việc"}
                     </span>
                     <span className="createjob-jobtype-arrow">
-                      <span class="material-symbols-outlined">stat_minus_1</span>
+                      <span className="material-symbols-outlined">
+                        stat_minus_1
+                      </span>
                     </span>
                   </button>
 

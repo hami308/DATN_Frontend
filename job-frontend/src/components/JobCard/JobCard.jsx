@@ -9,6 +9,7 @@ import {
   saveMyJobApi,
   unsaveMyJobApi,
 } from "../../service/candidate/savedJob.service";
+import { formatJobLocation } from "../../utils/jobLocation";
 
 const fileBaseUrl = BASE_URL.replace("/api", "");
 
@@ -59,6 +60,7 @@ function JobCard({
   }, [isSaved]);
 
   const logoSrc = getLogoUrl(logo);
+  const locationDisplay = formatJobLocation(location);
 
   const handleLogoError = (event) => {
     if (event.currentTarget.dataset.fallbackApplied) return;
@@ -186,7 +188,12 @@ function JobCard({
           <div className="job-card-meta">
             <div className="job-card-info-item">
               <span className="material-symbols-outlined">location_on</span>
-              <span>{location}</span>
+              <span
+                className="job-card-location-text"
+                title={locationDisplay.tooltipText}
+              >
+                {locationDisplay.displayText}
+              </span>
             </div>
 
             <div className="job-card-info-item">

@@ -7,6 +7,7 @@ import logo_img from "../../assets/images/logo.png";
 
 import Close_Job from "../Popup/Close_Job/Close_Job";
 import Extend_Job from "../Popup/Extend_Job/Extend_Job";
+import { formatJobLocation } from "../../utils/jobLocation";
 
 const getStatusClass = (statusCode) => {
   const normalizedStatus = Number(statusCode);
@@ -46,6 +47,7 @@ function JobComponent({
 
   const menuRef = useRef(null);
   const isClosed = Number(statusCode) === 0;
+  const locationDisplay = formatJobLocation(location);
 
   const jobInfo = useMemo(
     () => ({
@@ -132,7 +134,12 @@ function JobComponent({
           <div className="job-component-meta">
             <div className="job-component-info-item">
               <span className="material-symbols-outlined">location_on</span>
-              <span>{location}</span>
+              <span
+                className="job-component-location-text"
+                title={locationDisplay.tooltipText}
+              >
+                {locationDisplay.displayText}
+              </span>
             </div>
 
             <div className="job-component-info-item">

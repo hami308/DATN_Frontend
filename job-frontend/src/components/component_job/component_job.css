@@ -82,6 +82,10 @@
 .component-job-location-text {
   font-size: 18px;
   color: #1d2238;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* =========================

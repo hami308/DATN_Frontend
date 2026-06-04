@@ -7,6 +7,7 @@ import {
 } from "../../service/candidate/savedJob.service";
 import "./component_job.css";
 import logoDefault from "../../assets/images/logo.png";
+import { formatJobLocation } from "../../utils/jobLocation";
 
 const getErrorMessage = (error, fallback) => {
   return error?.message || error?.data?.message || error?.error || fallback;
@@ -36,6 +37,7 @@ const ComponentJob = ({
   const navigate = useNavigate();
   const user = getCurrentUser();
   const role = user?.role;
+  const locationDisplay = formatJobLocation(location);
 
   const [saved, setSaved] = useState(isSaved);
   const [saving, setSaving] = useState(false);
@@ -157,7 +159,12 @@ const ComponentJob = ({
 
         <div className="component-job-location">
           <span className="material-symbols-outlined">location_on</span>
-          <span className="component-job-location-text">{location}</span>
+          <span
+            className="component-job-location-text"
+            title={locationDisplay.tooltipText}
+          >
+            {locationDisplay.displayText}
+          </span>
         </div>
 
         <div className="component-job-salary">{salary}</div>
