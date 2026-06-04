@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./CV_management_form.module.css";
 
 import JobCard from "../../../components/JobCard/JobCard";
 import Pagination from "../../../components/Pagination/Pagination";
-import logo from "../../../assets/image/logo.png";
+import logoDefault from "../../../assets/images/logo.png";
 
 import * as pdfjsLib from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker?url";
@@ -15,13 +15,45 @@ import {
   setDefaultCVApi,
   getCVFileUrl,
 } from "../../../service/cv/cv_service";
+import { getMyRecommendedJobsApi } from "../../../service/candidate/recommendedJob.service";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
+
+const renderPdfPreview = async (url) => {
+  const pdf = await pdfjsLib.getDocument(url).promise;
+  const page = await pdf.getPage(1);
+
+  const viewport = page.getViewport({ scale: 1.2 });
+
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  canvas.height = viewport.height;
+  canvas.width = viewport.width;
+
+  await page.render({
+    canvasContext: context,
+    viewport,
+  }).promise;
+
+  return canvas.toDataURL("image/png");
+};
+
+const getCVsFromResponse = (response) => {
+  return response?.data?.data || [];
+};
+
+const getRecommendedJobsFromResponse = (response) => {
+  return response?.data?.data?.jobs || [];
+};
 
 export default function CVManagement() {
   const [cvs, setCvs] = useState([]);
   const [previewMap, setPreviewMap] = useState({});
   const [pageLoading, setPageLoading] = useState(true);
+  const [recommendedJobs, setRecommendedJobs] = useState([]);
+  const [recommendedLoading, setRecommendedLoading] = useState(false);
+  const [recommendedError, setRecommendedError] = useState("");
 
   const [actionLoading, setActionLoading] = useState({
     upload: false,
@@ -33,31 +65,29 @@ export default function CVManagement() {
 
   const LoadingIcon = () => <span className={styles.spinner}></span>;
 
-  const renderPdfPreview = async (url) => {
-    const pdf = await pdfjsLib.getDocument(url).promise;
-    const page = await pdf.getPage(1);
+  const loadRecommendedJobs = useCallback(async () => {
+    try {
+      setRecommendedLoading(true);
+      setRecommendedError("");
 
-    const viewport = page.getViewport({ scale: 1.2 });
+      const response = await getMyRecommendedJobsApi();
+      const jobs = getRecommendedJobsFromResponse(response);
 
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
+      setRecommendedJobs(jobs);
+      setCurrentPage(1);
+    } catch (err) {
+      setRecommendedJobs([]);
+      setRecommendedError(
+        err?.message ||
+          err?.data?.message ||
+          "Không thể lấy danh sách việc làm phù hợp."
+      );
+    } finally {
+      setRecommendedLoading(false);
+    }
+  }, []);
 
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-
-    await page.render({
-      canvasContext: context,
-      viewport,
-    }).promise;
-
-    return canvas.toDataURL("image/png");
-  };
-
-  const getCVsFromResponse = (response) => {
-    return response?.data?.data || [];
-  };
-
-  const loadMyCVs = async () => {
+  const loadMyCVs = useCallback(async () => {
     try {
       setPageLoading(true);
 
@@ -81,11 +111,12 @@ export default function CVManagement() {
     } finally {
       setPageLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     loadMyCVs();
-  }, []);
+    loadRecommendedJobs();
+  }, [loadMyCVs, loadRecommendedJobs]);
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
@@ -109,9 +140,10 @@ export default function CVManagement() {
         upload: true,
       }));
 
-      const response = await uploadMyCVApi(file);
+      await uploadMyCVApi(file);
 
       await loadMyCVs();
+      await loadRecommendedJobs();
     } catch (err) {
       alert(err?.message || err?.data?.message || "Tải lên CV thất bại.");
     } finally {
@@ -131,9 +163,10 @@ export default function CVManagement() {
         defaultId: cvId,
       }));
 
-      const response = await setDefaultCVApi(cvId);
+      await setDefaultCVApi(cvId);
 
       await loadMyCVs();
+      await loadRecommendedJobs();
 
       // alert(response.data.message || "Đặt CV mặc định thành công.");
     } catch (err) {
@@ -157,9 +190,10 @@ export default function CVManagement() {
         deleteId: cvId,
       }));
 
-      const response = await deleteMyCVApi(cvId);
+      await deleteMyCVApi(cvId);
 
       await loadMyCVs();
+      await loadRecommendedJobs();
 
       // alert(response.data.message || "Xóa CV thành công.");
     } catch (err) {
@@ -172,32 +206,11 @@ export default function CVManagement() {
     }
   };
 
-  const jobCards = [
-    {
-      logo,
-      title: "Frontend React Developer",
-      type: "Full Time",
-      location: "Đà Nẵng",
-      salary_min: 20000,
-      salary_max: 30000,
-      deadline: "Còn 5 ngày",
-    },
-    {
-      logo,
-      title: "Backend NodeJS",
-      type: "Full Time",
-      location: "Hà Nội",
-      salary_min: 25000,
-      salary_max: 35000,
-      deadline: "Còn 3 ngày",
-    },
-  ];
-
   const jobsPerPage = 5;
   const indexOfLast = currentPage * jobsPerPage;
   const indexOfFirst = indexOfLast - jobsPerPage;
-  const currentJobs = jobCards.slice(indexOfFirst, indexOfLast);
-  const totalPages = Math.ceil(jobCards.length / jobsPerPage);
+  const currentJobs = recommendedJobs.slice(indexOfFirst, indexOfLast);
+  const totalPages = Math.ceil(recommendedJobs.length / jobsPerPage);
 
   if (pageLoading) {
     return (
@@ -332,25 +345,53 @@ export default function CVManagement() {
           <h2>Việc làm phù hợp</h2>
 
           <div className={styles.list}>
-            {currentJobs.map((job, index) => (
-              <JobCard
-                key={index}
-                logo={job.logo}
-                title={job.title}
-                type={job.type}
-                location={job.location}
-                salary={job.salary_min + "VND–" + job.salary_max + "VND"}
-                deadline={job.deadline}
-              />
-            ))}
+            {recommendedLoading && (
+              <p className={styles.jobMessage}>
+                <LoadingIcon />
+                Đang tải việc làm phù hợp...
+              </p>
+            )}
 
-            <div className={styles.paginationWrap}>
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
+            {!recommendedLoading && recommendedError && (
+              <p className={styles.error}>{recommendedError}</p>
+            )}
+
+            {!recommendedLoading &&
+              !recommendedError &&
+              currentJobs.map((job) => (
+                <div key={job.id} className={styles.recommendedJob}>
+                  <JobCard
+                    id={job.id}
+                    logo={job.company?.logo || logoDefault}
+                    title={job.name}
+                    type={job.job_type?.name || "Chưa cập nhật"}
+                    location={job.location || "Chưa cập nhật"}
+                    salaryMin={job.salary_min}
+                    salaryMax={job.salary_max}
+                    deadline={job.expire}
+                  />
+                </div>
+              ))}
+
+            {!recommendedLoading &&
+              !recommendedError &&
+              recommendedJobs.length === 0 && (
+                <p className={styles.jobMessage}>
+                  Chưa có việc làm phù hợp với CV mặc định của bạn.
+                </p>
+              )}
+
+            {!recommendedLoading &&
+              !recommendedError &&
+              recommendedJobs.length > 0 && (
+                <div className={styles.paginationWrap}>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                </div>
+              )}
           </div>
         </div>
       )}
