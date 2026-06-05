@@ -275,11 +275,7 @@ export default function CVManagement() {
             </div>
           </label>
         )}
-
-        {cvs.length >= 5 && (
-          <p className={styles.error}>Bạn đã lưu tối đa 5 CV.</p>
-        )}
-
+        
         <div className={styles.cvList}>
           {cvs.map((cv) => {
             const fileUrl = getCVFileUrl(cv.file_url);
