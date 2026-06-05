@@ -243,38 +243,36 @@ export default function CVManagement() {
       <h2 className={styles.title}>Quản lý CV của bạn</h2>
 
       <div className={styles.cvPanel}>
-        {cvs.length < 5 && (
-          <label
-            className={`${styles.uploadBox} ${
-              actionLoading.upload ? styles.disabledBox : ""
-            }`}
-          >
-            <input
-              type="file"
-              accept="application/pdf"
-              hidden
-              onChange={handleUpload}
-              disabled={actionLoading.upload}
-            />
+        <label
+          className={`${styles.uploadBox} ${
+            actionLoading.upload ? styles.disabledBox : ""
+          }`}
+        >
+          <input
+            type="file"
+            accept="application/pdf"
+            hidden
+            onChange={handleUpload}
+            disabled={actionLoading.upload}
+          />
 
-            <div className={styles.uploadContent}>
-              <div className={styles.uploadIcon}>☁</div>
-
-              <div>
-                {actionLoading.upload ? (
-                  <>
-                    <LoadingIcon />
-                    Đang tải CV...
-                  </>
-                ) : (
-                  "Chọn hoặc kéo thả file vào đây"
-                )}
+          <div className={styles.uploadContent}>
+            {actionLoading.upload ? (
+              <div className={styles.uploadLoading}>
+                <LoadingIcon />
+                Đang tải CV...
               </div>
+            ) : (
+              <>
+                <div className={styles.uploadIcon}>☁</div>
 
-              <span>Chỉ chấp nhận định dạng file PDF.</span>
-            </div>
-          </label>
-        )}
+                <div>Chọn hoặc kéo thả file vào đây</div>
+
+                <span>Chỉ chấp nhận định dạng file PDF.</span>
+              </>
+            )}
+          </div>
+        </label>
         
         <div className={styles.cvList}>
           {cvs.map((cv) => {
