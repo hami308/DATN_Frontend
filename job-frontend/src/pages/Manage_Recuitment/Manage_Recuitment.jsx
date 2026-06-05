@@ -25,27 +25,6 @@ const getErrorMessage = (error) => {
   );
 };
 
-const formatCurrency = (value) => {
-  if (value === null || value === undefined || value === "") return "";
-
-  const numberValue = Number(value);
-
-  if (Number.isNaN(numberValue)) return "";
-
-  return `${new Intl.NumberFormat("vi-VN").format(numberValue)} triệu VND`;
-};
-
-const formatSalary = (min, max) => {
-  const minSalary = formatCurrency(min);
-  const maxSalary = formatCurrency(max);
-
-  if (minSalary && maxSalary) return `${minSalary} - ${maxSalary}`;
-  if (minSalary) return `Từ ${minSalary}`;
-  if (maxSalary) return `Đến ${maxSalary}`;
-
-  return "Thỏa thuận";
-};
-
 const formatDeadline = (expire) => {
   if (!expire) return "Chưa có hạn";
 
@@ -94,7 +73,8 @@ const mapJobToCard = (job) => ({
   type: job.job_type_name || job.jobTypeName || "Chưa cập nhật",
   level: job.level_name || job.levelName || "Chưa cập nhật",
   location: job.location || "Chưa cập nhật",
-  salary: formatSalary(job.salary_min, job.salary_max),
+  salary_min: job.salary_min,
+  salary_max: job.salary_max,
   deadline: formatDeadline(job.expire),
   expire: job.expire,
   expireText: [formatExpireDate(job.expire), formatDeadline(job.expire)]
