@@ -132,11 +132,6 @@ export default function CVManagement() {
       return;
     }
 
-    if (cvs.length >= 5) {
-      alert("Bạn chỉ được lưu tối đa 5 CV.");
-      e.target.value = "";
-      return;
-    }
     const oldDefaultCvId = getDefaultCvId(cvs);
     try {
       setActionLoading((prev) => ({
