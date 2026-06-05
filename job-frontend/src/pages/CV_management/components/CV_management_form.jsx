@@ -47,7 +47,9 @@ const getCVsFromResponse = (response) => {
 const getRecommendedJobsFromResponse = (response) => {
   return response?.data?.data?.jobs || [];
 };
-
+const getDefaultCvId = (cvList) => {
+  return cvList.find((cv) => cv.is_default)?.id || null;
+};
 export default function CVManagement() {
   const [cvs, setCvs] = useState([]);
   const [previewMap, setPreviewMap] = useState({});
@@ -81,13 +83,24 @@ export default function CVManagement() {
       setRecommendedError(
         err?.message ||
           err?.data?.message ||
-          "Không thể lấy danh sách việc làm phù hợp."
+          "Không thể lấy danh sách việc làm phù hợp.",
       );
     } finally {
       setRecommendedLoading(false);
     }
   }, []);
+  const loadPreviewImages = async (cvList) => {
+    const previews = {};
 
+    for (const cv of cvList) {
+      if (cv.file_url) {
+        const fileUrl = getCVFileUrl(cv.file_url);
+        previews[cv.id] = await renderPdfPreview(fileUrl);
+      }
+    }
+
+    setPreviewMap(previews);
+  };
   const loadMyCVs = useCallback(async () => {
     try {
       setPageLoading(true);
@@ -96,17 +109,7 @@ export default function CVManagement() {
       const cvList = getCVsFromResponse(response);
 
       setCvs(cvList);
-
-      const previews = {};
-
-      for (const cv of cvList) {
-        if (cv.file_url) {
-          const fileUrl = getCVFileUrl(cv.file_url);
-          previews[cv.id] = await renderPdfPreview(fileUrl);
-        }
-      }
-
-      setPreviewMap(previews);
+      await loadPreviewImages(cvList);
     } catch (err) {
       alert(err?.message || err?.data?.message || "Lấy danh sách CV thất bại.");
     } finally {
@@ -134,7 +137,7 @@ export default function CVManagement() {
       e.target.value = "";
       return;
     }
-
+    const oldDefaultCvId = getDefaultCvId(cvs);
     try {
       setActionLoading((prev) => ({
         ...prev,
@@ -143,8 +146,17 @@ export default function CVManagement() {
 
       await uploadMyCVApi(file);
 
-      await loadMyCVs();
-      await loadRecommendedJobs();
+      const response = await getMyCVsApi();
+      const newCvList = getCVsFromResponse(response);
+
+      setCvs(newCvList);
+      await loadPreviewImages(newCvList);
+
+      const newDefaultCvId = getDefaultCvId(newCvList);
+
+      if (oldDefaultCvId !== newDefaultCvId) {
+        await loadRecommendedJobs();
+      }
     } catch (err) {
       alert(err?.message || err?.data?.message || "Tải lên CV thất bại.");
     } finally {
@@ -184,7 +196,7 @@ export default function CVManagement() {
     const confirmDelete = window.confirm("Bạn có chắc muốn xóa CV này không?");
 
     if (!confirmDelete) return;
-
+    const oldDefaultCvId = getDefaultCvId(cvs);
     try {
       setActionLoading((prev) => ({
         ...prev,
@@ -193,8 +205,17 @@ export default function CVManagement() {
 
       await deleteMyCVApi(cvId);
 
-      await loadMyCVs();
-      await loadRecommendedJobs();
+      const response = await getMyCVsApi();
+      const newCvList = getCVsFromResponse(response);
+
+      setCvs(newCvList);
+      await loadPreviewImages(newCvList);
+
+      const newDefaultCvId = getDefaultCvId(newCvList);
+
+      if (oldDefaultCvId !== newDefaultCvId) {
+        await loadRecommendedJobs();
+      }
 
       // alert(response.data.message || "Xóa CV thành công.");
     } catch (err) {
