@@ -470,7 +470,7 @@ export default function CreateJob() {
               </div>
             </div>
 
-            {loadingData && (
+            {isEditMode && loadingData && (
               <p className="createjob-submit-message">Đang tải dữ liệu...</p>
             )}
 
@@ -546,7 +546,7 @@ export default function CreateJob() {
                         <div className="industry-selected-list">
                           {selectedIndustries.length === 0 ? (
                             <span className="industry-placeholder">
-                              {loadingData ? "Đang tải..." : "Chọn..."}
+                              {isEditMode && loadingData ? "Đang tải..." : "Chọn..."}
                             </span>
                           ) : (
                             selectedIndustries.map((industry) => (
