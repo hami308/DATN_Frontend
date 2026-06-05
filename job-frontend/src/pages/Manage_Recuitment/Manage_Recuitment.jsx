@@ -58,7 +58,7 @@ const formatDeadline = (expire) => {
   expireDate.setHours(0, 0, 0, 0);
 
   const dayDiff = Math.ceil(
-    (expireDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+    (expireDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
   );
 
   if (dayDiff < 0) return "Đã hết hạn";
@@ -195,7 +195,7 @@ function ManageRecuitment() {
   const startIndex = (currentPage - 1) * limit;
   const currentJobs = useMemo(
     () => jobs.slice(startIndex, startIndex + limit),
-    [jobs, startIndex]
+    [jobs, startIndex],
   );
 
   const handleCloseJob = async (job) => {
@@ -215,7 +215,7 @@ function ManageRecuitment() {
                 statusCode: closedJob?.status ?? 0,
                 status: formatStatus(closedJob?.status ?? 0),
               }
-            : item
+            : item,
         );
       });
     } catch (error) {
@@ -240,7 +240,7 @@ function ManageRecuitment() {
                 statusCode: reopenedJob?.status ?? 1,
                 status: formatStatus(reopenedJob?.status ?? 1),
               }
-            : item
+            : item,
         );
       });
     } catch (error) {
@@ -262,14 +262,17 @@ function ManageRecuitment() {
                 ...item,
                 expire: nextExpire,
                 deadline: formatDeadline(nextExpire),
-                expireText: [formatExpireDate(nextExpire), formatDeadline(nextExpire)]
+                expireText: [
+                  formatExpireDate(nextExpire),
+                  formatDeadline(nextExpire),
+                ]
                   .filter(Boolean)
                   .join(" - "),
                 statusCode: nextStatus,
                 status: formatStatus(nextStatus),
               }
-            : item
-        )
+            : item,
+        ),
       );
     } catch (error) {
       alert(getErrorMessage(error));
@@ -283,9 +286,7 @@ function ManageRecuitment() {
         <MenuCard />
         <div className="manage-recuitment-content">
           <div className="manage-recuitment-header">
-            <h2 className="manage-job-title">
-              Danh sách các tin tuyển dụng
-            </h2>
+            <h2 className="manage-job-title">Danh sách các tin tuyển dụng</h2>
             <SearchBar
               industries={industries}
               industryLoading={industryLoading}
@@ -308,7 +309,8 @@ function ManageRecuitment() {
                   type={job.type}
                   level={job.level}
                   location={job.location}
-                  salary={job.salary}
+                  salaryMin={job.salary_min}
+                  salaryMax={job.salary_max}
                   deadline={job.deadline}
                   expire={job.expire}
                   expireText={job.expireText}
