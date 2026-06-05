@@ -14,6 +14,7 @@ import {
   deleteMyCVApi,
   setDefaultCVApi,
   getCVFileUrl,
+  getCVDisplayName,
 } from "../../../service/cv/cv_service";
 import { getMyRecommendedJobsApi } from "../../../service/candidate/recommendedJob.service";
 
@@ -266,11 +267,7 @@ export default function CVManagement() {
         <div className={styles.cvList}>
           {cvs.map((cv) => {
             const fileUrl = getCVFileUrl(cv.file_url);
-            const rawFileName = cv.file_url?.split("/").pop() || "CV của bạn";
-
-            const fileName = rawFileName
-              .replace(/^\d+-\d+-/, "")
-              .replace(/-/g, " ");
+            const fileName = getCVDisplayName(cv);
 
             return (
               <div key={cv.id} className={styles.preview}>

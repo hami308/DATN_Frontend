@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import styles from "./ApplyJobModal.module.css";
 
-import { getMyCVsApi } from "../../service/cv/cv_service";
+import { getCVDisplayName, getMyCVsApi } from "../../service/cv/cv_service";
 
 import { applyJobApi } from "../../service/candidate/application_service";
 
@@ -75,11 +75,7 @@ export default function ApplyJobModal({ jobId, onClose }) {
                   />
 
                   <span>
-                    {cv.file_url
-                      ?.split("/")
-                      .pop()
-                      ?.replace(/^\d+-\d+-/, "")
-                      ?.replace(/-/g, " ")}
+                    {getCVDisplayName(cv)}
 
                     {cv.is_default && (
                       <span className={styles.defaultText}> - Mặc định</span>

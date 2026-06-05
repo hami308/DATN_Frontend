@@ -24,3 +24,7 @@ export const setDefaultCVApi = async (cvId) => {
 export const getCVFileUrl = (filePath) => {
   return getPublicFileUrl(filePath);
 };
+
+export const getCVDisplayName = (cv) => {
+  return cv?.original_name?.trim() || "CV ứng viên.pdf";
+};
