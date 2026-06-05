@@ -257,20 +257,20 @@ export default function CVManagement() {
           />
 
           <div className={styles.uploadContent}>
-            <div className={styles.uploadIcon}>☁</div>
+            {actionLoading.upload ? (
+              <div className={styles.uploadLoading}>
+                <LoadingIcon />
+                Đang tải CV...
+              </div>
+            ) : (
+              <>
+                <div className={styles.uploadIcon}>☁</div>
 
-            <div>
-              {actionLoading.upload ? (
-                <>
-                  <LoadingIcon />
-                  Đang tải CV...
-                </>
-              ) : (
-                "Chọn hoặc kéo thả file vào đây"
-              )}
-            </div>
+                <div>Chọn hoặc kéo thả file vào đây</div>
 
-            <span>Chỉ chấp nhận định dạng file PDF.</span>
+                <span>Chỉ chấp nhận định dạng file PDF.</span>
+              </>
+            )}
           </div>
         </label>
         

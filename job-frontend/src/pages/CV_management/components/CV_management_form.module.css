@@ -62,6 +62,13 @@
   color: #888;
 }
 
+.uploadLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
 .uploadIcon {
   font-size: 28px;
   margin-bottom: 6px;
