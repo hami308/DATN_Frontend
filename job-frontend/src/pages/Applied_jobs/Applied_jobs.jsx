@@ -29,25 +29,6 @@ export default function AppliedJobsPage() {
   const [filter, setFilter] = useState("Tất cả trạng thái");
 
   const jobsPerPage = 5;
-  const formatCurrency = (value) => {
-    if (value === null || value === undefined || value === "") return "";
-
-    const numberValue = Number(value);
-
-    if (Number.isNaN(numberValue)) return "";
-
-    return `${new Intl.NumberFormat("vi-VN").format(numberValue)} triệu VND`;
-  };
-  const formatSalary = (min, max) => {
-    const minSalary = formatCurrency(min);
-    const maxSalary = formatCurrency(max);
-
-    if (minSalary && maxSalary) return `${minSalary} - ${maxSalary}`;
-    if (minSalary) return `Từ ${minSalary}`;
-    if (maxSalary) return `Đến ${maxSalary}`;
-
-    return "Thỏa thuận";
-  };
   const fetchApplications = async () => {
     try {
       setLoading(true);
@@ -133,7 +114,8 @@ export default function AppliedJobsPage() {
                       location={
                         job.location || company.location || "Chưa cập nhật"
                       }
-                      salary={formatSalary(job.salary_min, job.salary_max)}
+                      salaryMin={job.salary_min}
+                      salaryMax={job.salary_max}
                       deadline={job.expire}
                       status={getStatusText(application.status)}
                       statusCode={application.status}

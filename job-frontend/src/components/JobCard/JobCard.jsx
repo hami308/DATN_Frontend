@@ -10,6 +10,7 @@ import {
   unsaveMyJobApi,
 } from "../../service/candidate/savedJob.service";
 import { formatJobLocation } from "../../utils/jobLocation";
+import { formatSalary } from "../../utils/salary";
 
 const fileBaseUrl = BASE_URL.replace("/api", "");
 
@@ -103,46 +104,6 @@ function JobCard({
     } finally {
       setSaving(false);
     }
-  };
-  const formatSalary = (min, max) => {
-    const hasMin = min !== null && min !== undefined && min !== "";
-    const hasMax = max !== null && max !== undefined && max !== "";
-
-    if (!hasMin && !hasMax) {
-      return "Thỏa thuận";
-    }
-
-    const formatMoney = (value) => {
-      const numberValue = Number(value);
-
-      if (Number.isNaN(numberValue)) return "";
-
-      // Chuyển VND -> triệu
-      const million = numberValue / 1000000;
-
-      // Nếu số tròn -> 12
-      // Nếu lẻ -> 12.5
-      return million % 1 === 0
-        ? million.toFixed(0)
-        : million.toFixed(1);
-    };
-
-    const minSalary = hasMin ? formatMoney(min) : "";
-    const maxSalary = hasMax ? formatMoney(max) : "";
-
-    if (minSalary && maxSalary) {
-      return `${minSalary}-${maxSalary} triệu VND`;
-    }
-
-    if (minSalary) {
-      return `Từ ${minSalary} triệu VND`;
-    }
-
-    if (maxSalary) {
-      return `Đến ${maxSalary} triệu VND`;
-    }
-
-    return "Thỏa thuận";
   };
   const getDeadlineText = (deadline) => {
     if (!deadline) return "Chưa cập nhật";

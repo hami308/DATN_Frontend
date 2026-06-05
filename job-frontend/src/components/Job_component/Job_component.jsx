@@ -8,6 +8,7 @@ import logo_img from "../../assets/images/logo.png";
 import Close_Job from "../Popup/Close_Job/Close_Job";
 import Extend_Job from "../Popup/Extend_Job/Extend_Job";
 import { formatJobLocation } from "../../utils/jobLocation";
+import { formatSalary } from "../../utils/salary";
 
 const getStatusClass = (statusCode) => {
   const normalizedStatus = Number(statusCode);
@@ -26,6 +27,8 @@ function JobComponent({
   type,
   location,
   salary,
+  salaryMin,
+  salaryMax,
   deadline,
   status,
   statusCode,
@@ -48,6 +51,7 @@ function JobComponent({
   const menuRef = useRef(null);
   const isClosed = Number(statusCode) === 0;
   const locationDisplay = formatJobLocation(location);
+  const salaryDisplay = salary || formatSalary(salaryMin, salaryMax);
 
   const jobInfo = useMemo(
     () => ({
@@ -56,7 +60,7 @@ function JobComponent({
       title,
       type,
       location,
-      salary,
+      salary: salaryDisplay,
       deadline,
       status,
       statusCode,
@@ -71,7 +75,7 @@ function JobComponent({
       title,
       type,
       location,
-      salary,
+      salaryDisplay,
       deadline,
       status,
       statusCode,
@@ -144,7 +148,7 @@ function JobComponent({
 
             <div className="job-component-info-item">
               <span className="material-symbols-outlined">payments</span>
-              <span>{salary}</span>
+              <span>{salaryDisplay}</span>
             </div>
 
             <div className="job-component-info-item">
