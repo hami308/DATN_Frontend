@@ -148,6 +148,7 @@ const CV_list = () => {
         email: getCandidateEmail(application),
         phone: getCandidatePhone(application),
         submissionDate: formatDate(application.created_at),
+        matchingScore: application.matching_score ?? "—",
         status: normalizeStatus(application.status),
         rejectReason: application.reason_reject || "",
         cvUrl: getCVFileUrl(application.cv?.file_url),
@@ -309,6 +310,7 @@ const CV_list = () => {
                   <tr>
                     <th>Họ và tên</th>
                     <th>Ngày nộp</th>
+                    <th>Matching score</th>
                     <th>Trạng thái</th>
                     <th>Lý do từ chối</th>
                     <th>Hành động</th>
@@ -323,6 +325,8 @@ const CV_list = () => {
                       </td>
 
                       <td>{candidate.submissionDate}</td>
+
+                      <td>{candidate.matchingScore}</td>
 
                       <td>
                         <span className={getStatusBadge(candidate.status)}>
