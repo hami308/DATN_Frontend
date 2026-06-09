@@ -107,7 +107,7 @@
    SECTION TITLE
 ========================= */
 .createjob-section-title {
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 500;
   color: #111827;
   margin: 30px 0 18px;
@@ -137,7 +137,7 @@
 }
 
 .createjob-form-group label {
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 500;
   color: #475569;
   margin-bottom: 8px;
@@ -153,9 +153,10 @@
   padding: 14px 16px;
   border: 1px solid #d1d5db;
   border-radius: 12px;
-  font-size: 16px;
+  font-size: 14px;
   background: #fff;
   outline: none;
+  font-family: Roboto, sans-serif;
 }
 
 .createjob-input:focus,
@@ -202,7 +203,7 @@
   padding: 0 14px 0 16px;
   border: 1px solid #d1d5db;
   border-radius: 12px;
-  font-size: 16px;
+  font-size: 14px;
   color: #111827;
   background-color: #fff;
   outline: none;
