@@ -138,7 +138,7 @@ export default function Company_Infor() {
     setOriginalCompany(null);
   };
 
-  const fillCompanyForm = (company) => {
+  const fillCompanyForm = (company, { includeCertificate = true } = {}) => {
     setCompanyName(company?.name || "");
     setTaxCode(company?.tax_code || "");
     setWebsite(company?.url_website || "");
@@ -147,7 +147,9 @@ export default function Company_Infor() {
     setDescription(company?.description || "");
     setLogo(getPublicAssetUrl(company?.logo) || null);
     setLogoFile(null);
-    setSavedCertificateUrl(getPublicAssetUrl(company?.certificate) || "");
+    setSavedCertificateUrl(
+      includeCertificate ? getPublicAssetUrl(company?.certificate) || "" : ""
+    );
     setCertificateFile(null);
 
     setSelectedFields(
@@ -480,7 +482,7 @@ export default function Company_Infor() {
       );
 
       const company = getCompanyFromResponse(response, selectedCompanyName);
-      fillCompanyForm(company);
+      fillCompanyForm(company, { includeCertificate: false });
     } catch (error) {
       console.log("Lỗi lấy thông tin công ty:", error);
     }
