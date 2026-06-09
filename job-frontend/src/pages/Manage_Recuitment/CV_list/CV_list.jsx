@@ -36,7 +36,9 @@ const formatDate = (value) => {
 const normalizeStatus = (status) => {
   const normalized = String(status || "").toLowerCase();
 
-  if (["approved", "accept", "accepted", "1", "đã duyệt"].includes(normalized)) {
+  if (
+    ["approved", "accept", "accepted", "1", "đã duyệt"].includes(normalized)
+  ) {
     return "approved";
   }
 
@@ -112,12 +114,13 @@ const CV_list = () => {
           getJobDetailApi(jobId),
         ]);
         if (isMounted) {
-          const applicationData = applicationsResponse?.data?.applications || [];
+          const applicationData =
+            applicationsResponse?.data?.applications || [];
 
           setApplications(applicationData);
           setTotal(applicationsResponse?.data?.total ?? applicationData.length);
           setJobTitle(
-            jobResponse?.data?.job?.name || `Danh sách ứng viên tin #${jobId}`
+            jobResponse?.data?.job?.name || `Danh sách ứng viên tin #${jobId}`,
           );
         }
       } catch (error) {
@@ -154,13 +157,13 @@ const CV_list = () => {
         cvUrl: getCVFileUrl(application.cv?.file_url),
         raw: application,
       })),
-    [applications]
+    [applications],
   );
 
   const handleView = (candidate) => {
     if (!candidate?.cvUrl) {
       alert(
-        `Thông tin ứng viên:\nHọ tên: ${candidate.name}\nEmail: ${candidate.email}\nSĐT: ${candidate.phone}\nNgày nộp: ${candidate.submissionDate}`
+        `Thông tin ứng viên:\nHọ tên: ${candidate.name}\nEmail: ${candidate.email}\nSĐT: ${candidate.phone}\nNgày nộp: ${candidate.submissionDate}`,
       );
       return;
     }
@@ -171,7 +174,7 @@ const CV_list = () => {
   const updateApplicationStatus = async (
     candidate,
     status,
-    reasonReject = ""
+    reasonReject = "",
   ) => {
     try {
       setActionLoadingId(candidate.id);
@@ -184,7 +187,8 @@ const CV_list = () => {
               reason_reject: reasonReject,
             });
 
-      const updatedApplication = response?.data?.application || response?.data || null;
+      const updatedApplication =
+        response?.data?.application || response?.data || null;
 
       setApplications((prevApplications) =>
         prevApplications.map((application) => {
@@ -206,7 +210,7 @@ const CV_list = () => {
                     ? reasonReject
                     : application.reason_reject,
               };
-        })
+        }),
       );
     } catch (error) {
       alert(getErrorMessage(error));
@@ -247,7 +251,7 @@ const CV_list = () => {
     const isSuccess = await updateApplicationStatus(
       rejectCandidate,
       "rejected",
-      normalizedReason
+      normalizedReason,
     );
 
     if (isSuccess) {
@@ -310,9 +314,10 @@ const CV_list = () => {
                   <tr>
                     <th>Họ và tên</th>
                     <th>Ngày nộp</th>
-                    <th>Matching score</th>
+
                     <th>Trạng thái</th>
                     <th>Lý do từ chối</th>
+                    <th>Điểm phù hợp</th>
                     <th>Hành động</th>
                   </tr>
                 </thead>
@@ -326,8 +331,6 @@ const CV_list = () => {
 
                       <td>{candidate.submissionDate}</td>
 
-                      <td>{candidate.matchingScore}</td>
-
                       <td>
                         <span className={getStatusBadge(candidate.status)}>
                           {statusLabels[candidate.status]}
@@ -337,7 +340,7 @@ const CV_list = () => {
                       <td className="cv-list-reject-reason-cell">
                         {renderRejectReason(candidate)}
                       </td>
-
+                      <td>{candidate.matchingScore}</td>
                       <td className="cv-list-action-buttons">
                         <button
                           className="cv-list-btn-view"
