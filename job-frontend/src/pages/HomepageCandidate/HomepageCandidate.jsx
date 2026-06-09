@@ -37,6 +37,32 @@ const getTotalPagesFromResponse = (response, jobsPerPage) => {
   );
 };
 
+const removeEmptyParams = (params) => {
+  return Object.fromEntries(
+    Object.entries(params).filter(([, value]) => value !== "" && value != null),
+  );
+};
+
+const normalizeSearchParams = (values) => {
+  return removeEmptyParams({
+    keyword: values?.keyword ?? values?.name,
+    industryId: values?.industryId,
+  });
+};
+
+const normalizeFilterParams = (values) => {
+  const experience =
+    values?.experience ||
+    (values?.expMin !== "" && values?.expMax !== ""
+      ? `${values?.expMin}_${values?.expMax}`
+      : "");
+
+  return removeEmptyParams({
+    jobTypeId: values?.jobTypeId,
+    experience,
+  });
+};
+
 export default function Homepage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [jobs, setJobs] = useState([]);
@@ -48,7 +74,7 @@ export default function Homepage() {
   const [searchParams, setSearchParams] = useState({});
   const [filterParams, setFilterParams] = useState({});
 
-  const jobsPerPage = 5;
+  const jobsPerPage = 10;
 
   const fetchSavedJobs = async () => {
     try {
@@ -113,7 +139,7 @@ export default function Homepage() {
             <SearchBar
               onSearch={(values) => {
                 setCurrentPage(1);
-                setSearchParams(values);
+                setSearchParams(normalizeSearchParams(values));
               }}
             />
           </div>
@@ -123,7 +149,7 @@ export default function Homepage() {
               <AcvancedFilter
                 onFilterChange={(values) => {
                   setCurrentPage(1);
-                  setFilterParams(values);
+                  setFilterParams(normalizeFilterParams(values));
                 }}
               />
             </div>
