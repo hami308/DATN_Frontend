@@ -79,6 +79,19 @@ const getCandidatePhone = (application) => {
   return application?.candidate?.phone || "Chưa cập nhật";
 };
 
+const formatMatchingScore = (value) => {
+  if (value === null || value === undefined || value === "") return "—";
+
+  const score = Number(value);
+
+  if (Number.isNaN(score)) return "—";
+
+  return score.toLocaleString("vi-VN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
+
 const CV_list = () => {
   const { jobId } = useParams();
 
@@ -151,7 +164,7 @@ const CV_list = () => {
         email: getCandidateEmail(application),
         phone: getCandidatePhone(application),
         submissionDate: formatDate(application.created_at),
-        matchingScore: application.matching_score ?? "—",
+        matchingScore: formatMatchingScore(application.matching_score),
         status: normalizeStatus(application.status),
         rejectReason: application.reason_reject || "",
         cvUrl: getCVFileUrl(application.cv?.file_url),
