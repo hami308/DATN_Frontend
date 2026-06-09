@@ -213,17 +213,86 @@ export default function Company_Infor() {
     return data?.company || data?.data?.company || data?.data || data;
   };
 
+  const getCompanyDetailFromResponse = (response) => {
+    return (
+      response?.company ||
+      response?.data?.company ||
+      response?.data?.data?.company ||
+      response?.data ||
+      response
+    );
+  };
+
+  const getPendingCompanyFromDetailResponse = (response) => {
+    return (
+      response?.pendingCompany ||
+      response?.data?.pendingCompany ||
+      response?.company?.pendingCompany ||
+      response?.data?.company?.pendingCompany ||
+      response?.data?.data?.pendingCompany ||
+      null
+    );
+  };
+
+  const hasPendingCompanyUpdate = (company) => {
+    return Boolean(
+      company?.has_pending_update ||
+        company?.hasPendingUpdate ||
+        company?.pending_company_id ||
+        company?.pendingCompanyId
+    );
+  };
+
+  const buildDisplayPendingCompany = (company, pendingCompanyData) => {
+    if (!pendingCompanyData) return null;
+
+    return {
+      ...pendingCompanyData,
+      id:
+        pendingCompanyData.id ||
+        pendingCompanyData.pending_company_id ||
+        company?.pending_company_id ||
+        company?.pendingCompanyId,
+      company_id:
+        pendingCompanyData.company_id ||
+        pendingCompanyData.companyId ||
+        getCompanyId(company),
+      request_type:
+        pendingCompanyData.request_type ||
+        pendingCompanyData.requestType ||
+        company?.pending_request_type ||
+        company?.pendingRequestType,
+      status:
+        pendingCompanyData.status ||
+        company?.pending_status ||
+        company?.pendingStatus ||
+        "pending",
+    };
+  };
+
   const fillApprovedCompany = async (id, fallbackName) => {
     if (id) {
       const selectedCompanyRes = await getCompanyDetailById(id);
+      const selectedCompany = getCompanyDetailFromResponse(selectedCompanyRes);
+      const pendingCompanyData = getPendingCompanyFromDetailResponse(
+        selectedCompanyRes
+      );
+      const displayPendingCompany = buildDisplayPendingCompany(
+        selectedCompany,
+        pendingCompanyData
+      );
 
-      const selectedCompany =
-        selectedCompanyRes.company ||
-        selectedCompanyRes.data?.company ||
-        selectedCompanyRes.data ||
-        selectedCompanyRes;
+      if (hasPendingCompanyUpdate(selectedCompany) && displayPendingCompany) {
+        setPendingCompany(displayPendingCompany);
+        setCompanyStatus(displayPendingCompany.status);
+        fillCompanyForm(displayPendingCompany);
+        setOriginalCompany(selectedCompany || null);
+      } else {
+        setPendingCompany(null);
+        setCompanyStatus(selectedCompany?.status || "approved");
+        fillCompanyForm(selectedCompany);
+      }
 
-      fillCompanyForm(selectedCompany);
       setCompanyId(String(getCompanyId(selectedCompany) || id));
       setIsOtherCompany(false);
 
