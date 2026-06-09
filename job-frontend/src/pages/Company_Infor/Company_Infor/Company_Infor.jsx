@@ -284,12 +284,10 @@ export default function Company_Infor() {
 
       if (hasPendingCompanyUpdate(selectedCompany) && displayPendingCompany) {
         setPendingCompany(displayPendingCompany);
-        setCompanyStatus(displayPendingCompany.status);
         fillCompanyForm(displayPendingCompany);
         setOriginalCompany(selectedCompany || null);
       } else {
         setPendingCompany(null);
-        setCompanyStatus(selectedCompany?.status || "approved");
         fillCompanyForm(selectedCompany);
       }
 
