@@ -12,6 +12,7 @@ import business_paper from "../../../assets/images/business_paper.png";
 import {
   getAllCompanies,
   getCompaniesByNameFromCompanyTable,
+  getCompanyInfor,
   getCompanyDetailById,
   updateCompany,
 } from "../../../service/comapny/company_infor";
@@ -270,9 +271,16 @@ export default function Company_Infor() {
     };
   };
 
-  const fillApprovedCompany = async (id, fallbackName) => {
-    if (id) {
-      const selectedCompanyRes = await getCompanyDetailById(id);
+  const fillApprovedCompany = async (
+    id,
+    fallbackName,
+    { useMyCompanyProfile = false } = {}
+  ) => {
+    if (id || useMyCompanyProfile) {
+      const selectedCompanyRes = useMyCompanyProfile
+        ? await getCompanyInfor()
+        : await getCompanyDetailById(id);
+      console.log("Chi tiết công ty đã duyệt:", selectedCompanyRes);
       const selectedCompany = getCompanyDetailFromResponse(selectedCompanyRes);
       const pendingCompanyData = getPendingCompanyFromDetailResponse(
         selectedCompanyRes
@@ -359,7 +367,9 @@ export default function Company_Infor() {
         setCompanyId(String(recruiterCompanyId));
         setIsOtherCompany(false);
 
-        await fillApprovedCompany(recruiterCompanyId);
+        await fillApprovedCompany(recruiterCompanyId, null, {
+          useMyCompanyProfile: true,
+        });
         return;
       }
 
