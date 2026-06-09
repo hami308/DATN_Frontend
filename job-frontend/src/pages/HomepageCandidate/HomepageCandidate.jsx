@@ -12,9 +12,30 @@ import Pagination from "../../components/Pagination/Pagination";
 import styles from "./Homepage.module.css";
 import logoDefault from "../../assets/images/logo.png";
 
-import { getJobsApi } from "../../service/job/get_jobs";
+import { getMyFullPosNegRecommendedJobsApi } from "../../service/candidate/recommendedJob.service";
 
 import { getMySavedJobsApi } from "../../service/candidate/savedJob.service";
+
+const getJobsFromResponse = (response) => {
+  const jobs =
+    response?.data?.data?.jobs ||
+    response?.data?.jobs ||
+    response?.jobs ||
+    response?.data?.data ||
+    response?.data ||
+    response;
+
+  return Array.isArray(jobs) ? jobs : [];
+};
+
+const getTotalPagesFromResponse = (response, jobsPerPage) => {
+  return (
+    response?.data?.data?.pagination?.totalPages ||
+    response?.data?.pagination?.totalPages ||
+    response?.pagination?.totalPages ||
+    Math.max(1, Math.ceil(getJobsFromResponse(response).length / jobsPerPage))
+  );
+};
 
 export default function Homepage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,15 +80,15 @@ export default function Homepage() {
       try {
         setLoading(true);
 
-        const response = await getJobsApi({
+        const response = await getMyFullPosNegRecommendedJobsApi({
           page: currentPage,
           limit: jobsPerPage,
           ...searchParams,
           ...filterParams,
         });
 
-        setJobs(response.data.jobs);
-        setTotalPages(response.data.pagination.totalPages);
+        setJobs(getJobsFromResponse(response));
+        setTotalPages(getTotalPagesFromResponse(response, jobsPerPage));
       } catch (error) {
         console.error(error);
       } finally {
