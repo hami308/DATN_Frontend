@@ -85,7 +85,7 @@ export default function Homepage() {
   const [searchParams, setSearchParams] = useState({});
   const [filterParams, setFilterParams] = useState({});
 
-  const jobsPerPage = 10;
+  const jobsPerPage = 5;
 
   const fetchSavedJobs = async () => {
     try {
