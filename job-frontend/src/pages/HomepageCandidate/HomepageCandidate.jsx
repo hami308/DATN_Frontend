@@ -50,16 +50,41 @@ const normalizeSearchParams = (values) => {
   });
 };
 
+const toMillionParam = (value) => {
+  const numberValue = Number(value);
+
+  if (!Number.isFinite(numberValue)) {
+    return "";
+  }
+
+  return String(numberValue / 1000000).replace(/\.0+$/, "");
+};
+
+const normalizeLevelParam = (value) => {
+  return String(value || "")
+    .trim()
+    .toLowerCase();
+};
+
+const hasValue = (value) => value !== "" && value != null;
+
 const normalizeFilterParams = (values) => {
   const experience =
     values?.experience ||
-    (values?.expMin !== "" && values?.expMax !== ""
+    (hasValue(values?.expMin) && hasValue(values?.expMax)
       ? `${values?.expMin}_${values?.expMax}`
+      : "");
+  const salary =
+    values?.salary ||
+    (hasValue(values?.salaryMin) && hasValue(values?.salaryMax)
+      ? `${toMillionParam(values?.salaryMin)}_${toMillionParam(values?.salaryMax)}`
       : "");
 
   return removeEmptyParams({
     jobTypeId: values?.jobTypeId,
     experience,
+    salary,
+    level: normalizeLevelParam(values?.level),
   });
 };
 
@@ -147,6 +172,7 @@ export default function Homepage() {
           <div className={styles.body}>
             <div className={styles.filter}>
               <AcvancedFilter
+                includeLevelValue
                 onFilterChange={(values) => {
                   setCurrentPage(1);
                   setFilterParams(normalizeFilterParams(values));
