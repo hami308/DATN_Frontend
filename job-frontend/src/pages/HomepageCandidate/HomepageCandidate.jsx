@@ -50,16 +50,6 @@ const normalizeSearchParams = (values) => {
   });
 };
 
-const toMillionParam = (value) => {
-  const numberValue = Number(value);
-
-  if (!Number.isFinite(numberValue)) {
-    return "";
-  }
-
-  return String(numberValue / 1000000).replace(/\.0+$/, "");
-};
-
 const normalizeLevelParam = (value) => {
   return String(value || "")
     .trim()
@@ -74,16 +64,12 @@ const normalizeFilterParams = (values) => {
     (hasValue(values?.expMin) && hasValue(values?.expMax)
       ? `${values?.expMin}_${values?.expMax}`
       : "");
-  const salary =
-    values?.salary ||
-    (hasValue(values?.salaryMin) && hasValue(values?.salaryMax)
-      ? `${toMillionParam(values?.salaryMin)}_${toMillionParam(values?.salaryMax)}`
-      : "");
 
   return removeEmptyParams({
     jobTypeId: values?.jobTypeId,
     experience,
-    salary,
+    salaryMin: values?.salaryMin,
+    salaryMax: values?.salaryMax,
     level: normalizeLevelParam(values?.level),
   });
 };

@@ -16,7 +16,7 @@ const experienceOptions = [
 
 const salaryOptions = [
   { label: "Tất cả", value: "" },
-  { label: "Dưới 10 triệu", value: "0-10000000" },
+  { label: "Dưới 10 triệu", value: "1000000-10000000" },
   { label: "10 - 15 triệu", value: "10000000-15000000" },
   { label: "15 - 20 triệu", value: "15000000-20000000" },
   { label: "20 - 30 triệu", value: "20000000-30000000" },
