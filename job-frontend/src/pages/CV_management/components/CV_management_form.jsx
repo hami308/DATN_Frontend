@@ -47,6 +47,9 @@ const getCVsFromResponse = (response) => {
 const getRecommendedJobsFromResponse = (response) => {
   return response?.data?.data?.jobs || [];
 };
+
+let recommendedJobsCache = null;
+
 const getDefaultCvId = (cvList) => {
   return cvList.find((cv) => cv.is_default)?.id || null;
 };
@@ -68,7 +71,13 @@ export default function CVManagement() {
 
   const LoadingIcon = () => <span className={styles.spinner}></span>;
 
-  const loadRecommendedJobs = useCallback(async () => {
+  const loadRecommendedJobs = useCallback(async ({ force = false } = {}) => {
+    if (!force && recommendedJobsCache) {
+      setRecommendedJobs(recommendedJobsCache);
+      setRecommendedError("");
+      return;
+    }
+
     try {
       setRecommendedLoading(true);
       setRecommendedError("");
@@ -76,6 +85,7 @@ export default function CVManagement() {
       const response = await getMyRecommendedJobsApi();
       const jobs = getRecommendedJobsFromResponse(response);
 
+      recommendedJobsCache = jobs;
       setRecommendedJobs(jobs);
       setCurrentPage(1);
     } catch (err) {
@@ -150,7 +160,7 @@ export default function CVManagement() {
       const newDefaultCvId = getDefaultCvId(newCvList);
 
       if (oldDefaultCvId !== newDefaultCvId) {
-        await loadRecommendedJobs();
+        await loadRecommendedJobs({ force: true });
       }
     } catch (err) {
       alert(err?.message || err?.data?.message || "Tải lên CV thất bại.");
@@ -174,7 +184,7 @@ export default function CVManagement() {
       await setDefaultCVApi(cvId);
 
       await loadMyCVs();
-      await loadRecommendedJobs();
+      await loadRecommendedJobs({ force: true });
 
       // alert(response.data.message || "Đặt CV mặc định thành công.");
     } catch (err) {
@@ -209,7 +219,7 @@ export default function CVManagement() {
       const newDefaultCvId = getDefaultCvId(newCvList);
 
       if (oldDefaultCvId !== newDefaultCvId) {
-        await loadRecommendedJobs();
+        await loadRecommendedJobs({ force: true });
       }
 
       // alert(response.data.message || "Xóa CV thành công.");
