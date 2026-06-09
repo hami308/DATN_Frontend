@@ -816,6 +816,12 @@ export default function Company_Infor() {
                           }}
                         >
                           <div className={styles.tags}>
+                            {readonly && selectedFields.length === 0 && (
+                              <span className={styles.emptyFieldText}>
+                                Chưa cập nhật
+                              </span>
+                            )}
+
                             {selectedFields.map((field) => (
                               <span
                                 key={getIndustryId(field)}
