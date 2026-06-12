@@ -5,6 +5,7 @@ import pic3 from "../../assets/image/pic3.png";
 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { loginApi } from "../../service/auth/login";
 import { getPublicFileUrl } from "../../service/storage/public_file_upload";
 export default function Login() {
@@ -12,6 +13,7 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -88,12 +90,24 @@ export default function Login() {
 
           <label>Mật khẩu</label>
 
-          <input
-            type="password"
-            placeholder="abc@123"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className={styles.passwordField}>
+            <input
+              className={styles.passwordInput}
+              type={showPassword ? "text" : "password"}
+              placeholder="abc@123"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button
+              type="button"
+              className={styles.togglePassword}
+              onClick={() => setShowPassword((current) => !current)}
+              aria-label={showPassword ? "An mat khau" : "Hien mat khau"}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
 
           <button
             type="button"
