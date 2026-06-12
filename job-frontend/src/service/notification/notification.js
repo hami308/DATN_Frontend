@@ -39,3 +39,6 @@ export const getTodayNewNotificationsCount = (notifications) => {
     );
   }).length;
 };
+
+export const getUnreadNotificationsCount = (notifications) =>
+  notifications.filter((item) => !item.isRead).length;

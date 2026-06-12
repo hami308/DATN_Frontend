@@ -14,7 +14,7 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   getNotificationsApi,
-  getTodayNewNotificationsCount,
+  getUnreadNotificationsCount,
   normalizeNotifications,
 } from "../../service/notification/notification";
 
@@ -89,12 +89,12 @@ export default function Sidebar() {
       try {
         const response = await getNotificationsApi();
         const notifications = normalizeNotifications(response);
-        const count = getTodayNewNotificationsCount(notifications);
+        const count = getUnreadNotificationsCount(notifications);
 
         if (isMounted) {
           setNewNotificationsCount(count);
         }
-      } catch (error) {
+      } catch {
         if (isMounted) {
           setNewNotificationsCount(0);
         }
