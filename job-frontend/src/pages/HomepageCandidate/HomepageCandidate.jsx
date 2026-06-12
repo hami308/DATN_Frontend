@@ -12,9 +12,67 @@ import Pagination from "../../components/Pagination/Pagination";
 import styles from "./Homepage.module.css";
 import logoDefault from "../../assets/images/logo.png";
 
-import { getJobsApi } from "../../service/job/get_jobs";
+import { getMyFullPosNegRecommendedJobsApi } from "../../service/candidate/recommendedJob.service";
 
 import { getMySavedJobsApi } from "../../service/candidate/savedJob.service";
+
+const getJobsFromResponse = (response) => {
+  const jobs =
+    response?.data?.data?.jobs ||
+    response?.data?.jobs ||
+    response?.jobs ||
+    response?.data?.data ||
+    response?.data ||
+    response;
+
+  return Array.isArray(jobs) ? jobs : [];
+};
+
+const getTotalPagesFromResponse = (response, jobsPerPage) => {
+  return (
+    response?.data?.data?.pagination?.totalPages ||
+    response?.data?.pagination?.totalPages ||
+    response?.pagination?.totalPages ||
+    Math.max(1, Math.ceil(getJobsFromResponse(response).length / jobsPerPage))
+  );
+};
+
+const removeEmptyParams = (params) => {
+  return Object.fromEntries(
+    Object.entries(params).filter(([, value]) => value !== "" && value != null),
+  );
+};
+
+const normalizeSearchParams = (values) => {
+  return removeEmptyParams({
+    keyword: values?.keyword ?? values?.name,
+    industryId: values?.industryId,
+  });
+};
+
+const normalizeLevelParam = (value) => {
+  return String(value || "")
+    .trim()
+    .toLowerCase();
+};
+
+const hasValue = (value) => value !== "" && value != null;
+
+const normalizeFilterParams = (values) => {
+  const experience =
+    values?.experience ||
+    (hasValue(values?.expMin) && hasValue(values?.expMax)
+      ? `${values?.expMin}_${values?.expMax}`
+      : "");
+
+  return removeEmptyParams({
+    jobTypeId: values?.jobTypeId,
+    experience,
+    salaryMin: values?.salaryMin,
+    salaryMax: values?.salaryMax,
+    level: normalizeLevelParam(values?.level),
+  });
+};
 
 export default function Homepage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,15 +117,15 @@ export default function Homepage() {
       try {
         setLoading(true);
 
-        const response = await getJobsApi({
+        const response = await getMyFullPosNegRecommendedJobsApi({
           page: currentPage,
           limit: jobsPerPage,
           ...searchParams,
           ...filterParams,
         });
 
-        setJobs(response.data.jobs);
-        setTotalPages(response.data.pagination.totalPages);
+        setJobs(getJobsFromResponse(response));
+        setTotalPages(getTotalPagesFromResponse(response, jobsPerPage));
       } catch (error) {
         console.error(error);
       } finally {
@@ -92,7 +150,7 @@ export default function Homepage() {
             <SearchBar
               onSearch={(values) => {
                 setCurrentPage(1);
-                setSearchParams(values);
+                setSearchParams(normalizeSearchParams(values));
               }}
             />
           </div>
@@ -100,9 +158,10 @@ export default function Homepage() {
           <div className={styles.body}>
             <div className={styles.filter}>
               <AcvancedFilter
+                includeLevelValue
                 onFilterChange={(values) => {
                   setCurrentPage(1);
-                  setFilterParams(values);
+                  setFilterParams(normalizeFilterParams(values));
                 }}
               />
             </div>

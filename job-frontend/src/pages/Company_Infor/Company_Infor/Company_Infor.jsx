@@ -12,6 +12,7 @@ import business_paper from "../../../assets/images/business_paper.png";
 import {
   getAllCompanies,
   getCompaniesByNameFromCompanyTable,
+  getCompanyInfor,
   getCompanyDetailById,
   updateCompany,
 } from "../../../service/comapny/company_infor";
@@ -137,7 +138,7 @@ export default function Company_Infor() {
     setOriginalCompany(null);
   };
 
-  const fillCompanyForm = (company) => {
+  const fillCompanyForm = (company, { includeCertificate = true } = {}) => {
     setCompanyName(company?.name || "");
     setTaxCode(company?.tax_code || "");
     setWebsite(company?.url_website || "");
@@ -146,7 +147,9 @@ export default function Company_Infor() {
     setDescription(company?.description || "");
     setLogo(getPublicAssetUrl(company?.logo) || null);
     setLogoFile(null);
-    setSavedCertificateUrl(getPublicAssetUrl(company?.certificate) || "");
+    setSavedCertificateUrl(
+      includeCertificate ? getPublicAssetUrl(company?.certificate) || "" : ""
+    );
     setCertificateFile(null);
 
     setSelectedFields(
@@ -213,17 +216,91 @@ export default function Company_Infor() {
     return data?.company || data?.data?.company || data?.data || data;
   };
 
-  const fillApprovedCompany = async (id, fallbackName) => {
-    if (id) {
-      const selectedCompanyRes = await getCompanyDetailById(id);
+  const getCompanyDetailFromResponse = (response) => {
+    return (
+      response?.company ||
+      response?.data?.company ||
+      response?.data?.data?.company ||
+      response?.data ||
+      response
+    );
+  };
 
-      const selectedCompany =
-        selectedCompanyRes.company ||
-        selectedCompanyRes.data?.company ||
-        selectedCompanyRes.data ||
-        selectedCompanyRes;
+  const getPendingCompanyFromDetailResponse = (response) => {
+    return (
+      response?.pendingCompany ||
+      response?.data?.pendingCompany ||
+      response?.company?.pendingCompany ||
+      response?.data?.company?.pendingCompany ||
+      response?.data?.data?.pendingCompany ||
+      null
+    );
+  };
 
-      fillCompanyForm(selectedCompany);
+  const hasPendingCompanyUpdate = (company) => {
+    return Boolean(
+      company?.has_pending_update ||
+        company?.hasPendingUpdate ||
+        company?.pending_company_id ||
+        company?.pendingCompanyId
+    );
+  };
+
+  const buildDisplayPendingCompany = (company, pendingCompanyData) => {
+    if (!pendingCompanyData) return null;
+
+    return {
+      ...pendingCompanyData,
+      id:
+        pendingCompanyData.id ||
+        pendingCompanyData.pending_company_id ||
+        company?.pending_company_id ||
+        company?.pendingCompanyId,
+      company_id:
+        pendingCompanyData.company_id ||
+        pendingCompanyData.companyId ||
+        getCompanyId(company),
+      request_type:
+        pendingCompanyData.request_type ||
+        pendingCompanyData.requestType ||
+        company?.pending_request_type ||
+        company?.pendingRequestType,
+      status:
+        pendingCompanyData.status ||
+        company?.pending_status ||
+        company?.pendingStatus ||
+        "pending",
+    };
+  };
+
+  const fillApprovedCompany = async (
+    id,
+    fallbackName,
+    { useMyCompanyProfile = false } = {}
+  ) => {
+    if (id || useMyCompanyProfile) {
+      const selectedCompanyRes = useMyCompanyProfile
+        ? await getCompanyInfor()
+        : await getCompanyDetailById(id);
+      console.log("Chi tiết công ty đã duyệt:", selectedCompanyRes);
+      const selectedCompany = getCompanyDetailFromResponse(selectedCompanyRes);
+      const pendingCompanyData = getPendingCompanyFromDetailResponse(
+        selectedCompanyRes
+      );
+      const displayPendingCompany = buildDisplayPendingCompany(
+        selectedCompany,
+        pendingCompanyData
+      );
+
+      if (hasPendingCompanyUpdate(selectedCompany) && displayPendingCompany) {
+        setPendingCompany(displayPendingCompany);
+        fillCompanyForm(displayPendingCompany);
+        setOriginalCompany(selectedCompany || null);
+      } else {
+        setPendingCompany(null);
+        fillCompanyForm(selectedCompany);
+      }
+
       setCompanyId(String(getCompanyId(selectedCompany) || id));
       setIsOtherCompany(false);
 
@@ -292,7 +369,9 @@ export default function Company_Infor() {
         setCompanyId(String(recruiterCompanyId));
         setIsOtherCompany(false);
 
-        await fillApprovedCompany(recruiterCompanyId);
+        await fillApprovedCompany(recruiterCompanyId, null, {
+          useMyCompanyProfile: true,
+        });
         return;
       }
 
@@ -403,7 +482,7 @@ export default function Company_Infor() {
       );
 
       const company = getCompanyFromResponse(response, selectedCompanyName);
-      fillCompanyForm(company);
+      fillCompanyForm(company, { includeCertificate: false });
     } catch (error) {
       console.log("Lỗi lấy thông tin công ty:", error);
     }

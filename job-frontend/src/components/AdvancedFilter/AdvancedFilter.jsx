@@ -16,7 +16,7 @@ const experienceOptions = [
 
 const salaryOptions = [
   { label: "Tất cả", value: "" },
-  { label: "Dưới 10 triệu", value: "0-10000000" },
+  { label: "Dưới 10 triệu", value: "1000000-10000000" },
   { label: "10 - 15 triệu", value: "10000000-15000000" },
   { label: "15 - 20 triệu", value: "15000000-20000000" },
   { label: "20 - 30 triệu", value: "20000000-30000000" },
@@ -39,7 +39,10 @@ const parseRange = (value) => {
   };
 };
 
-export default function AdvancedFilter({ onFilterChange }) {
+export default function AdvancedFilter({
+  onFilterChange,
+  includeLevelValue = false,
+}) {
   const [jobTypes, setJobTypes] = useState([]);
   const [levels, setLevels] = useState([]);
 
@@ -74,15 +77,30 @@ export default function AdvancedFilter({ onFilterChange }) {
 
     const expRange = parseRange(nextExp);
     const salaryRange = parseRange(nextSalary);
+    const selectedLevel = levels.find(
+      (level) => String(level.id) === String(nextLevelId),
+    );
 
-    onFilterChange?.({
+    const levelValue =
+      selectedLevel?.slug ||
+      selectedLevel?.code ||
+      selectedLevel?.name ||
+      nextLevelId;
+
+    const filters = {
       expMin: expRange.min,
       expMax: expRange.max,
       salaryMin: salaryRange.min,
       salaryMax: salaryRange.max,
       jobTypeId: nextJobTypeId,
       levelId: nextLevelId,
-    });
+    };
+
+    if (includeLevelValue) {
+      filters.level = nextLevelId ? levelValue : "";
+    }
+
+    onFilterChange?.(filters);
   };
 
   const handleExpChange = (value) => {
