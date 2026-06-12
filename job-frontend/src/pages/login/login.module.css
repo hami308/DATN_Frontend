@@ -120,6 +120,39 @@ input {
   background: rgba(255, 255, 255, 0.9);
 }
 
+.passwordField {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordInput {
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 44px;
+}
+
+.togglePassword {
+  position: absolute;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #4b5563;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.togglePassword:hover {
+  background: rgba(15, 23, 42, 0.08);
+  color: #111827;
+}
+
 .forgot {
   width: fit-content;
   padding: 0;
@@ -280,6 +313,10 @@ input {
 
   input {
     padding: 10px;
+  }
+
+  .passwordInput {
+    padding-right: 42px;
   }
 
   .loginBtn {
