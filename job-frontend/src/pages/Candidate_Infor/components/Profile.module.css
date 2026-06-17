@@ -154,6 +154,7 @@
 .readOnlyInput {
   color: #666;
   cursor: not-allowed;
+  min-width: 300px;
 }
 /* divider */
 .divider {
