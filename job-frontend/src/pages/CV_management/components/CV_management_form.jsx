@@ -283,7 +283,7 @@ export default function CVManagement() {
             )}
           </div>
         </label>
-        
+
         <div className={styles.cvList}>
           {cvs.map((cv) => {
             const fileUrl = getCVFileUrl(cv.file_url);
