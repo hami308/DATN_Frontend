@@ -38,7 +38,7 @@ export default function Conditions() {
         },
         {
           title: "Đăng tin tuyển dụng đầu tiên",
-          done: Boolean(response.data?.hasFirstJob),
+          done: Boolean(response.data?.hasPostedJob ?? response.data?.hasFirstJob),
           href: "/post-news/create-job",
         },
       ]);
