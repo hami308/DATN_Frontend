@@ -135,7 +135,7 @@ export default function ProfileForm({ profileId }) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [errors, setErrors] = useState({});
-
+  const [recruiterInfo, setRecruiterInfo] = useState(null);
   const user = JSON.parse(localStorage.getItem("user"));
   const isAdmin = user?.role === "admin";
   const isRecruiter = user?.role === "recruiter";
@@ -178,6 +178,7 @@ export default function ProfileForm({ profileId }) {
   };
 
   const fillFormData = (recruiter, user) => {
+    setRecruiterInfo(recruiter);
     setAvatar(getPublicFileUrl(recruiter?.avatar));
 
     setFormData({
@@ -250,6 +251,7 @@ export default function ProfileForm({ profileId }) {
 
     fetchRecruiter();
   }, [profileId]);
+  console.log("Initial formData:", formData);
 
   const handleChange = (e) => {
     if (isAdmin) return;
@@ -402,7 +404,7 @@ export default function ProfileForm({ profileId }) {
   if (pageLoading) {
     return <p>Đang tải...</p>;
   }
-
+  const hasPhoneInDb = recruiterInfo?.phone?.trim();
   return (
     <div className={styles.card}>
       <div className={styles.header}>
@@ -541,7 +543,7 @@ export default function ProfileForm({ profileId }) {
                 className={
                   formData.is_verify_phone
                     ? styles.verifyPhoneLinkDisabled
-                    : !formData.phone?.trim()
+                    : !hasPhoneInDb
                     ? styles.verifyPhoneLinkEmpty
                     : styles.verifyPhoneLink
                 }                         
