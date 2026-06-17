@@ -46,10 +46,9 @@ export default function VerifyPhoneContent() {
       setMessage("");
 
       const response = await requestPhoneOtp(phoneNumber);
-
+      
       setMessage(
-        response?.message ||
-          "Đã gửi mã OTP xác thực đến số điện thoại của bạn."
+        ""
       );
     } catch (err) {
       setMessage("");
