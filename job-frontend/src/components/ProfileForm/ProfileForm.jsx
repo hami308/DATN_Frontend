@@ -541,8 +541,10 @@ export default function ProfileForm({ profileId }) {
                 className={
                   formData.is_verify_phone
                     ? styles.verifyPhoneLinkDisabled
+                    : !formData.phone?.trim()
+                    ? styles.verifyPhoneLinkEmpty
                     : styles.verifyPhoneLink
-                }
+                }                         
                 title={
                   formData.is_verify_phone
                     ? "Số điện thoại đã được xác thực"
