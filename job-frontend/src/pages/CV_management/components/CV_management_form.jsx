@@ -17,6 +17,7 @@ import {
   getCVDisplayName,
 } from "../../../service/cv/cv_service";
 import { getMyRecommendedJobsApi } from "../../../service/candidate/recommendedJob.service";
+import { getMySavedJobsApi } from "../../../service/candidate/savedJob.service";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
@@ -48,6 +49,17 @@ const getRecommendedJobsFromResponse = (response) => {
   return response?.data?.data?.jobs || [];
 };
 
+const getSavedJobsFromResponse = (response) => {
+  const jobs =
+    response?.data?.data?.jobs ||
+    response?.data?.jobs ||
+    response?.jobs ||
+    response?.data ||
+    response;
+
+  return Array.isArray(jobs) ? jobs : [];
+};
+
 let recommendedJobsCache = null;
 
 const getDefaultCvId = (cvList) => {
@@ -60,6 +72,7 @@ export default function CVManagement() {
   const [recommendedJobs, setRecommendedJobs] = useState([]);
   const [recommendedLoading, setRecommendedLoading] = useState(false);
   const [recommendedError, setRecommendedError] = useState("");
+  const [savedJobIds, setSavedJobIds] = useState([]);
 
   const [actionLoading, setActionLoading] = useState({
     upload: false,
@@ -83,6 +96,7 @@ export default function CVManagement() {
       setRecommendedError("");
 
       const response = await getMyRecommendedJobsApi();
+      console.log("Recommended Jobs Response:", response);
       const jobs = getRecommendedJobsFromResponse(response);
 
       recommendedJobsCache = jobs;
@@ -99,6 +113,46 @@ export default function CVManagement() {
       setRecommendedLoading(false);
     }
   }, []);
+
+  const loadSavedJobs = useCallback(async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+      if (!user?.id || user.role !== "candidate") {
+        setSavedJobIds([]);
+        return;
+      }
+
+      const response = await getMySavedJobsApi();
+      const savedJobs = getSavedJobsFromResponse(response);
+      const ids = savedJobs
+        .map((job) => job?.id)
+        .filter((jobId) => jobId !== undefined && jobId !== null)
+        .map(Number);
+
+      setSavedJobIds(ids);
+    } catch (error) {
+      console.error("GET SAVED JOBS ERROR:", error);
+      setSavedJobIds([]);
+    }
+  }, []);
+
+  const handleSavedChange = (jobId, nextSaved) => {
+    setSavedJobIds((prevIds) => {
+      const normalizedId = Number(jobId);
+
+      if (Number.isNaN(normalizedId)) return prevIds;
+
+      if (nextSaved) {
+        return prevIds.includes(normalizedId)
+          ? prevIds
+          : [...prevIds, normalizedId];
+      }
+
+      return prevIds.filter((id) => id !== normalizedId);
+    });
+  };
+
   const loadPreviewImages = async (cvList) => {
     const previews = {};
 
@@ -130,7 +184,8 @@ export default function CVManagement() {
   useEffect(() => {
     loadMyCVs();
     loadRecommendedJobs();
-  }, [loadMyCVs, loadRecommendedJobs]);
+    loadSavedJobs();
+  }, [loadMyCVs, loadRecommendedJobs, loadSavedJobs]);
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
@@ -386,6 +441,8 @@ export default function CVManagement() {
                     salaryMin={job.salary_min}
                     salaryMax={job.salary_max}
                     deadline={job.expire}
+                    isSaved={savedJobIds.includes(Number(job.id))}
+                    onSavedChange={handleSavedChange}
                   />
                 </div>
               ))}
