@@ -685,7 +685,7 @@ export default function CreateJob() {
                 </div>
 
                 <h3 className="createjob-section-title">
-                  2. Mô tả công việc
+                  2. Mô tả/Yêu cầu công việc
                 </h3>
 
                 <div className="createjob-form-grid-two">
