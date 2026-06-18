@@ -179,14 +179,14 @@ function JobComponent({
               {status}
             </button>
             {canViewCV && (
-            <a
-              className="job-component-cv-link"
-              href={cvUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Xem CV
-            </a>
+              <a
+                className="job-component-cv-link"
+                href={cvUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Xem chi tiết CV
+              </a>
             )}
           </>
         )}
