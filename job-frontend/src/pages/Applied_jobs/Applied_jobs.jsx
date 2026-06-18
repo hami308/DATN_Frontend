@@ -11,6 +11,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import logoDefault from "../../assets/images/logo.png";
 
 import { getMyApplicationsApi } from "../../service/candidate/application_service";
+import { getCVFileUrl } from "../../service/cv/cv_service";
 
 const APPLICATION_STATUS_LABEL = {
   pending: "Đang chờ duyệt",
@@ -20,6 +21,15 @@ const APPLICATION_STATUS_LABEL = {
 
 const getStatusText = (status) => {
   return APPLICATION_STATUS_LABEL[status] || "Đang chờ duyệt";
+};
+
+const getApplicationCVUrl = (application) => {
+  return getCVFileUrl(
+    application?.cv?.file_url ||
+      application?.cv?.file_path ||
+      application?.cv_file_url ||
+      application?.cvUrl,
+  );
 };
 
 export default function AppliedJobsPage() {
@@ -119,6 +129,7 @@ export default function AppliedJobsPage() {
                       deadline={job.expire}
                       status={getStatusText(application.status)}
                       statusCode={application.status}
+                      cvUrl={getApplicationCVUrl(application)}
                     />
                   );
                 })}

@@ -39,6 +39,7 @@ function JobComponent({
   onCloseJob,
   onExtendJob,
   onReopenJob,
+  cvUrl,
 }) {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -50,6 +51,7 @@ function JobComponent({
 
   const menuRef = useRef(null);
   const isClosed = Number(statusCode) === 0;
+  const canViewCV = role === "candidate" && Boolean(cvUrl);
   const locationDisplay = formatJobLocation(location);
   const salaryDisplay = salary || formatSalary(salaryMin, salaryMax);
 
@@ -159,7 +161,11 @@ function JobComponent({
         </div>
       </div>
 
-      <div className="job-component-right">
+      <div
+        className={`job-component-right ${
+          canViewCV ? "job-component-right-with-cv" : ""
+        }`}
+      >
         {role === "recruiter" && (
           <button
             className={`job-component-status-btn ${getStatusClass(statusCode)}`}
@@ -168,9 +174,21 @@ function JobComponent({
           </button>
         )}
         {role === "candidate" && (
-          <button className={`job-component-status-btn ${statusCode} `}>
-            {status}
-          </button>
+          <>
+            <button className={`job-component-status-btn ${statusCode} `}>
+              {status}
+            </button>
+            {canViewCV && (
+            <a
+              className="job-component-cv-link"
+              href={cvUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Xem CV
+            </a>
+            )}
+          </>
         )}
 
         {role === "recruiter" && (
