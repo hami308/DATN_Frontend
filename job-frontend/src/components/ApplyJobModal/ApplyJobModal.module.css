@@ -56,6 +56,17 @@
   margin-bottom: 18px;
 }
 
+.loadingState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 96px;
+
+  color: #374151;
+  font-size: 15px;
+}
+
 .cvItem {
   border: 1px solid #e5e7eb;
   border-radius: 10px;

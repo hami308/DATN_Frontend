@@ -9,10 +9,13 @@ import { applyJobApi } from "../../service/candidate/application_service";
 export default function ApplyJobModal({ jobId, onClose }) {
   const [cvs, setCvs] = useState([]);
   const [selectedCvId, setSelectedCvId] = useState("");
+  const [cvLoading, setCvLoading] = useState(true);
 
   const [loading, setLoading] = useState(false);
 
   const fetchCVs = async () => {
+    setCvLoading(true);
+
     try {
       const response = await getMyCVsApi();
 
@@ -25,6 +28,8 @@ export default function ApplyJobModal({ jobId, onClose }) {
       setSelectedCvId(defaultCv?.id || list[0]?.id || "");
     } catch (error) {
       console.error(error);
+    } finally {
+      setCvLoading(false);
     }
   };
 
@@ -61,53 +66,59 @@ export default function ApplyJobModal({ jobId, onClose }) {
       <div className={styles.modal}>
         <h3 className={styles.title}>Chọn CV để ứng tuyển</h3>
 
-        <div className={styles.cvList}>
-          {cvs.length > 0 ? (
-            cvs.map((cv) => (
-              <div key={cv.id} className={styles.cvItem}>
-                <label>
-                  <input
-                    type="radio"
-                    name="cv"
-                    value={cv.id}
-                    checked={Number(selectedCvId) === Number(cv.id)}
-                    onChange={(e) => setSelectedCvId(e.target.value)}
-                  />
+        {cvLoading ? (
+          <div className={styles.loadingState}>Đang tải danh sách CV...</div>
+        ) : (
+          <>
+            <div className={styles.cvList}>
+              {cvs.length > 0 ? (
+                cvs.map((cv) => (
+                  <div key={cv.id} className={styles.cvItem}>
+                    <label>
+                      <input
+                        type="radio"
+                        name="cv"
+                        value={cv.id}
+                        checked={Number(selectedCvId) === Number(cv.id)}
+                        onChange={(e) => setSelectedCvId(e.target.value)}
+                      />
 
-                  <span>
-                    {getCVDisplayName(cv)}
+                      <span>
+                        {getCVDisplayName(cv)}
 
-                    {cv.is_default && (
-                      <span className={styles.defaultText}> - Mặc định</span>
-                    )}
-                  </span>
-                </label>
-              </div>
-            ))
-          ) : (
-            <p>Bạn chưa có CV. Vui lòng tải CV trong mục Quản lý CV trước.</p>
-          )}
-        </div>
+                        {cv.is_default && (
+                          <span className={styles.defaultText}> - Mặc định</span>
+                        )}
+                      </span>
+                    </label>
+                  </div>
+                ))
+              ) : (
+                <p>Bạn chưa có CV. Vui lòng tải CV trong mục Quản lý CV trước.</p>
+              )}
+            </div>
 
-        <div className={styles.actions}>
-          <button
-            className={styles.cancelBtn}
-            type="button"
-            onClick={onClose}
-            disabled={loading}
-          >
-            Hủy
-          </button>
+            <div className={styles.actions}>
+              <button
+                className={styles.cancelBtn}
+                type="button"
+                onClick={onClose}
+                disabled={loading}
+              >
+                Hủy
+              </button>
 
-          <button
-            className={styles.submitBtn}
-            type="button"
-            onClick={handleApply}
-            disabled={loading || cvs.length === 0}
-          >
-            {loading ? "Đang ứng tuyển..." : "Xác nhận ứng tuyển"}
-          </button>
-        </div>
+              <button
+                className={styles.submitBtn}
+                type="button"
+                onClick={handleApply}
+                disabled={loading || cvs.length === 0}
+              >
+                {loading ? "Đang ứng tuyển..." : "Xác nhận ứng tuyển"}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
